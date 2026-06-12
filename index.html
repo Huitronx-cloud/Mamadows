@@ -1383,6 +1383,273 @@
     letter-spacing: 2px;
     cursor: pointer;
   }
+
+  /* ═══ PRO UPGRADE ═══ */
+  body {
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(200,255,0,0.06), transparent),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(78,205,196,0.04), transparent),
+      var(--bg);
+  }
+
+  .stat-card, .phase-card, .meta-card, .beer-tracker, .fasting-card,
+  .progress-section, .notes-section, .history-item {
+    box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 8px 24px rgba(0,0,0,0.35);
+  }
+
+  .stat-card:active, .day-card:active, .beer-btn:active { transform: scale(0.96); }
+  .stat-card, .day-card, .beer-btn { transition: all 0.18s cubic-bezier(.2,.8,.4,1); }
+
+  /* QUOTE BAR */
+  .quote-bar {
+    background: linear-gradient(120deg, rgba(200,255,0,0.07), rgba(78,205,196,0.05));
+    border: 1px solid rgba(200,255,0,0.15);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 24px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .quote-mark {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--accent);
+    line-height: 0.8;
+    flex-shrink: 0;
+  }
+
+  .quote-text {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text);
+    font-style: italic;
+  }
+
+  .quote-author {
+    font-size: 0.65rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    margin-top: 4px;
+    font-style: normal;
+  }
+
+  /* LEVEL / XP */
+  .level-bar-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 8px 24px rgba(0,0,0,0.35);
+  }
+
+  .level-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .level-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .level-icon {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+  }
+
+  .level-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+
+  .level-sub {
+    font-size: 0.62rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .level-xp {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+  }
+
+  .xp-bar-bg {
+    height: 10px;
+    background: var(--surface2);
+    border-radius: 100px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .xp-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent3), var(--accent));
+    border-radius: 100px;
+    transition: width 0.8s cubic-bezier(.2,.8,.3,1);
+    position: relative;
+  }
+
+  .xp-bar-fill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+    animation: shimmer 2.5s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* STREAK */
+  .streak-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .streak-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 8px 24px rgba(0,0,0,0.35);
+  }
+
+  .streak-flame { font-size: 1.8rem; margin-bottom: 4px; }
+
+  .streak-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    line-height: 1;
+    color: var(--accent2);
+  }
+
+  .streak-card.trofeo .streak-num { color: var(--accent); }
+
+  .streak-label {
+    font-size: 0.6rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+  }
+
+  /* LOGROS */
+  .achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .ach-badge {
+    aspect-ratio: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .ach-badge.unlocked {
+    background: linear-gradient(135deg, rgba(200,255,0,0.12), rgba(78,205,196,0.08));
+    border-color: rgba(200,255,0,0.4);
+  }
+
+  .ach-badge.locked { opacity: 0.35; filter: grayscale(1); }
+
+  .ach-icon { font-size: 1.5rem; }
+
+  .ach-name {
+    font-size: 0.5rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    line-height: 1.2;
+  }
+
+  .ach-badge.unlocked .ach-name { color: var(--accent); }
+
+  /* SPARKLINE PESO */
+  .sparkline-wrap { margin-top: 14px; }
+
+  .sparkline-label {
+    font-size: 0.6rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  /* CONFETTI */
+  .confetti-piece {
+    position: fixed;
+    width: 9px; height: 14px;
+    top: -20px;
+    z-index: 500;
+    pointer-events: none;
+    animation: confettiFall linear forwards;
+  }
+
+  @keyframes confettiFall {
+    to { transform: translateY(110vh) rotate(720deg); opacity: 0.8; }
+  }
+
+  /* TOAST XP */
+  .xp-toast {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(60px) scale(0.8);
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    color: #0d0d0f;
+    padding: 8px 20px;
+    border-radius: 100px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(.2,.8,.3,1.4);
+    z-index: 250;
+  }
+
+  .xp-toast.show {
+    transform: translateX(-50%) translateY(0) scale(1);
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
 </style>
 </head>
 <body>
@@ -1395,6 +1662,46 @@
   <div class="week-badge">
     <div class="week-num" id="weekNum">01</div>
     <div class="week-label">Semana</div>
+  </div>
+</div>
+
+<!-- FRASE DEL DÍA -->
+<div class="quote-bar">
+  <div class="quote-mark">"</div>
+  <div>
+    <div class="quote-text" id="quoteText">La disciplina es elegir entre lo que quieres ahora y lo que quieres más.</div>
+    <div class="quote-author" id="quoteAuthor">— Abraham Lincoln</div>
+  </div>
+</div>
+
+<!-- NIVEL / XP -->
+<div class="level-bar-wrap">
+  <div class="level-top">
+    <div class="level-name">
+      <div class="level-icon" id="levelIcon">🥊</div>
+      <div>
+        <div class="level-title" id="levelTitle">NOVATO</div>
+        <div class="level-sub" id="levelSub">Nivel 1</div>
+      </div>
+    </div>
+    <div class="level-xp" id="levelXp">0 XP</div>
+  </div>
+  <div class="xp-bar-bg">
+    <div class="xp-bar-fill" id="xpBarFill" style="width:0%"></div>
+  </div>
+</div>
+
+<!-- RACHAS -->
+<div class="streak-row">
+  <div class="streak-card">
+    <div class="streak-flame">🔥</div>
+    <div class="streak-num" id="streakNum">0</div>
+    <div class="streak-label">Semanas seguidas<br>cumpliendo gym</div>
+  </div>
+  <div class="streak-card trofeo">
+    <div class="streak-flame">🏆</div>
+    <div class="streak-num" id="bestStreakNum">0</div>
+    <div class="streak-label">Mejor racha<br>histórica</div>
   </div>
 </div>
 
@@ -1412,6 +1719,10 @@
     <div class="meta-bar-fill" id="metaBar" style="width:0%"></div>
   </div>
   <div class="meta-caption" id="metaCaption">0.0 kg perdidos · 10.0 kg restantes</div>
+  <div class="sparkline-wrap" id="sparklineWrap" style="display:none">
+    <div class="sparkline-label">Tu peso semana a semana</div>
+    <svg id="weightSparkline" width="100%" height="50" preserveAspectRatio="none"></svg>
+  </div>
 </div>
 
 <!-- SISTEMA DE FASES -->
@@ -1433,6 +1744,10 @@
   <div class="phase-next-label" id="phaseNextLabel">— entrenos para la siguiente fase</div>
   <div class="phase-stepper" id="phaseStepper"></div>
 </div>
+
+<!-- LOGROS -->
+<div class="section-title">Logros</div>
+<div class="achievements-grid" id="achievementsGrid"></div>
 
 <!-- STATS ROW -->
 <div class="stats-row">
@@ -1601,6 +1916,7 @@
 
 <!-- TOAST -->
 <div class="toast" id="toast">✓ Guardado</div>
+<div class="xp-toast" id="xpToast">+50 XP</div>
 
 <script>
 const DAYS = ['LUN','MAR','MIÉ','JUE','VIE','SÁB','DOM'];
@@ -2156,6 +2472,10 @@ function markDayDone(dayIndex) {
       updateAllStats();
       renderPhase();
       closeWorkoutModal();
+      awardXP(50, 'Entreno');
+      launchConfetti();
+      checkAchievements(false);
+      renderAchievements();
       if (phaseAfter.id > phaseBefore.id) {
         setTimeout(() => showPhaseUnlock(phaseAfter), 400);
       } else {
@@ -2210,6 +2530,170 @@ function saveState() {
 
 let state = loadState();
 
+
+// ═══ SISTEMA PRO: XP, NIVELES, RACHAS, LOGROS ═══
+
+const LEVELS = [
+  { name: 'NOVATO', icon: '🥊', xp: 0 },
+  { name: 'APRENDIZ', icon: '🥉', xp: 300 },
+  { name: 'CONSTANTE', icon: '🥈', xp: 800 },
+  { name: 'DISCIPLINADO', icon: '🥇', xp: 1500 },
+  { name: 'GUERRERO', icon: '⚔️', xp: 2500 },
+  { name: 'IMPARABLE', icon: '🚀', xp: 4000 },
+  { name: 'BESTIA', icon: '🦁', xp: 6000 },
+  { name: 'LEYENDA', icon: '👑', xp: 9000 }
+];
+
+const QUOTES = [
+  { t: 'La disciplina es elegir entre lo que quieres ahora y lo que quieres más.', a: 'Abraham Lincoln' },
+  { t: 'No cuentes los días, haz que los días cuenten.', a: 'Muhammad Ali' },
+  { t: 'El cuerpo logra lo que la mente cree.', a: 'Anónimo' },
+  { t: 'El dolor de hoy es la fuerza de mañana.', a: 'Anónimo' },
+  { t: 'No tienes que ser extremo, solo consistente.', a: 'Anónimo' },
+  { t: 'Un año a partir de hoy desearás haber empezado hoy.', a: 'Karen Lamb' },
+  { t: 'La motivación te hace empezar. El hábito te hace seguir.', a: 'Jim Ryun' },
+  { t: 'Tu único límite eres tú.', a: 'Anónimo' },
+  { t: 'Suda ahora, brilla después.', a: 'Anónimo' },
+  { t: 'Cada entrenamiento cuenta, aunque no lo sientas.', a: 'Anónimo' },
+  { t: 'El éxito es la suma de pequeños esfuerzos repetidos día tras día.', a: 'Robert Collier' },
+  { t: 'No pares cuando estés cansado. Para cuando hayas terminado.', a: 'David Goggins' },
+  { t: 'Hazlo por la versión de ti que sabe que puede lograrlo.', a: 'Anónimo' },
+  { t: 'Los campeones entrenan, las leyendas nunca paran.', a: 'Anónimo' }
+];
+
+const ACHIEVEMENTS = [
+  { id: 'first_workout', icon: '💪', name: 'Primer entreno', check: s => (s.totalWorkouts||0) >= 1 },
+  { id: 'ten_workouts', icon: '🔟', name: '10 entrenos', check: s => (s.totalWorkouts||0) >= 10 },
+  { id: 'phase2', icon: '🏗️', name: 'Fase 2', check: s => (s.totalWorkouts||0) >= 12 },
+  { id: 'phase3', icon: '🔥', name: 'Fase 3', check: s => (s.totalWorkouts||0) >= 30 },
+  { id: 'phase4', icon: '💎', name: 'Fase 4', check: s => (s.totalWorkouts||0) >= 54 },
+  { id: 'first_week', icon: '📅', name: '1ª semana', check: s => (s.history||[]).length >= 1 },
+  { id: 'four_weeks', icon: '🗓️', name: '4 semanas', check: s => (s.history||[]).length >= 4 },
+  { id: 'beer_control', icon: '🍺', name: 'Cerveza bajo control', check: s => (s.history||[]).some(h => h.beers <= 6) },
+  { id: 'beer_master', icon: '🧊', name: '4 sem. sobrio-ish', check: s => { const h=(s.history||[]).slice(0,4); return h.length>=4 && h.every(x=>x.beers<=6); } },
+  { id: 'lost_2kg', icon: '⚖️', name: '-2 kg', check: s => s.peso <= 94 },
+  { id: 'lost_5kg', icon: '📉', name: '-5 kg', check: s => s.peso <= 91 },
+  { id: 'lost_10kg', icon: '🏆', name: 'META: -10 kg', check: s => s.peso <= 86 },
+  { id: 'streak_2', icon: '🔥', name: 'Racha ×2', check: s => (s.bestStreak||0) >= 2 },
+  { id: 'streak_4', icon: '🌋', name: 'Racha ×4', check: s => (s.bestStreak||0) >= 4 },
+  { id: 'perfect_week', icon: '⭐', name: 'Semana perfecta', check: s => (s.history||[]).some(h => h.gymDays.length >= 3 && h.beers <= 6) },
+  { id: 'fasting_user', icon: '⏱️', name: 'Primer ayuno', check: s => !!s.lastMealTime }
+];
+
+function getLevel() {
+  const xp = state.xp || 0;
+  let lvl = LEVELS[0], idx = 0;
+  LEVELS.forEach((l, i) => { if (xp >= l.xp) { lvl = l; idx = i; } });
+  return { ...lvl, index: idx, next: LEVELS[idx + 1] || null };
+}
+
+function awardXP(amount, label) {
+  state.xp = (state.xp || 0) + amount;
+  saveState();
+  renderLevel();
+  const t = document.getElementById('xpToast');
+  t.textContent = '+' + amount + ' XP' + (label ? ' · ' + label : '');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function renderLevel() {
+  const lvl = getLevel();
+  const xp = state.xp || 0;
+  document.getElementById('levelIcon').textContent = lvl.icon;
+  document.getElementById('levelTitle').textContent = lvl.name;
+  document.getElementById('levelSub').textContent = 'Nivel ' + (lvl.index + 1) + ' de ' + LEVELS.length;
+  document.getElementById('levelXp').textContent = xp + ' XP';
+  const fill = document.getElementById('xpBarFill');
+  if (lvl.next) {
+    const pct = ((xp - lvl.xp) / (lvl.next.xp - lvl.xp)) * 100;
+    fill.style.width = Math.min(100, pct) + '%';
+  } else {
+    fill.style.width = '100%';
+  }
+}
+
+function renderStreak() {
+  document.getElementById('streakNum').textContent = state.streak || 0;
+  document.getElementById('bestStreakNum').textContent = state.bestStreak || 0;
+}
+
+function renderQuote() {
+  const dayIdx = Math.floor(Date.now() / 86400000) % QUOTES.length;
+  const q = QUOTES[dayIdx];
+  document.getElementById('quoteText').textContent = q.t;
+  document.getElementById('quoteAuthor').textContent = '— ' + q.a;
+}
+
+function checkAchievements(celebrate) {
+  if (!state.achievements) state.achievements = [];
+  let newOnes = [];
+  ACHIEVEMENTS.forEach(a => {
+    if (!state.achievements.includes(a.id) && a.check(state)) {
+      state.achievements.push(a.id);
+      newOnes.push(a);
+    }
+  });
+  if (newOnes.length) {
+    saveState();
+    renderAchievements();
+    if (celebrate) {
+      launchConfetti();
+      const first = newOnes[0];
+      showToast(first.icon + ' ¡Logro: ' + first.name + '!');
+      awardXP(100 * newOnes.length, 'Logro');
+    }
+  }
+}
+
+function renderAchievements() {
+  const grid = document.getElementById('achievementsGrid');
+  const unlocked = state.achievements || [];
+  grid.innerHTML = ACHIEVEMENTS.map(a => {
+    const isUn = unlocked.includes(a.id);
+    return `<div class="ach-badge ${isUn ? 'unlocked' : 'locked'}" title="${a.name}">
+      <div class="ach-icon">${a.icon}</div>
+      <div class="ach-name">${a.name}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderSparkline() {
+  const hist = (state.history || []).slice(0, 12).reverse();
+  const wrap = document.getElementById('sparklineWrap');
+  if (hist.length < 2) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  const svg = document.getElementById('weightSparkline');
+  const w = svg.clientWidth || 300, h = 50, pad = 4;
+  const weights = hist.map(x => x.peso);
+  const min = Math.min(...weights) - 0.5, max = Math.max(...weights) + 0.5;
+  const pts = weights.map((v, i) => {
+    const x = pad + (i / (weights.length - 1)) * (w - pad * 2);
+    const y = pad + (1 - (v - min) / (max - min)) * (h - pad * 2);
+    return x.toFixed(1) + ',' + y.toFixed(1);
+  });
+  svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  svg.innerHTML = `
+    <polyline points="${pts.join(' ')}" fill="none" stroke="#c8ff00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    ${pts.map((p,i) => `<circle cx="${p.split(',')[0]}" cy="${p.split(',')[1]}" r="2.5" fill="${i === pts.length-1 ? '#c8ff00' : '#4ecdc4'}"/>`).join('')}
+  `;
+}
+
+function launchConfetti() {
+  const colors = ['#c8ff00', '#4ecdc4', '#ff6b35', '#a855f7', '#ffffff'];
+  for (let i = 0; i < 50; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + 'vw';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
+    piece.style.animationDelay = (Math.random() * 0.4) + 's';
+    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 3500);
+  }
+}
+
 function init() {
   renderDate();
   renderWeekNum();
@@ -2218,6 +2702,11 @@ function init() {
   updateAllStats();
   renderHistory();
   renderPhase();
+  renderLevel();
+  renderStreak();
+  renderQuote();
+  renderAchievements();
+  renderSparkline();
   if (state.lastMealTime) renderFasting();
 }
 
@@ -2374,6 +2863,19 @@ function saveWeek() {
     note: note
   };
   state.history.unshift(entry);
+  // Rachas: semana cumplida = 3+ días de gym
+  if (entry.gymDays.length >= 3) {
+    state.streak = (state.streak || 0) + 1;
+    if (state.streak > (state.bestStreak || 0)) state.bestStreak = state.streak;
+  } else {
+    state.streak = 0;
+  }
+  // XP por cerrar la semana + bonos
+  let weekXP = 100;
+  if (entry.gymDays.length >= 3) weekXP += 50;
+  if (entry.beers <= 6) weekXP += 50;
+  if (entry.prevPeso !== null && entry.peso < entry.prevPeso) weekXP += 75;
+  state.xp = (state.xp || 0) + weekXP;
   state.prevPeso = state.peso;
   state.weekNum += 1;
   state.beers = 0;
@@ -2385,7 +2887,12 @@ function saveWeek() {
   renderBeerGrid();
   updateAllStats();
   renderHistory();
-  showToast('¡Semana ' + entry.week + ' guardada!');
+  renderLevel();
+  renderStreak();
+  renderSparkline();
+  checkAchievements(true);
+  showToast('¡Semana ' + entry.week + ' guardada! +' + weekXP + ' XP');
+  launchConfetti();
 }
 
 function renderHistory() {
@@ -2435,6 +2942,7 @@ function confirmPeso() {
   saveState();
   updateAllStats();
   closeModal();
+  checkAchievements(true);
   showToast('Peso actualizado: ' + val.toFixed(1) + ' kg');
 }
 
@@ -2511,6 +3019,8 @@ function confirmFasting() {
   saveState();
   closeFastingModal();
   renderFasting();
+  checkAchievements(false);
+  renderAchievements();
   showToast('Ayuno iniciado 🕐');
 }
 
