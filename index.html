@@ -1511,6 +1511,11 @@
     animation: shimmer 2.5s infinite;
   }
 
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.85; transform: scale(0.99); }
+  }
+
   @keyframes shimmer {
     0% { transform: translateX(-100%); }
     100% { transform: translateX(100%); }
@@ -1650,6 +1655,215 @@
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
   }
+
+  /* VICIOS TRACKER */
+  .vicios-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 28px;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 8px 24px rgba(0,0,0,0.35);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .vicios-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ff6b35, #a855f7);
+    border-radius: 16px 16px 0 0;
+  }
+
+  .vicios-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .vicio-block {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.18s cubic-bezier(.2,.8,.4,1);
+    user-select: none;
+  }
+
+  .vicio-block:active { transform: scale(0.96); }
+
+  .vicio-icon { font-size: 2rem; margin-bottom: 8px; }
+
+  .vicio-days {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.6rem;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+
+  .vicio-block.alcohol .vicio-days { color: #ff6b35; }
+  .vicio-block.weed .vicio-days { color: #a855f7; }
+
+  .vicio-label {
+    font-size: 0.6rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+
+  .vicio-btns {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+  }
+
+  .vicio-btn {
+    flex: 1;
+    padding: 7px 4px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .vicio-block.alcohol .vicio-btn:hover,
+  .vicio-block.alcohol .vicio-btn.reset-btn:hover { border-color: #ff6b35; color: #ff6b35; }
+
+  .vicio-block.weed .vicio-btn:hover,
+  .vicio-block.weed .vicio-btn.reset-btn:hover { border-color: #a855f7; color: #a855f7; }
+
+  .vicio-milestone {
+    font-size: 0.65rem;
+    font-family: 'DM Mono', monospace;
+    margin-top: 8px;
+    padding: 4px 8px;
+    border-radius: 100px;
+    display: inline-block;
+  }
+
+  .vicio-block.alcohol .vicio-milestone {
+    color: #ff6b35;
+    background: rgba(255,107,53,0.1);
+    border: 1px solid rgba(255,107,53,0.2);
+  }
+
+  .vicio-block.weed .vicio-milestone {
+    color: #a855f7;
+    background: rgba(168,85,247,0.1);
+    border: 1px solid rgba(168,85,247,0.2);
+  }
+
+  /* PESO DOMINICAL */
+  .peso-sunday-card {
+    background: linear-gradient(135deg, rgba(200,255,0,0.08), rgba(78,205,196,0.05));
+    border: 1px solid rgba(200,255,0,0.25);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 28px;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 8px 24px rgba(0,0,0,0.35);
+  }
+
+  .peso-sunday-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+
+  .peso-sunday-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .peso-sunday-sub {
+    font-size: 0.65rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    margin-top: 3px;
+  }
+
+  .peso-sunday-current {
+    text-align: right;
+  }
+
+  .peso-sunday-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .peso-sunday-unit {
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .peso-domingo-btn {
+    width: 100%;
+    padding: 13px;
+    background: var(--accent);
+    color: #0d0d0f;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 10px;
+  }
+
+  .peso-domingo-btn:active { transform: scale(0.98); }
+
+  .peso-domingo-btn.disabled {
+    background: var(--surface2);
+    color: var(--muted);
+    cursor: default;
+  }
+
+  .peso-next-weigh {
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    text-align: center;
+  }
+
+  .peso-delta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .peso-delta-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+  }
+
+  .peso-delta-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+  }
+
+  .peso-delta-val.loss { color: var(--accent); }
+  .peso-delta-val.gain { color: var(--danger); }
+  .peso-delta-val.same { color: var(--muted); }
 </style>
 </head>
 <body>
@@ -1664,6 +1878,7 @@
     <div class="week-label">Semana</div>
   </div>
 </div>
+
 
 <!-- FRASE DEL DÍA -->
 <div class="quote-bar">
@@ -1703,6 +1918,63 @@
     <div class="streak-num" id="bestStreakNum">0</div>
     <div class="streak-label">Mejor racha<br>histórica</div>
   </div>
+</div>
+
+<!-- DÍAS DE GYM -->
+<div class="section-title">Gym esta semana</div>
+<div class="days-grid" id="daysGrid">
+  <!-- Rendered by JS -->
+</div>
+
+<!-- VICIOS TRACKER -->
+<div class="section-title">Días sin vicios</div>
+<div class="vicios-card">
+  <div style="font-size:0.65rem;color:var(--muted);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;">Toca + para sumar un día sin vicio · Toca reset si recaíste</div>
+  <div class="vicios-grid">
+    <div class="vicio-block alcohol">
+      <div class="vicio-icon">🍺</div>
+      <div class="vicio-days" id="alcoholDays">0</div>
+      <div class="vicio-label">días sin alcohol</div>
+      <div class="vicio-milestone" id="alcoholMilestone">Empieza hoy</div>
+      <div class="vicio-btns">
+        <button class="vicio-btn reset-btn" onclick="resetVicio('alcohol')">Reset</button>
+        <button class="vicio-btn" onclick="addVicioDays('alcohol', 1)">+ Día</button>
+      </div>
+    </div>
+    <div class="vicio-block weed">
+      <div class="vicio-icon">🌿</div>
+      <div class="vicio-days" id="weedDays">0</div>
+      <div class="vicio-label">días sin weed</div>
+      <div class="vicio-milestone" id="weedMilestone">Empieza hoy</div>
+      <div class="vicio-btns">
+        <button class="vicio-btn reset-btn" onclick="resetVicio('weed')">Reset</button>
+        <button class="vicio-btn" onclick="addVicioDays('weed', 1)">+ Día</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PESO SEMANAL -->
+<div class="section-title">Peso semanal</div>
+<div class="peso-sunday-card">
+  <div class="peso-sunday-header">
+    <div>
+      <div class="peso-sunday-title">⚖️ Mi peso</div>
+      <div class="peso-sunday-sub" id="pesoSundaySub">Pésate cada domingo en ayunas</div>
+    </div>
+    <div class="peso-sunday-current">
+      <div class="peso-sunday-num" id="pesoSundayNum">96.0</div>
+      <div class="peso-sunday-unit">kg</div>
+    </div>
+  </div>
+  <div class="peso-delta-row" id="pesoDeltaRow" style="display:none">
+    <div class="peso-delta-label">vs semana anterior</div>
+    <div class="peso-delta-val" id="pesoDeltaVal">—</div>
+  </div>
+  <button class="peso-domingo-btn" id="pesoDomingoBtn" onclick="openPesoModal()">
+    ⚖️ REGISTRAR PESO DE HOY
+  </button>
+  <div class="peso-next-weigh" id="pesoNextWeigh"></div>
 </div>
 
 <!-- META PROGRESS -->
@@ -1767,12 +2039,6 @@
     <div class="stat-value" id="statGym">0</div>
     <div class="stat-delta">meta: 3</div>
   </div>
-</div>
-
-<!-- DÍAS DE GYM -->
-<div class="section-title">Días de gym esta semana</div>
-<div class="days-grid" id="daysGrid">
-  <!-- Rendered by JS -->
 </div>
 
 <!-- CERVEZA TRACKER -->
@@ -1865,18 +2131,6 @@
   </div>
 </div>
 
-<!-- MODAL PESO -->
-<div class="modal-overlay" id="pesoModal">
-  <div class="modal">
-    <div class="modal-title">Actualizar Peso</div>
-    <input type="number" class="modal-input" id="pesoInput" placeholder="96.0" step="0.1" min="50" max="200">
-    <div class="modal-hint">Pésate en ayunas, lunes por la mañana</div>
-    <div class="modal-btns">
-      <button class="modal-cancel" onclick="closeModal()">Cancelar</button>
-      <button class="modal-confirm" onclick="confirmPeso()">GUARDAR PESO</button>
-    </div>
-  </div>
-</div>
 
 <!-- MODAL RUTINA -->
 <div class="workout-modal-overlay" id="workoutModal">
@@ -2694,6 +2948,149 @@ function launchConfetti() {
   }
 }
 
+
+// ── VICIOS TRACKER ───────────────────────────────────────────
+
+const ALCOHOL_MILESTONES = [
+  [1,'¡Primer día! 💪'], [3,'3 días limpio 🌱'], [7,'1 semana sin alcohol 🔥'],
+  [14,'2 semanas 🥳'], [21,'21 días — nuevo hábito 🧠'], [30,'1 mes sin alcohol 👑'],
+  [60,'2 meses — eres otro 🚀'], [90,'90 días. Leyenda. 🏆']
+];
+
+const WEED_MILESTONES = [
+  [1,'¡Primer día! 💪'], [3,'3 días limpio 🌿'], [7,'1 semana 🔥'],
+  [14,'Mente más clara 🧠'], [21,'21 días — nuevo hábito ⚡'], [30,'1 mes sin weed 👑'],
+  [60,'2 meses — claridad total 🚀'], [90,'90 días. Imparable. 🏆']
+];
+
+function getMilestoneText(days, milestones) {
+  let text = 'Empieza hoy';
+  for (const [d, t] of milestones) { if (days >= d) text = t; }
+  return text;
+}
+
+function renderVicios() {
+  const alc = state.alcoholDays || 0;
+  const weed = state.weedDays || 0;
+  document.getElementById('alcoholDays').textContent = alc;
+  document.getElementById('weedDays').textContent = weed;
+  document.getElementById('alcoholMilestone').textContent = getMilestoneText(alc, ALCOHOL_MILESTONES);
+  document.getElementById('weedMilestone').textContent = getMilestoneText(weed, WEED_MILESTONES);
+}
+
+function addVicioDays(type, n) {
+  if (type === 'alcohol') {
+    const prev = state.alcoholDays || 0;
+    state.alcoholDays = prev + n;
+    // Check milestone crossed
+    const prevMs = getMilestoneText(prev, ALCOHOL_MILESTONES);
+    const newMs  = getMilestoneText(state.alcoholDays, ALCOHOL_MILESTONES);
+    if (newMs !== prevMs && state.alcoholDays > 0) {
+      setTimeout(() => { launchConfetti(); showToast('🍺 ' + newMs); }, 200);
+      awardXP(50, 'Milestone alcohol');
+    }
+  } else {
+    const prev = state.weedDays || 0;
+    state.weedDays = prev + n;
+    const prevMs = getMilestoneText(prev, WEED_MILESTONES);
+    const newMs  = getMilestoneText(state.weedDays, WEED_MILESTONES);
+    if (newMs !== prevMs && state.weedDays > 0) {
+      setTimeout(() => { launchConfetti(); showToast('🌿 ' + newMs); }, 200);
+      awardXP(50, 'Milestone weed');
+    }
+  }
+  saveState();
+  renderVicios();
+  checkAchievements(false);
+}
+
+function resetVicio(type) {
+  if (type === 'alcohol') {
+    if ((state.alcoholDays||0) === 0) return;
+    const best = state.bestAlcoholStreak || 0;
+    if ((state.alcoholDays||0) > best) state.bestAlcoholStreak = state.alcoholDays;
+    state.alcoholDays = 0;
+    showToast('Reseteado 🍺 — vuelve a empezar, cada día cuenta');
+  } else {
+    if ((state.weedDays||0) === 0) return;
+    const best = state.bestWeedStreak || 0;
+    if ((state.weedDays||0) > best) state.bestWeedStreak = state.weedDays;
+    state.weedDays = 0;
+    showToast('Reseteado 🌿 — lo importante es seguir intentando');
+  }
+  saveState();
+  renderVicios();
+}
+
+// ── PESO DOMINICAL ────────────────────────────────────────────
+
+function isSunday() {
+  return new Date().getDay() === 0;
+}
+
+function daysUntilSunday() {
+  const day = new Date().getDay(); // 0=dom
+  return day === 0 ? 0 : 7 - day;
+}
+
+function renderPesoDominical() {
+  const num = document.getElementById('pesoSundayNum');
+  const btn = document.getElementById('pesoDomingoBtn');
+  const sub = document.getElementById('pesoSundaySub');
+  const next = document.getElementById('pesoNextWeigh');
+  const deltaRow = document.getElementById('pesoDeltaRow');
+  const deltaVal = document.getElementById('pesoDeltaVal');
+
+  if (num) num.textContent = (state.peso || 96).toFixed(1);
+
+  // Delta vs prev
+  if (state.prevPeso !== null && state.prevPeso !== undefined && deltaRow) {
+    const diff = (state.peso || 96) - state.prevPeso;
+    deltaRow.style.display = 'flex';
+    if (diff < 0) {
+      deltaVal.textContent = '▼ ' + Math.abs(diff).toFixed(1) + ' kg menos';
+      deltaVal.className = 'peso-delta-val loss';
+    } else if (diff > 0) {
+      deltaVal.textContent = '▲ ' + diff.toFixed(1) + ' kg más';
+      deltaVal.className = 'peso-delta-val gain';
+    } else {
+      deltaVal.textContent = '= Sin cambio';
+      deltaVal.className = 'peso-delta-val same';
+    }
+  }
+
+  if (!btn) return;
+
+  if (isSunday()) {
+    btn.classList.remove('disabled');
+    btn.textContent = '⚖️ ES DOMINGO — REGISTRA TU PESO';
+    btn.style.background = '';
+    btn.style.animation = 'pulse 2s ease infinite';
+    if (sub) sub.textContent = '¡Hoy es el día! Pésate en ayunas antes de comer.';
+    if (next) next.textContent = '';
+  } else {
+    const days = daysUntilSunday();
+    btn.classList.add('disabled');
+    btn.textContent = '⚖️ REGISTRAR PESO DE HOY';
+    btn.style.animation = '';
+    if (sub) sub.textContent = 'Pésate cada domingo en ayunas · misma hora, sin ropa';
+    if (next) next.textContent = 'Próximo pesaje en ' + days + ' día' + (days===1?'':'s') + ' (domingo)';
+  }
+}
+
+// ── ACHIEVEMENTS: add vicio milestones ────────────────────────
+const VICIO_ACHIEVEMENTS = [
+  { id: 'alc_7', icon: '🍺', name: '7 días sin alcohol', check: s => (s.alcoholDays||0) >= 7 || (s.bestAlcoholStreak||0) >= 7 },
+  { id: 'alc_30', icon: '🏅', name: '30 días sin alcohol', check: s => (s.alcoholDays||0) >= 30 || (s.bestAlcoholStreak||0) >= 30 },
+  { id: 'weed_7', icon: '🌿', name: '7 días sin weed', check: s => (s.weedDays||0) >= 7 || (s.bestWeedStreak||0) >= 7 },
+  { id: 'weed_30', icon: '🧠', name: '30 días sin weed', check: s => (s.weedDays||0) >= 30 || (s.bestWeedStreak||0) >= 30 },
+];
+
+// Merge into ACHIEVEMENTS array
+VICIO_ACHIEVEMENTS.forEach(a => {
+  if (!ACHIEVEMENTS.find(x => x.id === a.id)) ACHIEVEMENTS.push(a);
+});
+
 function init() {
   renderDate();
   renderWeekNum();
@@ -2707,6 +3104,8 @@ function init() {
   renderQuote();
   renderAchievements();
   renderSparkline();
+  renderVicios();
+  renderPesoDominical();
   if (state.lastMealTime) renderFasting();
 }
 
@@ -2926,6 +3325,10 @@ function renderHistory() {
 }
 
 function openPesoModal() {
+  if (!isSunday()) {
+    const days = daysUntilSunday();
+    if (!confirm('Hoy no es domingo — lo ideal es pesarte siempre el mismo día para comparar bien. ¿Quieres registrar de todas formas?')) return;
+  }
   document.getElementById('pesoInput').value = state.peso.toFixed(1);
   document.getElementById('pesoModal').classList.add('show');
   setTimeout(() => document.getElementById('pesoInput').focus(), 300);
@@ -2941,9 +3344,11 @@ function confirmPeso() {
   state.peso = val;
   saveState();
   updateAllStats();
+  renderPesoDominical();
   closeModal();
   checkAchievements(true);
-  showToast('Peso actualizado: ' + val.toFixed(1) + ' kg');
+  awardXP(25, 'Pesaje semanal');
+  showToast('⚖️ Peso registrado: ' + val.toFixed(1) + ' kg');
 }
 
 function showToast(msg) {
