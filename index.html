@@ -1864,21 +1864,348 @@
   .peso-delta-val.loss { color: var(--accent); }
   .peso-delta-val.gain { color: var(--danger); }
   .peso-delta-val.same { color: var(--muted); }
+
+  /* HEADER + NIVEL INTEGRADO */
+  .header-level-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 18px 18px 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 12px 32px rgba(0,0,0,0.4);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header-level-card::before {
+    content: 'IVANFIT';
+    position: absolute;
+    right: -16px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    color: rgba(200,255,0,0.03);
+    letter-spacing: 4px;
+    pointer-events: none;
+  }
+
+  .header-level-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .header-left-col h1.app-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 7vw, 3.5rem);
+    letter-spacing: 2px;
+    line-height: 0.9;
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .app-date {
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-family: 'DM Mono', monospace;
+    margin-top: 5px;
+  }
+
+  .header-right-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
+  .week-badge-inline {
+    text-align: right;
+  }
+
+  .week-badge-inline .week-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .week-badge-inline .week-label {
+    font-size: 0.55rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .level-badge-inline {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 7px 10px;
+  }
+
+  .level-icon-sm {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  .level-title-sm {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    line-height: 1;
+    color: var(--text);
+  }
+
+  .level-sub-sm {
+    font-size: 0.55rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .level-xp-sm {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent);
+    margin-left: 4px;
+  }
+
+  /* GYM WEEK CARD */
+  .gym-week-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 8px 24px rgba(0,0,0,0.35);
+  }
+
+  .gym-week-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+
+  .gym-week-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .gym-week-sub {
+    font-size: 0.62rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    margin-top: 3px;
+  }
+
+  .gym-week-count {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--accent3);
+    line-height: 1;
+  }
+
+  .gym-week-denom {
+    font-size: 1rem;
+    color: var(--muted);
+  }
+
+  /* MONTHLY CALENDAR */
+  .monthly-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 28px;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 8px 24px rgba(0,0,0,0.35);
+  }
+
+  .monthly-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+
+  .monthly-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .monthly-legend {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .legend-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .legend-dot.gym { background: var(--accent3); }
+  .legend-dot.nobeers { background: #ff6b35; }
+  .legend-dot.perfect { background: var(--accent); }
+
+  .legend-label {
+    font-size: 0.55rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    margin-right: 4px;
+  }
+
+  .monthly-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+    margin-bottom: 6px;
+  }
+
+  .monthly-weekdays div {
+    text-align: center;
+    font-size: 0.6rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    text-transform: uppercase;
+    padding: 4px 0;
+  }
+
+  .monthly-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+    margin-bottom: 14px;
+  }
+
+  .cal-day {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: all 0.15s;
+    cursor: default;
+  }
+
+  .cal-day.empty { background: transparent; border-color: transparent; }
+  .cal-day.today { border-color: var(--accent); border-width: 2px; }
+
+  .cal-day.has-gym { background: rgba(78,205,196,0.12); border-color: rgba(78,205,196,0.35); }
+  .cal-day.has-nobeers { background: rgba(255,107,53,0.1); border-color: rgba(255,107,53,0.3); }
+  .cal-day.perfect-day { background: linear-gradient(135deg, rgba(200,255,0,0.15), rgba(78,205,196,0.1)); border-color: rgba(200,255,0,0.5); }
+  .cal-day.future { opacity: 0.3; }
+
+  .cal-day-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    line-height: 1;
+  }
+
+  .cal-day.today .cal-day-num { color: var(--accent); font-weight: 600; }
+  .cal-day.has-gym .cal-day-num,
+  .cal-day.perfect-day .cal-day-num { color: var(--text); }
+
+  .cal-day-dots {
+    display: flex;
+    gap: 2px;
+    margin-top: 2px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .cal-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+  }
+
+  .cal-dot.gym { background: var(--accent3); }
+  .cal-dot.nobeers { background: #ff6b35; }
+  .cal-dot.weed { background: #a855f7; }
+  .cal-dot.weigh { background: var(--accent); }
+
+  .monthly-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .monthly-stat {
+    text-align: center;
+  }
+
+  .monthly-stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    line-height: 1;
+  }
+
+  .monthly-stat-num.gym-col { color: var(--accent3); }
+  .monthly-stat-num.perf-col { color: var(--accent); }
+  .monthly-stat-num.alc-col { color: #ff6b35; }
+
+  .monthly-stat-label {
+    font-size: 0.55rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-top: 2px;
+  }
+
+  /* FIX: gym-week-card day grid visibility */
+  .gym-week-card .days-grid {
+    margin-bottom: 0;
+  }
+  .gym-week-card .day-card {
+    min-height: 54px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-left">
-    <h1>IVAN<br>FIT</h1>
-    <p id="currentDate">— — —</p>
-  </div>
-  <div class="week-badge">
-    <div class="week-num" id="weekNum">01</div>
-    <div class="week-label">Semana</div>
+
+<!-- IMPORT DATA BANNER -->
+<div id="importBanner" style="display:none; background:rgba(200,255,0,0.08); border:1px solid rgba(200,255,0,0.25); border-radius:12px; padding:14px; margin-bottom:20px; font-family:'DM Sans',sans-serif; font-size:0.82rem; color:var(--text);">
+  <div style="font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:1px; color:var(--accent); margin-bottom:8px;">¿Cambiaste de URL?</div>
+  Si ya tenías datos guardados y cambiaste de Netlify a GitHub (o viceversa), tus datos están en el navegador anterior.
+  Abre la app en el navegador viejo, ve al final de la página y toca <strong>"Exportar mis datos"</strong> para copiarlos aquí.
+  <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+    <textarea id="importInput" placeholder="Pega aquí tus datos exportados..." style="width:100%; min-height:60px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:'DM Mono',monospace; font-size:0.72rem; padding:8px; resize:none; outline:none;"></textarea>
+    <button onclick="importData()" style="padding:10px 20px; background:var(--accent); color:#0d0d0f; border:none; border-radius:8px; font-family:'Bebas Neue',sans-serif; font-size:1rem; cursor:pointer;">IMPORTAR</button>
+    <button onclick="document.getElementById('importBanner').style.display='none'" style="padding:10px 16px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; color:var(--muted); font-family:'DM Mono',monospace; font-size:0.75rem; cursor:pointer;">Cerrar</button>
   </div>
 </div>
-
 
 <!-- FRASE DEL DÍA -->
 <div class="quote-bar">
@@ -1889,19 +2216,29 @@
   </div>
 </div>
 
-<!-- NIVEL / XP -->
-<div class="level-bar-wrap">
-  <div class="level-top">
-    <div class="level-name">
-      <div class="level-icon" id="levelIcon">🥊</div>
-      <div>
-        <div class="level-title" id="levelTitle">NOVATO</div>
-        <div class="level-sub" id="levelSub">Nivel 1</div>
+<!-- HEADER + NIVEL INTEGRADO -->
+<div class="header-level-card">
+  <div class="header-level-top">
+    <div class="header-left-col">
+      <h1 class="app-title">IVAN<br>FIT</h1>
+      <p class="app-date" id="currentDate">— — —</p>
+    </div>
+    <div class="header-right-col">
+      <div class="week-badge-inline">
+        <div class="week-num" id="weekNum">01</div>
+        <div class="week-label">Semana</div>
+      </div>
+      <div class="level-badge-inline">
+        <div class="level-icon-sm" id="levelIcon">🥊</div>
+        <div>
+          <div class="level-title-sm" id="levelTitle">NOVATO</div>
+          <div class="level-sub-sm" id="levelSub">Nivel 1</div>
+        </div>
+        <div class="level-xp-sm" id="levelXp">0 XP</div>
       </div>
     </div>
-    <div class="level-xp" id="levelXp">0 XP</div>
   </div>
-  <div class="xp-bar-bg">
+  <div class="xp-bar-bg" style="margin-top:12px">
     <div class="xp-bar-fill" id="xpBarFill" style="width:0%"></div>
   </div>
 </div>
@@ -1921,9 +2258,19 @@
 </div>
 
 <!-- DÍAS DE GYM -->
-<div class="section-title">Gym esta semana</div>
-<div class="days-grid" id="daysGrid">
-  <!-- Rendered by JS -->
+<div class="gym-week-card">
+  <div class="gym-week-header">
+    <div>
+      <div class="gym-week-title">💪 Gym esta semana</div>
+      <div class="gym-week-sub" id="gymWeekSub">Toca un día para ver la rutina</div>
+    </div>
+    <div class="gym-week-count">
+      <span id="gymDaysCount">0</span><span class="gym-week-denom">/3</span>
+    </div>
+  </div>
+  <div class="days-grid" id="daysGrid">
+    <!-- Rendered by JS -->
+  </div>
 </div>
 
 <!-- VICIOS TRACKER -->
@@ -2123,12 +2470,41 @@
 <!-- GUARDAR -->
 <button class="save-btn" onclick="saveWeek()">GUARDAR SEMANA ↓</button>
 
+<!-- EXPORTAR DATOS -->
+<div style="margin-bottom:16px; display:flex; gap:10px;">
+  <button onclick="exportData()" style="flex:1; padding:12px; background:var(--surface); border:1px solid var(--border); border-radius:12px; color:var(--muted); font-family:'DM Mono',monospace; font-size:0.75rem; cursor:pointer; text-align:center;">
+    💾 Exportar mis datos
+  </button>
+  <button onclick="document.getElementById('importBanner').style.display='block'; window.scrollTo({top:0,behavior:'smooth'})" style="flex:1; padding:12px; background:var(--surface); border:1px solid var(--border); border-radius:12px; color:var(--muted); font-family:'DM Mono',monospace; font-size:0.75rem; cursor:pointer; text-align:center;">
+    📥 Importar datos
+  </button>
+</div>
+
 <!-- HISTORIAL -->
 <div class="section-title">Historial</div>
 <div class="history-section" id="historyList">
   <div style="text-align:center; padding:30px; color:var(--muted); font-family:'DM Mono',monospace; font-size:0.8rem;">
     Aún no hay semanas guardadas.<br>¡Registra tu primera!
   </div>
+</div>
+
+
+<!-- CALENDARIO MENSUAL -->
+<div class="section-title">Este mes</div>
+<div class="monthly-card">
+  <div class="monthly-header">
+    <div class="monthly-title" id="monthlyTitle">JUNIO 2026</div>
+    <div class="monthly-legend">
+      <span class="legend-dot gym"></span><span class="legend-label">Gym</span>
+      <span class="legend-dot nobeers"></span><span class="legend-label">Sin alcohol</span>
+      <span class="legend-dot perfect"></span><span class="legend-label">Día perfecto</span>
+    </div>
+  </div>
+  <div class="monthly-weekdays">
+    <div>L</div><div>M</div><div>X</div><div>J</div><div>V</div><div>S</div><div>D</div>
+  </div>
+  <div class="monthly-grid" id="monthlyGrid"></div>
+  <div class="monthly-stats" id="monthlyStats"></div>
 </div>
 
 
@@ -2152,6 +2528,19 @@
     <div class="modal-btns">
       <button class="modal-cancel" onclick="closeFastingModal()">Cancelar</button>
       <button class="modal-confirm" style="background:linear-gradient(135deg,#a855f7,#ec4899); color:white;" onclick="confirmFasting()">CALCULAR AYUNO</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PESO -->
+<div class="modal-overlay" id="pesoModal">
+  <div class="modal">
+    <div class="modal-title">Actualizar Peso</div>
+    <input type="number" class="modal-input" id="pesoInput" placeholder="96.0" step="0.1" min="40" max="200">
+    <div class="modal-hint">Pésate en ayunas, domingo por la mañana</div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="modal-confirm" onclick="confirmPeso()">GUARDAR PESO</button>
     </div>
   </div>
 </div>
@@ -2569,6 +2958,7 @@ const REST_DAYS = {
 let workoutProgress = {}; // { dayIndex: { exIdx: { setsDone: N } } }
 
 function renderDays() {
+  updateGymWeekCount();
   const grid = document.getElementById('daysGrid');
   grid.innerHTML = '';
   DAYS.forEach((day, i) => {
@@ -2728,8 +3118,11 @@ function markDayDone(dayIndex) {
       closeWorkoutModal();
       awardXP(50, 'Entreno');
       launchConfetti();
+      logTodayGym();
       checkAchievements(false);
       renderAchievements();
+      renderMonthlyCalendar();
+      updateGymWeekCount();
       if (phaseAfter.id > phaseBefore.id) {
         setTimeout(() => showPhaseUnlock(phaseAfter), 400);
       } else {
@@ -2741,6 +3134,7 @@ function markDayDone(dayIndex) {
   saveState();
   renderDays();
   updateAllStats();
+  updateGymWeekCount();
   closeWorkoutModal();
   showToast('💪 ¡Día ' + DAYS[dayIndex] + ' completado!');
 }
@@ -2763,8 +3157,19 @@ document.getElementById('workoutModal').addEventListener('click', function(e) {
 });
 
 function loadState() {
-  const saved = localStorage.getItem('ivanfit_state');
-  if (saved) return JSON.parse(saved);
+  // Try current key first, then legacy keys for URL migration
+  const keys = ['ivanfit_state', 'ivanfit', 'fitness_state'];
+  for (const k of keys) {
+    try {
+      const saved = localStorage.getItem(k);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        // Migrate to canonical key
+        if (k !== 'ivanfit_state') localStorage.setItem('ivanfit_state', saved);
+        return parsed;
+      }
+    } catch(e) {}
+  }
   return {
     peso: 96.0,
     prevPeso: null,
@@ -2774,6 +3179,12 @@ function loadState() {
     weekNum: 1,
     history: [],
     totalWorkouts: 0,
+    alcoholDays: 0,
+    weedDays: 0,
+    xp: 0,
+    streak: 0,
+    bestStreak: 0,
+    monthlyLog: {},
     startDate: new Date().toISOString()
   };
 }
@@ -3001,6 +3412,7 @@ function addVicioDays(type, n) {
   }
   saveState();
   renderVicios();
+  renderMonthlyCalendar();
   checkAchievements(false);
 }
 
@@ -3070,7 +3482,7 @@ function renderPesoDominical() {
     if (next) next.textContent = '';
   } else {
     const days = daysUntilSunday();
-    btn.classList.add('disabled');
+    btn.classList.remove('disabled');
     btn.textContent = '⚖️ REGISTRAR PESO DE HOY';
     btn.style.animation = '';
     if (sub) sub.textContent = 'Pésate cada domingo en ayunas · misma hora, sin ropa';
@@ -3091,6 +3503,229 @@ VICIO_ACHIEVEMENTS.forEach(a => {
   if (!ACHIEVEMENTS.find(x => x.id === a.id)) ACHIEVEMENTS.push(a);
 });
 
+
+// ── GYM WEEK COUNTER ─────────────────────────────────────────
+function updateGymWeekCount() {
+  const el = document.getElementById('gymDaysCount');
+  const sub = document.getElementById('gymWeekSub');
+  if (el) el.textContent = state.gymDays.length;
+  if (sub) {
+    const n = state.gymDays.length;
+    if (n === 0) sub.textContent = 'Toca un día para ver la rutina';
+    else if (n < 3) sub.textContent = n + ' de 3 días — ¡sigue!';
+    else sub.textContent = '✓ Semana completa — ¡lo lograste!';
+  }
+}
+
+// ── MONTHLY CALENDAR ─────────────────────────────────────────
+function renderMonthlyCalendar() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const today = now.getDate();
+
+  const monthNames = ['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO',
+    'JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'];
+
+  const titleEl = document.getElementById('monthlyTitle');
+  if (titleEl) titleEl.textContent = monthNames[month] + ' ' + year;
+
+  // Build daily log from history + current week data
+  const dailyLog = {}; // { 'YYYY-MM-DD': { gym, noBeers, weigh, noWeed } }
+
+  // From saved history (each history entry has a date string like "5 jun. 2026")
+  // We store actual dates per day differently — use monthlyLog in state
+  const log = state.monthlyLog || {};
+
+  // Mark current week gym days as today's date approximation
+  // We map gymDays (0=Mon..6=Sun) to actual dates this week
+  const dayOfWeek = now.getDay(); // 0=Sun
+  // Convert to Mon-based: Mon=0
+  const monBased = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+  const weekStart = new Date(now);
+  weekStart.setDate(now.getDate() - monBased);
+
+  state.gymDays.forEach(d => {
+    const date = new Date(weekStart);
+    date.setDate(weekStart.getDate() + d);
+    if (date.getMonth() === month && date.getFullYear() === year) {
+      const key = date.toISOString().slice(0,10);
+      if (!dailyLog[key]) dailyLog[key] = {};
+      dailyLog[key].gym = true;
+    }
+  });
+
+  // Overlay stored log
+  Object.assign(dailyLog, log);
+
+  // Also mark today's alcohol/weed status from current counters
+  // If alcoholDays > 0, today and recent days are clean — mark today
+  const todayKey = now.toISOString().slice(0,10);
+  if (!dailyLog[todayKey]) dailyLog[todayKey] = {};
+  if ((state.alcoholDays||0) > 0) dailyLog[todayKey].noBeers = true;
+  if ((state.weedDays||0) > 0) dailyLog[todayKey].noWeed = true;
+
+  // Build calendar grid
+  const firstDay = new Date(year, month, 1).getDay(); // 0=Sun
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  // Convert Sunday-first to Monday-first
+  const startOffset = firstDay === 0 ? 6 : firstDay - 1;
+
+  const grid = document.getElementById('monthlyGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  // Empty cells before month start
+  for (let i = 0; i < startOffset; i++) {
+    const empty = document.createElement('div');
+    empty.className = 'cal-day empty';
+    grid.appendChild(empty);
+  }
+
+  let gymCount = 0, perfectCount = 0, alcoholFreeCount = 0;
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateKey = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dayData = dailyLog[dateKey] || {};
+    const isFuture = d > today;
+    const isToday = d === today;
+
+    const cell = document.createElement('div');
+    let cls = 'cal-day';
+    if (isFuture) cls += ' future';
+    if (isToday) cls += ' today';
+
+    const isPerfect = dayData.gym && dayData.noBeers;
+    if (isPerfect && !isFuture) { cls += ' perfect-day'; perfectCount++; }
+    else if (dayData.gym && !isFuture) { cls += ' has-gym'; }
+    else if (dayData.noBeers && !isFuture) { cls += ' has-nobeers'; }
+
+    if (dayData.gym && !isFuture) gymCount++;
+    if (dayData.noBeers && !isFuture) alcoholFreeCount++;
+
+    cell.className = cls;
+    const dots = [
+      dayData.gym ? '<div class="cal-dot gym"></div>' : '',
+      dayData.noBeers ? '<div class="cal-dot nobeers"></div>' : '',
+      dayData.noWeed ? '<div class="cal-dot weed"></div>' : '',
+      dayData.weigh ? '<div class="cal-dot weigh"></div>' : ''
+    ].filter(Boolean).join('');
+
+    cell.innerHTML = `
+      <div class="cal-day-num">${d}</div>
+      ${dots ? '<div class="cal-day-dots">' + dots + '</div>' : ''}
+    `;
+
+    // Tap to toggle gym day (only past/today)
+    if (!isFuture) {
+      cell.style.cursor = 'pointer';
+      cell.addEventListener('click', () => toggleCalDay(dateKey, 'gym'));
+    }
+
+    grid.appendChild(cell);
+  }
+
+  // Stats
+  const statsEl = document.getElementById('monthlyStats');
+  if (statsEl) statsEl.innerHTML = `
+    <div class="monthly-stat">
+      <div class="monthly-stat-num gym-col">${gymCount}</div>
+      <div class="monthly-stat-label">Días de gym</div>
+    </div>
+    <div class="monthly-stat">
+      <div class="monthly-stat-num perf-col">${perfectCount}</div>
+      <div class="monthly-stat-label">Días perfectos</div>
+    </div>
+    <div class="monthly-stat">
+      <div class="monthly-stat-num alc-col">${alcoholFreeCount}</div>
+      <div class="monthly-stat-label">Sin alcohol</div>
+    </div>
+  `;
+}
+
+function toggleCalDay(dateKey, type) {
+  if (!state.monthlyLog) state.monthlyLog = {};
+  if (!state.monthlyLog[dateKey]) state.monthlyLog[dateKey] = {};
+  state.monthlyLog[dateKey][type] = !state.monthlyLog[dateKey][type];
+  saveState();
+  renderMonthlyCalendar();
+  if (state.monthlyLog[dateKey][type]) showToast('💪 Día marcado');
+}
+
+// ── AUTO-LOG gym days in monthly calendar on markDayDone ─────
+function logTodayGym() {
+  const now = new Date();
+  const key = now.toISOString().slice(0,10);
+  if (!state.monthlyLog) state.monthlyLog = {};
+  if (!state.monthlyLog[key]) state.monthlyLog[key] = {};
+  state.monthlyLog[key].gym = true;
+  // Also log alcohol/weed free status
+  if ((state.alcoholDays||0) > 0) state.monthlyLog[key].noBeers = true;
+  if ((state.weedDays||0) > 0) state.monthlyLog[key].noWeed = true;
+  saveState();
+}
+
+// ── LOG PESO in calendar when registered ─────────────────────
+function logPesoInCalendar() {
+  const now = new Date();
+  const key = now.toISOString().slice(0,10);
+  if (!state.monthlyLog) state.monthlyLog = {};
+  if (!state.monthlyLog[key]) state.monthlyLog[key] = {};
+  state.monthlyLog[key].weigh = true;
+  saveState();
+}
+
+// ── ALSO update gym count on render ──────────────────────────
+const _origUpdateAllStats = typeof updateAllStats === 'function' ? updateAllStats : null;
+
+
+// ── EXPORT / IMPORT DATA ─────────────────────────────────────
+function exportData() {
+  const data = JSON.stringify(state, null, 2);
+  const blob = new Blob([data], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'ivanfit-backup-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('✓ Datos exportados');
+}
+
+function importData() {
+  try {
+    const raw = document.getElementById('importInput').value.trim();
+    if (!raw) { showToast('Pega tus datos primero'); return; }
+    const parsed = JSON.parse(raw);
+    if (!parsed.weekNum && !parsed.history) throw new Error('Formato inválido');
+    Object.assign(state, parsed);
+    saveState();
+    document.getElementById('importBanner').style.display = 'none';
+    init();
+    launchConfetti();
+    showToast('✓ Datos restaurados correctamente');
+  } catch(e) {
+    showToast('Error: datos inválidos. Intenta de nuevo.');
+  }
+}
+
+function checkFirstRun() {
+  // If no history and no workouts, might be a fresh install or URL change
+  // Show import banner only if localStorage was truly empty (startDate is today)
+  const start = new Date(state.startDate || Date.now());
+  const now = new Date();
+  const isToday = start.toDateString() === now.toDateString();
+  // Don't show if they have data
+  if ((state.totalWorkouts||0) > 0 || (state.history||[]).length > 0) return;
+  // Show banner after 3 seconds if truly fresh
+  if (isToday) {
+    setTimeout(() => {
+      const banner = document.getElementById('importBanner');
+      if (banner) banner.style.display = 'block';
+    }, 3000);
+  }
+}
+
 function init() {
   renderDate();
   renderWeekNum();
@@ -3106,6 +3741,9 @@ function init() {
   renderSparkline();
   renderVicios();
   renderPesoDominical();
+  updateGymWeekCount();
+  renderMonthlyCalendar();
+  checkFirstRun();
   if (state.lastMealTime) renderFasting();
 }
 
@@ -3325,11 +3963,7 @@ function renderHistory() {
 }
 
 function openPesoModal() {
-  if (!isSunday()) {
-    const days = daysUntilSunday();
-    if (!confirm('Hoy no es domingo — lo ideal es pesarte siempre el mismo día para comparar bien. ¿Quieres registrar de todas formas?')) return;
-  }
-  document.getElementById('pesoInput').value = state.peso.toFixed(1);
+  document.getElementById('pesoInput').value = (state.peso || 96).toFixed(1);
   document.getElementById('pesoModal').classList.add('show');
   setTimeout(() => document.getElementById('pesoInput').focus(), 300);
 }
@@ -3345,6 +3979,8 @@ function confirmPeso() {
   saveState();
   updateAllStats();
   renderPesoDominical();
+  logPesoInCalendar();
+  renderMonthlyCalendar();
   closeModal();
   checkAchievements(true);
   awardXP(25, 'Pesaje semanal');
