@@ -2,2550 +2,1068 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seguimiento Semanal</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>IvanFit</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0d0d0f;
-    --surface: #16161a;
-    --surface2: #1e1e24;
-    --border: #2a2a32;
-    --accent: #c8ff00;
-    --accent2: #ff6b35;
-    --accent3: #4ecdc4;
-    --text: #e8e8ec;
-    --muted: #6b6b7a;
-    --danger: #ff4757;
-    --success: #c8ff00;
-  }
+:root {
+  /* ── DARK (night) ── */
+  --bg:      #0a0a0a;
+  --s1:      #111;
+  --s2:      #1a1a1a;
+  --s3:      #222;
+  --border:  #2a2a2a;
+  --text:    #f0f0f0;
+  --muted:   #666;
+  --dim:     #3a3a3a;
+  --accent:  #c8ff00;
+  --a2:      #ff5c38;
+  --a3:      #38c8ff;
+  --purple:  #a855f7;
+  --green:   #22c55e;
+  --mode-icon: '🌙';
+}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+/* ── LIGHT (day) ── */
+:root.day {
+  --bg:      #f4f4f0;
+  --s1:      #ffffff;
+  --s2:      #f0f0ec;
+  --s3:      #e8e8e4;
+  --border:  #ddddd8;
+  --text:    #111111;
+  --muted:   #888888;
+  --dim:     #cccccc;
+  --accent:  #6abf00;
+  --a2:      #e04020;
+  --a3:      #0090cc;
+  --purple:  #8b3fdb;
+  --green:   #1a9e40;
+  --mode-icon: '☀️';
+}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-    padding: 24px 16px 60px;
-  }
+/* Smooth color transitions */
+*, *::before, *::after {
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: 0.4s;
+  transition-timing-function: ease;
+}
 
-  /* HEADER */
-  .header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    margin-bottom: 32px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--border);
-  }
+/* But NOT on animations or transforms */
+.confetti-piece, .toast, .xp-toast, .modal, .workout-modal,
+.phase-unlock-card, .nav-icon {
+  transition: none !important;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
+body{padding-bottom:72px}
 
-  .header-left h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2.5rem, 8vw, 4.5rem);
-    letter-spacing: 2px;
-    line-height: 1;
-    background: linear-gradient(135deg, var(--accent), var(--accent3));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+/* ── TOPBAR ── */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px 12px;
+  background:rgba(10,10,10,0.96);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:40;
+}
+.logo{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;letter-spacing:-0.3px}
+.logo span{color:var(--accent)}
+.topbar-meta{display:flex;align-items:center;gap:8px}
+.topbar-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
+.topbar-week{background:var(--s2);border:1px solid var(--border);border-radius:5px;padding:3px 8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:0.5px}
 
-  .header-left p {
-    color: var(--muted);
-    font-size: 0.85rem;
-    font-family: 'DM Mono', monospace;
-    margin-top: 4px;
-  }
+/* ── PAGES ── */
+.page{display:none;padding:16px 16px 8px;animation:fadeIn 0.2s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 
-  .week-badge {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 12px 20px;
-    text-align: right;
-  }
+/* ── BOTTOM NAV ── */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(10,10,10,0.97);
+  backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);
+  display:flex;
+  z-index:50;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.nav-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:10px 4px 8px;cursor:pointer;transition:all 0.15s;
+  border:none;background:transparent;color:var(--muted);
+  -webkit-tap-highlight-color:transparent;
+}
+.nav-item.active{color:var(--accent)}
+.nav-icon{width:22px;height:22px;margin-bottom:3px;transition:transform 0.2s cubic-bezier(.2,.8,.4,1.4);color:var(--muted)}.nav-item.active .nav-icon{color:var(--accent)}
+.nav-item.active .nav-icon{transform:scale(1.15)}
+.nav-label{font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:0.5px}
+.nav-dot{width:4px;height:4px;border-radius:50%;background:var(--accent);margin:0 auto;margin-top:3px;opacity:0;transition:opacity 0.2s}
+.nav-item.active .nav-dot{opacity:1}
 
-  .week-badge .week-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem;
-    color: var(--accent);
-    line-height: 1;
-  }
+/* ── COMMON ── */
+.section-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.card{background:var(--s1);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.card-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border)}
+.card-head-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.card-body{padding:16px}
 
-  .week-badge .week-label {
-    font-size: 0.7rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
+/* ── TYPOGRAPHY ── */
+.num-xl{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;line-height:1;letter-spacing:-2px}
+.num-lg{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;line-height:1;letter-spacing:-1px}
+.num-md{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;line-height:1;letter-spacing:-0.5px}
+.unit{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+.mono-sm{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+.mono-xs{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
 
-  /* STATS ROW */
-  .stats-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-bottom: 28px;
-  }
+/* ── BUTTONS ── */
+.btn{width:100%;padding:13px;border:none;border-radius:10px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s}
+.btn:active{transform:scale(0.97)}
+.btn-accent{background:var(--accent);color:#0a0a0a}
+.btn-ghost{background:var(--s2);border:1px solid var(--border);color:var(--muted)}
+.btn-ghost:hover{border-color:var(--dim);color:var(--text)}
+.btn-sunday{background:var(--accent);color:#0a0a0a;animation:pulseSun 2s ease infinite}
+@keyframes pulseSun{0%,100%{box-shadow:0 0 0 0 rgba(200,255,0,.4)}50%{box-shadow:0 0 0 8px rgba(200,255,0,0)}}
 
-  .stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 16px;
+/* ── PROGRESS RING SVG ── */
+.ring-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center}
+.ring-label{position:absolute;text-align:center}
+
+/* ─────────────────────────────────────────────
+   PAGE 1: INICIO
+───────────────────────────────────────────── */
+
+/* Hero card */
+.hero-card{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px;position:relative;overflow:hidden}
+.hero-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(200,255,0,0.06),transparent);pointer-events:none}
+
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
+.hero-greeting{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.hero-name{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.5px}
+.hero-phase-badge{background:var(--s2);border:1px solid var(--border);border-radius:6px;padding:6px 10px;text-align:right}
+.hero-phase-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
+.hero-phase-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--accent);letter-spacing:0.5px}
+
+/* Three rings */
+.rings-row{display:flex;justify-content:space-around;align-items:center;margin-bottom:20px}
+
+.ring-item{display:flex;flex-direction:column;align-items:center;gap:8px}
+.ring-title{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;text-align:center}
+
+/* Progress chart — weekly bars */
+.bars-chart{display:flex;gap:3px;align-items:flex-end;height:48px}
+.bar-col{display:flex;flex-direction:column;align-items:center;flex:1;gap:2px}
+.bar-track{width:100%;background:var(--s3);border-radius:3px;flex:1;position:relative;overflow:hidden;min-height:4px}
+.bar-fill{position:absolute;bottom:0;left:0;right:0;border-radius:3px;transition:height 0.6s cubic-bezier(.2,.8,.4,1)}
+.bar-label{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);text-transform:uppercase}
+
+/* Quote */
+.quote-card{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:16px}
+.quote-text{font-size:13px;color:rgba(240,240,240,.75);line-height:1.6;font-style:italic;margin-bottom:6px}
+.quote-author{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+
+/* Level strip */
+.level-strip{display:flex;align-items:center;gap:12px;background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:16px}
+.level-icon{width:36px;height:36px;background:var(--s3);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.level-info{flex:1;min-width:0}
+.level-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text);letter-spacing:0.3px}
+.level-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:1px}
+.xp-track{width:100%;height:3px;background:var(--s3);border-radius:100px;margin-top:7px;overflow:hidden}
+.xp-fill{height:100%;background:var(--accent);border-radius:100px;transition:width 0.6s ease}
+.level-xp{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);flex-shrink:0}
+
+/* Streak tiles */
+.streak-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.streak-tile{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:14px}
+.streak-tile-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.streak-tile-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
+.streak-tile-icon{font-size:14px}
+.streak-tile-num{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;line-height:1;letter-spacing:-1px}
+.streak-tile.fire .streak-tile-num{color:var(--a2)}
+.streak-tile.trophy .streak-tile-num{color:var(--accent)}
+.streak-tile-unit{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:3px}
+
+/* Gym days (home preview) */
+.days-row{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.day-card{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:8px 3px;text-align:center;cursor:pointer;transition:all 0.15s;user-select:none}
+.day-card:active{transform:scale(0.93)}
+.day-card.active{background:var(--accent);border-color:var(--accent)}
+.day-name{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:0.3px;margin-bottom:4px}
+.day-card.active .day-name{color:#0a0a0a}
+.day-icon{font-size:13px}
+.day-tap{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--dim);margin-top:2px}
+.day-card.active .day-tap{color:rgba(10,10,10,.5)}
+
+/* ─────────────────────────────────────────────
+   PAGE 2: ENTRENO
+───────────────────────────────────────────── */
+.gym-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+.gym-counter{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--a3);letter-spacing:-1px;line-height:1}
+.gym-counter span{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--muted);font-weight:400}
+.gym-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:3px}
+
+/* Stats 3-col */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.stat-tile{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:14px 12px;cursor:pointer;position:relative;overflow:hidden;transition:all 0.15s}
+.stat-tile:active{transform:scale(0.95)}
+.stat-tile::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px}
+.stat-tile.peso::after{background:var(--accent)}
+.stat-tile.cerveza::after{background:var(--a2)}
+.stat-tile.gym::after{background:var(--a3)}
+.stat-tile-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.stat-tile-num{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;line-height:1;letter-spacing:-1px;margin-bottom:3px}
+.stat-tile.peso .stat-tile-num{color:var(--accent)}
+.stat-tile.cerveza .stat-tile-num{color:var(--a2)}
+.stat-tile.gym .stat-tile-num{color:var(--a3)}
+.stat-tile-delta{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted)}
+.stat-tile-delta.good{color:var(--accent)}
+.stat-tile-delta.bad{color:var(--a2)}
+.stat-tile-hint{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--dim);margin-top:2px}
+
+/* Beer */
+.beer-grid{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.beer-btn{width:36px;height:36px;background:var(--s2);border:1px solid var(--border);border-radius:7px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.12s}
+.beer-btn:active{transform:scale(0.88)}
+.beer-btn.filled{background:rgba(255,92,56,.1);border-color:rgba(255,92,56,.35)}
+.beer-controls{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ctrl-btn{padding:9px;border:1px solid var(--border);border-radius:8px;background:var(--s2);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;transition:all 0.12s}
+
+/* Progress bars */
+.prog-item{margin-bottom:14px}
+.prog-item:last-child{margin-bottom:0}
+.prog-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.prog-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
+.prog-val{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text)}
+.prog-track{height:4px;background:var(--s3);border-radius:100px;overflow:hidden}
+.prog-fill{height:100%;border-radius:100px;transition:width 0.5s ease}
+
+/* Notes */
+.notes-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.notes-textarea{width:100%;min-height:72px;background:var(--s2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Inter',sans-serif;font-size:13px;line-height:1.5;padding:10px 12px;resize:none;outline:none;transition:border-color 0.15s}
+.notes-textarea:focus{border-color:var(--accent)}
+.notes-textarea::placeholder{color:var(--dim)}
+
+/* Monthly calendar */
+.monthly-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px}
+.monthly-weekdays div{text-align:center;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;padding:3px 0}
+.monthly-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:14px}
+.cal-day{aspect-ratio:1;border-radius:5px;background:var(--s2);border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all 0.12s}
+.cal-day.empty{background:transparent;border-color:transparent}
+.cal-day.today{border-color:var(--accent);border-width:2px}
+.cal-day.has-gym{background:rgba(56,200,255,.07);border-color:rgba(56,200,255,.2)}
+.cal-day.has-nobeers{background:rgba(255,92,56,.06);border-color:rgba(255,92,56,.18)}
+.cal-day.perfect-day{background:rgba(200,255,0,.07);border-color:rgba(200,255,0,.28)}
+.cal-day.future{opacity:.2}
+.cal-day-num{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted)}
+.cal-day.today .cal-day-num{color:var(--accent)}
+.cal-day.has-gym .cal-day-num,.cal-day.perfect-day .cal-day-num{color:var(--text)}
+.cal-day-dots{display:flex;gap:2px;margin-top:1px}
+.cal-dot{width:3px;height:3px;border-radius:50%}
+.cal-dot.gym{background:var(--a3)}
+.cal-dot.nobeers{background:var(--a2)}
+.cal-dot.weed{background:var(--purple)}
+.cal-dot.weigh{background:var(--accent)}
+.monthly-foot{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding-top:12px;border-top:1px solid var(--border)}
+.monthly-stat-num{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:-0.5px}
+.monthly-stat-num.gc{color:var(--a3)}
+.monthly-stat-num.pc{color:var(--accent)}
+.monthly-stat-num.ac{color:var(--a2)}
+.monthly-stat-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;margin-top:2px}
+
+/* ─────────────────────────────────────────────
+   PAGE 3: VICIOS
+───────────────────────────────────────────── */
+.vicio-hero{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
+.vicio-hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.vicio-hero-icon{font-size:32px}
+.vicio-hero-badge{font-family:'JetBrains Mono',monospace;font-size:10px;padding:4px 10px;border-radius:5px;text-transform:uppercase;letter-spacing:0.5px}
+.vicio-hero.alcohol .vicio-hero-badge{background:rgba(255,92,56,.1);color:var(--a2);border:1px solid rgba(255,92,56,.2)}
+.vicio-hero.weed .vicio-hero-badge{background:rgba(168,85,247,.1);color:var(--purple);border:1px solid rgba(168,85,247,.2)}
+.vicio-hero-num{font-family:'Syne',sans-serif;font-size:64px;font-weight:800;line-height:1;letter-spacing:-3px;margin-bottom:4px}
+.vicio-hero.alcohol .vicio-hero-num{color:var(--a2)}
+.vicio-hero.weed .vicio-hero-num{color:var(--purple)}
+.vicio-hero-unit{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:12px}
+.vicio-hero-milestone{font-family:'JetBrains Mono',monospace;font-size:11px;min-height:32px;line-height:1.5;margin-bottom:16px}
+.vicio-hero.alcohol .vicio-hero-milestone{color:var(--a2)}
+.vicio-hero.weed .vicio-hero-milestone{color:var(--purple)}
+.vicio-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.vicio-btn-reset{padding:11px;background:var(--s2);border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;transition:all 0.12s}
+.vicio-btn-add{padding:11px;border:none;border-radius:8px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.12s}
+.vicio-hero.alcohol .vicio-btn-add{background:rgba(255,92,56,.15);color:var(--a2);border:1px solid rgba(255,92,56,.3)}
+.vicio-hero.weed .vicio-btn-add{background:rgba(168,85,247,.15);color:var(--purple);border:1px solid rgba(168,85,247,.3)}
+.vicio-btn-add:active,.vicio-btn-reset:active{transform:scale(0.96)}
+
+/* Milestones list */
+.milestones-list{display:flex;flex-direction:column;gap:6px}
+.milestone-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--s1);border:1px solid var(--border);border-radius:10px;transition:all 0.2s}
+.milestone-item.reached{border-color:rgba(200,255,0,.25);background:rgba(200,255,0,.04)}
+.milestone-item.reached.alc{border-color:rgba(255,92,56,.25);background:rgba(255,92,56,.04)}
+.milestone-item.reached.weed{border-color:rgba(168,85,247,.25);background:rgba(168,85,247,.04)}
+.ms-days{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--muted);min-width:36px;letter-spacing:-0.5px}
+.milestone-item.reached .ms-days{color:var(--accent)}
+.milestone-item.reached.alc .ms-days{color:var(--a2)}
+.milestone-item.reached.weed .ms-days{color:var(--purple)}
+.ms-label{font-size:13px;color:var(--muted);flex:1}
+.milestone-item.reached .ms-label{color:var(--text)}
+.ms-check{font-size:14px;opacity:0}
+.milestone-item.reached .ms-check{opacity:1}
+
+/* ─────────────────────────────────────────────
+   PAGE 4: AYUNO
+───────────────────────────────────────────── */
+.fasting-hero{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px;text-align:center}
+.fasting-protocol-tag{display:inline-block;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.25);color:var(--purple);font-family:'JetBrains Mono',monospace;font-size:10px;padding:4px 12px;border-radius:100px;margin-bottom:20px;letter-spacing:1px;text-transform:uppercase}
+.fasting-time-display{font-family:'Syne',sans-serif;font-size:56px;font-weight:800;letter-spacing:-2px;line-height:1;margin-bottom:8px}
+.fasting-time-display.waiting{color:var(--purple)}
+.fasting-time-display.ready{color:var(--accent)}
+.fasting-time-display.inactive{color:var(--dim)}
+.fasting-status-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:20px}
+.fasting-set-btn{display:block;width:100%;padding:12px;background:rgba(168,85,247,.1);border:1px dashed rgba(168,85,247,.35);border-radius:10px;color:var(--purple);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;transition:all 0.15s;text-align:center;letter-spacing:0.5px}
+.fasting-set-btn.has-time{border-style:solid;border-color:rgba(168,85,247,.4)}
+.fasting-result{display:none}
+.fasting-result.show{display:block}
+.fasting-info-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.fasting-info-row:last-child{border-bottom:none}
+.fasting-info-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
+.fasting-info-val{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--purple)}
+.fasting-tip-box{background:var(--s2);border-radius:8px;padding:12px;font-size:12px;color:var(--muted);line-height:1.6;margin-top:12px}
+
+/* ─────────────────────────────────────────────
+   PAGE 5: CUENTA
+───────────────────────────────────────────── */
+.account-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.account-avatar{width:52px;height:52px;background:var(--s2);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.account-name{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--text);letter-spacing:-0.3px}
+.account-since{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px}
+.account-xp{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);margin-top:4px}
+
+/* Peso card */
+.peso-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.peso-top{display:flex;align-items:flex-start;justify-content:space-between;padding:16px 16px 12px}
+.peso-top-left{}
+.peso-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.peso-hint{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px}
+.peso-big-num{font-family:'Syne',sans-serif;font-size:44px;font-weight:800;line-height:1;color:var(--accent);letter-spacing:-2px}
+.peso-big-unit{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:3px;text-align:right}
+.peso-delta-row{display:flex;justify-content:space-between;align-items:center;padding:0 16px 12px}
+.peso-delta-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+.peso-delta-val{font-family:'Syne',sans-serif;font-size:15px;font-weight:700}
+.peso-delta-val.loss{color:var(--accent)}
+.peso-delta-val.gain{color:var(--a2)}
+.peso-delta-val.same{color:var(--muted)}
+.peso-action{padding:12px 16px;border-top:1px solid var(--border)}
+.peso-next{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-align:center;margin-top:8px}
+
+/* Meta block */
+.meta-block{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px}
+.meta-nums{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+.meta-current{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;color:var(--accent);line-height:1;letter-spacing:-2px}
+.meta-arrow{font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--dim)}
+.meta-target{font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:var(--muted);letter-spacing:-1px}
+.meta-unit{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);align-self:flex-end;padding-bottom:4px}
+.meta-track{height:6px;background:var(--s3);border-radius:100px;overflow:hidden;margin-bottom:8px}
+.meta-fill{height:100%;background:linear-gradient(90deg,var(--a3),var(--accent));border-radius:100px;transition:width 0.6s ease}
+.meta-caption{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+.sparkline-wrap{margin-top:14px}
+.sparkline-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+
+/* Phase block */
+.phase-block{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px}
+.phase-block-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
+.phase-tag{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.phase-name{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:-0.5px}
+.phase-counter-num{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;letter-spacing:-1px;text-align:right}
+.phase-counter-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-align:right;margin-top:2px}
+.phase-desc{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:12px}
+.phase-track{height:4px;background:var(--s3);border-radius:100px;overflow:hidden;margin-bottom:8px}
+.phase-fill{height:100%;border-radius:100px;transition:width 0.6s ease}
+.phase-next-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:14px}
+.phase-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.phase-step{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:8px 4px;text-align:center}
+.phase-step.done{border-color:rgba(200,255,0,.2);background:rgba(200,255,0,.04)}
+.phase-step.current{border-color:var(--accent)}
+.phase-step.locked{opacity:.3}
+.phase-step-num{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--text)}
+.phase-step.current .phase-step-num{color:var(--accent)}
+.phase-step-name{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);margin-top:2px;text-transform:uppercase}
+.phase-step-lock{font-size:9px;margin-top:2px}
+
+/* Achievements */
+.achievements-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:16px}
+.ach-badge{background:var(--s1);border:1px solid var(--border);border-radius:10px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:6px}
+.ach-badge.unlocked{border-color:rgba(200,255,0,.25);background:rgba(200,255,0,.04)}
+.ach-badge.locked{opacity:.2;filter:grayscale(1)}
+.ach-icon{font-size:18px}
+.ach-name{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);text-align:center;text-transform:uppercase;line-height:1.2}
+.ach-badge.unlocked .ach-name{color:var(--accent)}
+
+/* Data management — discrete */
+.data-section{background:var(--s1);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:16px}
+.data-row{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.12s}
+.data-row:last-child{border-bottom:none}
+.data-row:hover{background:var(--s2)}
+.data-row-left{display:flex;align-items:center;gap:10px}
+.data-row-icon{font-size:16px}
+.data-row-label{font-size:13px;color:var(--text)}
+.data-row-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:1px}
+.data-row-arrow{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--dim)}
+
+/* Import panel (hidden by default) */
+.import-panel{display:none;padding:16px;border-top:1px solid var(--border);background:var(--s2)}
+.import-panel.open{display:block}
+.import-textarea{width:100%;min-height:56px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:10px;padding:10px;resize:none;outline:none;margin-bottom:10px}
+.import-textarea:focus{border-color:var(--purple)}
+.import-textarea::placeholder{color:var(--dim)}
+.import-row{display:flex;gap:8px}
+.btn-sm{padding:9px 16px;border-radius:7px;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.12s;border:none}
+.btn-sm:active{transform:scale(0.96)}
+.btn-sm.accent{background:var(--accent);color:#0a0a0a}
+.btn-sm.ghost{background:var(--s3);color:var(--muted)}
+
+/* ─────────────────────────────────────────────
+   MODALS
+───────────────────────────────────────────── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(8px);z-index:100;align-items:flex-end;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:var(--s1);border:1px solid var(--border);border-top:none;border-radius:20px 20px 0 0;padding:28px 20px 48px;width:100%;max-width:430px;animation:slideUp .26s cubic-bezier(.2,.8,.4,1)}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--accent);margin-bottom:20px;letter-spacing:-0.3px}
+.modal-input{width:100%;padding:16px;background:var(--s2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Syne',sans-serif;font-size:32px;font-weight:800;text-align:center;outline:none;margin-bottom:12px;transition:border-color 0.15s;letter-spacing:-1px}
+.modal-input:focus{border-color:var(--accent)}
+.modal-hint{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-align:center;margin-bottom:20px}
+.modal-btns{display:grid;grid-template-columns:1fr 2fr;gap:8px}
+.modal-cancel{padding:13px;background:var(--s2);border:1px solid var(--border);border-radius:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer}
+.modal-confirm{padding:13px;background:var(--accent);border:none;border-radius:10px;color:#0a0a0a;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer}
+
+/* Fasting time picker */
+.fasting-time-picker{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.time-option{padding:12px 8px;background:var(--s2);border:1px solid var(--border);border-radius:10px;text-align:center;cursor:pointer;transition:all 0.12s}
+.time-option.selected,.time-option:hover{border-color:var(--purple);background:rgba(168,85,247,.08)}
+.time-val{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--purple);letter-spacing:-0.5px}
+.time-desc{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:2px}
+.custom-time-input{width:100%;padding:14px;background:var(--s2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Syne',sans-serif;font-size:28px;font-weight:800;text-align:center;outline:none;margin-bottom:16px;letter-spacing:-1px}
+.custom-time-input:focus{border-color:var(--purple)}
+
+/* Workout modal */
+.workout-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);backdrop-filter:blur(10px);z-index:100;align-items:flex-end;justify-content:center}
+.workout-modal-overlay.show{display:flex}
+.workout-modal{background:var(--s1);border:1px solid var(--border);border-top:none;border-radius:20px 20px 0 0;width:100%;max-width:430px;max-height:92vh;overflow-y:auto;animation:slideUp .26s cubic-bezier(.2,.8,.4,1)}
+.workout-modal-header{position:sticky;top:0;background:var(--s1);border-bottom:1px solid var(--border);padding:18px 16px 14px;z-index:10}
+.workout-modal-close{position:absolute;top:16px;right:16px;background:var(--s2);border:1px solid var(--border);border-radius:50%;width:30px;height:30px;color:var(--muted);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.workout-day-tag{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.workout-title{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;line-height:1;letter-spacing:-0.5px}
+.workout-subtitle{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px}
+.workout-body{padding:16px}
+.workout-focus-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.focus-chip{font-family:'JetBrains Mono',monospace;font-size:9px;padding:3px 8px;border-radius:4px;border:1px solid}
+.workout-prog-track{height:3px;background:var(--s3);border-radius:100px;overflow:hidden;margin-bottom:6px}
+.workout-prog-fill{height:100%;background:linear-gradient(90deg,var(--a3),var(--accent));border-radius:100px;transition:width 0.4s ease}
+.workout-prog-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-align:right;margin-top:-3px;margin-bottom:14px}
+.exercise-block{background:var(--s2);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:8px}
+.exercise-header{display:flex;align-items:center;padding:12px 14px;gap:10px;cursor:pointer;user-select:none}
+.exercise-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);min-width:20px}
+.exercise-info{flex:1}
+.exercise-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:1px}
+.exercise-sets{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted)}
+.exercise-check{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;transition:all 0.15s;flex-shrink:0;cursor:pointer}
+.exercise-check.done{background:var(--accent);border-color:var(--accent);color:#0a0a0a}
+.exercise-detail{display:none;padding:0 14px 14px;border-top:1px solid var(--border)}
+.exercise-detail.open{display:block}
+.exercise-tip{font-size:12px;color:var(--muted);line-height:1.55;margin-top:10px}
+.exercise-tip strong{color:var(--text)}
+.set-tracker{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.set-pill{padding:5px 12px;border-radius:5px;border:1px solid var(--border);background:var(--s1);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);cursor:pointer;transition:all 0.12s;user-select:none}
+.set-pill.done{background:var(--accent);border-color:var(--accent);color:#0a0a0a;font-weight:600}
+.cardio-block{background:rgba(56,200,255,.04);border:1px solid rgba(56,200,255,.15);border-radius:10px;padding:14px;margin-top:14px}
+.cardio-title{font-size:12px;font-weight:600;color:var(--a3);margin-bottom:5px}
+.cardio-desc{font-size:12px;color:var(--muted);line-height:1.55}
+.workout-done-btn{width:100%;padding:14px;background:var(--accent);border:none;border-radius:10px;color:#0a0a0a;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:16px;transition:all 0.15s}
+.workout-done-btn:active{transform:scale(0.98)}
+.rest-day-content{text-align:center;padding:40px 20px}
+.rest-day-icon{font-size:40px;margin-bottom:14px}
+.rest-day-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--text);margin-bottom:10px;letter-spacing:-0.3px}
+.rest-day-text{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* Phase unlock */
+.phase-unlock-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.96);backdrop-filter:blur(12px);z-index:300;align-items:center;justify-content:center;padding:24px}
+.phase-unlock-overlay.show{display:flex;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.phase-unlock-card{background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:40px 28px;text-align:center;max-width:360px;width:100%;animation:popIn .4s cubic-bezier(.34,1.4,.64,1)}
+@keyframes popIn{from{transform:scale(.75);opacity:0}to{transform:scale(1);opacity:1}}
+.unlock-emoji{font-size:48px;margin-bottom:16px;animation:bounce 1.2s ease infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.unlock-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px}
+.unlock-phase-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;margin-bottom:4px}
+.unlock-phase-title{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;letter-spacing:-1px;line-height:1;color:var(--accent);margin-bottom:16px}
+.unlock-phase-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:24px}
+.unlock-btn{width:100%;padding:14px;background:var(--accent);color:#0a0a0a;border:none;border-radius:10px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer}
+
+/* Toast */
+.toast{position:fixed;top:16px;right:16px;transform:translateX(120%);background:var(--s1);border:1px solid var(--border);color:var(--text);padding:7px 14px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.5px;transition:transform .3s cubic-bezier(.2,.8,.4,1);z-index:300;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.4)}
+.toast.show{transform:translateX(0)}
+.xp-toast{position:fixed;top:16px;right:16px;transform:translateX(120%) scale(.9);background:var(--accent);color:#0a0a0a;padding:7px 16px;border-radius:7px;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;opacity:0;transition:all .35s cubic-bezier(.2,.8,.4,1.2);z-index:250}
+.xp-toast.show{transform:translateX(0) scale(1);opacity:1}
+.confetti-piece{position:fixed;width:7px;height:11px;top:-20px;z-index:500;pointer-events:none;animation:confettiFall linear forwards;border-radius:2px}
+@keyframes confettiFall{to{transform:translateY(110vh) rotate(540deg);opacity:0}}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+
+  /* Center nav item — bigger home */
+  .nav-center {
     position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    transition: border-color 0.2s;
   }
 
-  .stat-card:hover { border-color: var(--accent); }
-
-  .stat-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    border-radius: 16px 16px 0 0;
-  }
-
-  .stat-card.peso::before { background: var(--accent); }
-  .stat-card.cervezas::before { background: var(--accent2); }
-  .stat-card.gym::before { background: var(--accent3); }
-
-  .stat-label {
-    font-size: 0.65rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-family: 'DM Mono', monospace;
-    margin-bottom: 8px;
-  }
-
-  .stat-value {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.2rem;
+  .nav-icon-center{color:var(--accent)}.nav-icon-center {
+    font-size: 28px;
+    margin-bottom: 2px;
+    transition: transform 0.2s cubic-bezier(.2,.8,.4,1.4);
     line-height: 1;
-    margin-bottom: 4px;
+    filter: drop-shadow(0 2px 6px rgba(200,255,0,0.35));
   }
 
-  .stat-card.peso .stat-value { color: var(--accent); }
-  .stat-card.cervezas .stat-value { color: var(--accent2); }
-  .stat-card.gym .stat-value { color: var(--accent3); }
-
-  .stat-delta {
-    font-size: 0.7rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
+  .nav-item.nav-center.active .nav-icon-center {
+    transform: scale(1.1);
+    filter: drop-shadow(0 2px 10px rgba(200,255,0,0.55));
   }
 
-  .stat-delta.good { color: var(--success); }
-  .stat-delta.bad { color: var(--danger); }
-
-  /* ENTRADA SEMANAL */
-  .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.4rem;
-    letter-spacing: 2px;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  /* CHECK DAYS */
-  .days-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
-    margin-bottom: 28px;
-  }
-
-  .day-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 10px 6px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    user-select: none;
-  }
-
-  .day-card.active {
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-
-  .day-card.active .day-name,
-  .day-card.active .day-icon { color: #0d0d0f; }
-
-  .day-name {
-    font-size: 0.6rem;
-    font-family: 'DM Mono', monospace;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 6px;
-    letter-spacing: 0.5px;
-  }
-
-  .day-icon {
-    font-size: 1.2rem;
-    color: var(--text);
-  }
-
-  /* BEER TRACKER */
-  .beer-tracker {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 28px;
-  }
-
-  .beer-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-  }
-
-  .beer-title {
-    font-size: 0.8rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .beer-count-display {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem;
-    color: var(--accent2);
-  }
-
-  .beer-count-display span {
-    font-size: 1rem;
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .beer-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 14px;
-  }
-
-  .beer-btn {
-    width: 42px;
-    height: 42px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    font-size: 1.3rem;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .beer-btn.filled {
-    background: rgba(255, 107, 53, 0.2);
-    border-color: var(--accent2);
-  }
-
-  .beer-controls {
-    display: flex;
-    gap: 10px;
-  }
-
-  .ctrl-btn {
-    flex: 1;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background: var(--surface2);
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
-  .ctrl-btn:hover { border-color: var(--accent2); }
-
-  /* PROGRESS BAR */
-  .progress-section {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 28px;
-  }
-
-  .progress-item {
-    margin-bottom: 18px;
-  }
-
-  .progress-item:last-child { margin-bottom: 0; }
-
-  .progress-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-  }
-
-  .progress-label {
-    font-size: 0.8rem;
-    font-family: 'DM Mono', monospace;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .progress-value {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1rem;
-    color: var(--text);
-  }
-
-  .progress-bar-bg {
-    height: 8px;
-    background: var(--surface2);
-    border-radius: 100px;
-    overflow: hidden;
-  }
-
-  .progress-bar-fill {
-    height: 100%;
-    border-radius: 100px;
-    transition: width 0.5s ease;
-  }
-
-  /* NOTA SEMANAL */
-  .notes-section {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 28px;
-  }
-
-  .notes-label {
-    font-size: 0.7rem;
-    font-family: 'DM Mono', monospace;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-  }
-
-  .notes-textarea {
-    width: 100%;
-    min-height: 90px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    padding: 12px;
-    resize: none;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .notes-textarea:focus { border-color: var(--accent); }
-  .notes-textarea::placeholder { color: var(--muted); }
-
-  /* GUARDAR BTN */
-  .save-btn {
-    width: 100%;
-    padding: 16px;
-    background: var(--accent);
-    color: #0d0d0f;
-    border: none;
-    border-radius: 14px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.3rem;
-    letter-spacing: 2px;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-bottom: 28px;
-  }
-
-  .save-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(200, 255, 0, 0.25); }
-  .save-btn:active { transform: translateY(0); }
-
-  /* HISTORIAL */
-  .history-section { margin-bottom: 28px; }
-
-  .history-item {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 16px;
-    margin-bottom: 10px;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 14px;
-    align-items: center;
-  }
-
-  .history-week {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem;
+  .nav-item.nav-center .nav-label {
     color: var(--accent);
-    line-height: 1;
-    min-width: 36px;
-    text-align: center;
+    font-size: 8px;
   }
 
-  .history-details { }
-
-  .history-date {
-    font-size: 0.65rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    margin-bottom: 4px;
-  }
-
-  .history-chips {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-
-  .chip {
-    font-size: 0.65rem;
-    font-family: 'DM Mono', monospace;
-    padding: 3px 8px;
-    border-radius: 100px;
-    border: 1px solid;
-  }
-
-  .chip.peso { color: var(--accent); border-color: rgba(200,255,0,0.3); background: rgba(200,255,0,0.08); }
-  .chip.cerveza { color: var(--accent2); border-color: rgba(255,107,53,0.3); background: rgba(255,107,53,0.08); }
-  .chip.gym { color: var(--accent3); border-color: rgba(78,205,196,0.3); background: rgba(78,205,196,0.08); }
-
-  .history-delta {
-    text-align: right;
-  }
-
-  .history-delta .kg {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.4rem;
-    line-height: 1;
-  }
-
-  .history-delta .kg.loss { color: var(--success); }
-  .history-delta .kg.gain { color: var(--danger); }
-  .history-delta .kg.neutral { color: var(--muted); }
-
-  .history-delta .kg-label {
-    font-size: 0.6rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-  }
-
-  /* META PROGRESS */
-  .meta-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 28px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .meta-card::after {
-    content: 'META';
-    position: absolute;
-    right: -8px;
-    top: 50%;
-    transform: translateY(-50%) rotate(90deg);
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 4rem;
-    color: rgba(200,255,0,0.04);
-    letter-spacing: 4px;
-  }
-
-  .meta-numbers {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-    margin-bottom: 12px;
-  }
-
-  .meta-current {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 3.5rem;
-    color: var(--accent);
-    line-height: 1;
-  }
-
-  .meta-arrow {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem;
-    color: var(--muted);
-  }
-
-  .meta-target {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.5rem;
-    color: var(--muted);
-    line-height: 1;
-  }
-
-  .meta-unit {
-    font-size: 0.8rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    align-self: flex-end;
-    margin-bottom: 6px;
-  }
-
-  .meta-bar-bg {
-    height: 12px;
-    background: var(--surface2);
-    border-radius: 100px;
-    overflow: hidden;
-    margin-bottom: 8px;
-  }
-
-  .meta-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent3), var(--accent));
-    border-radius: 100px;
-    transition: width 0.6s ease;
-  }
-
-  .meta-caption {
-    font-size: 0.7rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-  }
-
-  /* INPUT MODAL */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.8);
-    backdrop-filter: blur(4px);
-    z-index: 100;
-    align-items: flex-end;
-    justify-content: center;
-  }
-
-  .modal-overlay.show { display: flex; }
-
-  .modal {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 24px 24px 0 0;
-    padding: 28px 24px 40px;
-    width: 100%;
-    max-width: 500px;
-    animation: slideUp 0.3s ease;
-  }
-
-  @keyframes slideUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
-  }
-
-  .modal-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.8rem;
-    letter-spacing: 2px;
-    margin-bottom: 20px;
-    color: var(--accent);
-  }
-
-  .modal-input {
-    width: 100%;
-    padding: 16px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    color: var(--text);
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem;
-    text-align: center;
-    outline: none;
-    margin-bottom: 16px;
-    transition: border-color 0.2s;
-  }
-
-  .modal-input:focus { border-color: var(--accent); }
-
-  .modal-hint {
-    font-size: 0.75rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
-  .modal-btns {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 10px;
-  }
-
-  .modal-cancel {
-    padding: 14px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    cursor: pointer;
-  }
-
-  .modal-confirm {
-    padding: 14px;
-    background: var(--accent);
-    border: none;
-    border-radius: 12px;
-    color: #0d0d0f;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.1rem;
-    letter-spacing: 1px;
-    cursor: pointer;
-  }
-
-  /* TOAST */
+  /* Toast — move way above nav so it never overlaps */
   .toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    background: var(--accent);
-    color: #0d0d0f;
-    padding: 12px 24px;
-    border-radius: 100px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1rem;
-    letter-spacing: 1px;
-    transition: transform 0.3s ease;
-    z-index: 200;
-    white-space: nowrap;
-  }
-
-  .toast.show { transform: translateX(-50%) translateY(0); }
-
-  /* PESO INPUT en stats */
-  .stat-input-hint {
-    font-size: 0.6rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    margin-top: 2px;
-  }
-
-  .tap-hint {
-    font-size: 0.55rem;
-    color: rgba(107,107,122,0.5);
-    font-family: 'DM Mono', monospace;
-    text-align: center;
-    margin-top: 4px;
-  }
-
-  /* AYUNO INTERMITENTE */
-  .fasting-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 28px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .fasting-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #a855f7, #ec4899);
-    border-radius: 16px 16px 0 0;
-  }
-
-  .fasting-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 16px;
-  }
-
-  .fasting-label {
-    font-size: 0.7rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .fasting-protocol {
-    font-size: 0.65rem;
-    background: rgba(168, 85, 247, 0.15);
-    border: 1px solid rgba(168, 85, 247, 0.3);
-    color: #c084fc;
-    padding: 3px 10px;
-    border-radius: 100px;
-    font-family: 'DM Mono', monospace;
-  }
-
-  .fasting-set-btn {
-    width: 100%;
-    padding: 14px;
-    background: var(--surface2);
-    border: 1px dashed rgba(168, 85, 247, 0.4);
-    border-radius: 12px;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: center;
-    margin-bottom: 12px;
-  }
-
-  .fasting-set-btn:hover {
-    border-color: #a855f7;
-    color: #c084fc;
-  }
-
-  .fasting-set-btn.has-time {
-    background: rgba(168, 85, 247, 0.08);
-    border-style: solid;
-    border-color: rgba(168, 85, 247, 0.4);
-  }
-
-  .fasting-result {
-    display: none;
-    background: var(--surface2);
-    border-radius: 12px;
-    padding: 16px;
-    margin-top: 4px;
-  }
-
-  .fasting-result.show { display: block; }
-
-  .fasting-result-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-
-  .fasting-result-row:last-child { margin-bottom: 0; }
-
-  .fasting-result-label {
-    font-size: 0.7rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .fasting-result-value {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.4rem;
-    color: #c084fc;
-    line-height: 1;
-  }
-
-  .fasting-countdown {
-    text-align: center;
-    padding: 14px;
-    background: rgba(168, 85, 247, 0.08);
-    border: 1px solid rgba(168, 85, 247, 0.2);
-    border-radius: 10px;
-    margin-top: 12px;
-  }
-
-  .fasting-countdown-label {
-    font-size: 0.65rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 6px;
-  }
-
-  .fasting-countdown-time {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.2rem;
-    letter-spacing: 2px;
-    line-height: 1;
-  }
-
-  .fasting-countdown-time.waiting { color: #c084fc; }
-  .fasting-countdown-time.ready { color: var(--accent); }
-  .fasting-countdown-time.past { color: var(--muted); }
-
-  .fasting-tip {
-    font-size: 0.7rem;
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    margin-top: 10px;
-    line-height: 1.5;
-    padding: 10px;
-    background: rgba(255,255,255,0.02);
-    border-radius: 8px;
-    border-left: 2px solid rgba(168, 85, 247, 0.4);
-  }
-
-  /* MODAL AYUNO */
-  .fasting-time-picker {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-
-  .time-option {
-    padding: 14px 10px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
-  .time-option:hover, .time-option.selected {
-    background: rgba(168, 85, 247, 0.15);
-    border-color: #a855f7;
-  }
-
-  .time-option .time-val {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.6rem;
-    color: #c084fc;
-    line-height: 1;
-  }
-
-  .time-option .time-desc {
-    font-size: 0.6rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    margin-top: 3px;
-  }
-
-  .custom-time-input {
-    width: 100%;
-    padding: 14px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    color: var(--text);
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.8rem;
-    text-align: center;
-    outline: none;
-    margin-bottom: 16px;
-    transition: border-color 0.2s;
-    -webkit-appearance: none;
-  }
-
-  .custom-time-input:focus { border-color: #a855f7; }
-
-  /* RUTINA MODAL */
-  .workout-modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.9);
-    backdrop-filter: blur(6px);
-    z-index: 100;
-    align-items: flex-end;
-    justify-content: center;
-  }
-  .workout-modal-overlay.show { display: flex; }
-
-  .workout-modal {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 24px 24px 0 0;
-    width: 100%;
-    max-width: 500px;
-    max-height: 90vh;
-    overflow-y: auto;
-    animation: slideUp 0.3s ease;
-    padding-bottom: 40px;
-  }
-
-  .workout-modal-header {
-    position: sticky;
-    top: 0;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 20px 20px 16px;
-    z-index: 10;
-  }
-
-  .workout-modal-close {
-    position: absolute;
-    top: 18px; right: 18px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 50%;
-    width: 32px; height: 32px;
-    color: var(--muted);
-    font-size: 1rem;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-  }
-
-  .workout-day-tag {
-    font-size: 0.65rem;
-    font-family: 'DM Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--muted);
-    margin-bottom: 4px;
-  }
-
-  .workout-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem;
-    letter-spacing: 2px;
-    line-height: 1;
-  }
-
-  .workout-subtitle {
-    font-size: 0.75rem;
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    margin-top: 6px;
-  }
-
-  .workout-body { padding: 20px; }
-
-  .workout-focus-chips {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-  }
-
-  .focus-chip {
-    font-size: 0.65rem;
-    font-family: 'DM Mono', monospace;
-    padding: 4px 10px;
-    border-radius: 100px;
-    border: 1px solid;
-  }
-
-  .exercise-block {
-    margin-bottom: 10px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    overflow: hidden;
-  }
-
-  .exercise-header {
-    display: flex;
-    align-items: center;
-    padding: 14px 16px;
-    gap: 12px;
-    cursor: pointer;
-    user-select: none;
-  }
-
-  .exercise-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.1rem;
-    color: var(--muted);
-    min-width: 24px;
-  }
-
-  .exercise-info { flex: 1; }
-
-  .exercise-name {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 2px;
-  }
-
-  .exercise-sets {
-    font-size: 0.7rem;
-    font-family: 'DM Mono', monospace;
-    color: var(--muted);
-  }
-
-  .exercise-check {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    border: 2px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.8rem;
-    transition: all 0.2s;
-    flex-shrink: 0;
-    cursor: pointer;
-  }
-
-  .exercise-check.done {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #0d0d0f;
-  }
-
-  .exercise-detail {
-    display: none;
-    padding: 0 16px 14px;
-    border-top: 1px solid var(--border);
-  }
-
-  .exercise-detail.open { display: block; }
-
-  .exercise-tip {
-    font-size: 0.75rem;
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    line-height: 1.5;
-    margin-top: 10px;
-  }
-
-  .exercise-tip strong { color: var(--text); }
-
-  .set-tracker {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
-    flex-wrap: wrap;
-  }
-
-  .set-pill {
-    padding: 6px 14px;
-    border-radius: 100px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    font-size: 0.7rem;
-    font-family: 'DM Mono', monospace;
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.15s;
-    user-select: none;
-  }
-
-  .set-pill.done {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #0d0d0f;
-    font-weight: 600;
-  }
-
-  .workout-progress-bar-bg {
-    height: 6px;
-    background: var(--surface2);
-    border-radius: 100px;
-    overflow: hidden;
-    margin-bottom: 16px;
-  }
-
-  .workout-progress-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent3), var(--accent));
-    border-radius: 100px;
-    transition: width 0.4s ease;
-  }
-
-  .workout-progress-label {
-    font-size: 0.65rem;
-    font-family: 'DM Mono', monospace;
-    color: var(--muted);
-    text-align: right;
-    margin-top: -12px;
-    margin-bottom: 14px;
-  }
-
-  .cardio-block {
-    background: rgba(78, 205, 196, 0.06);
-    border: 1px solid rgba(78, 205, 196, 0.25);
-    border-radius: 14px;
-    padding: 16px;
-    margin-top: 16px;
-  }
-
-  .cardio-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1rem;
-    letter-spacing: 1px;
-    color: var(--accent3);
-    margin-bottom: 6px;
-  }
-
-  .cardio-desc {
-    font-size: 0.75rem;
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    line-height: 1.5;
-  }
-
-  .workout-done-btn {
-    width: 100%;
-    padding: 16px;
-    background: var(--accent);
-    color: #0d0d0f;
-    border: none;
-    border-radius: 14px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.2rem;
-    letter-spacing: 2px;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: all 0.2s;
-  }
-
-  .workout-done-btn:hover { opacity: 0.9; transform: translateY(-1px); }
-
-  .rest-day-content {
-    text-align: center;
-    padding: 30px 20px;
-  }
-
-  .rest-day-icon { font-size: 3rem; margin-bottom: 12px; }
-
-  .rest-day-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.6rem;
-    letter-spacing: 2px;
-    color: var(--text);
-    margin-bottom: 8px;
-  }
-
-  .rest-day-text {
-    font-size: 0.8rem;
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    line-height: 1.6;
-  }
-
-  /* day-card tap indicator */
-  .day-card .day-tap {
-    font-size: 0.5rem;
-    color: rgba(107,107,122,0.4);
-    font-family: 'DM Mono', monospace;
-    margin-top: 3px;
-  }
-
-  /* SISTEMA DE FASES */
-  .phase-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 28px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .phase-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    border-radius: 16px 16px 0 0;
-    background: var(--phase-color, #4ecdc4);
-  }
-
-  .phase-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 16px;
-  }
-
-  .phase-badge-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 0.7rem;
-    letter-spacing: 1px;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 2px;
-  }
-
-  .phase-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.8rem;
-    letter-spacing: 1px;
-    line-height: 1;
-    color: var(--phase-color, #4ecdc4);
-  }
-
-  .phase-counter {
-    text-align: right;
-  }
-
-  .phase-counter-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem;
-    line-height: 1;
-    color: var(--text);
-  }
-
-  .phase-counter-label {
-    font-size: 0.6rem;
-    font-family: 'DM Mono', monospace;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .phase-desc {
-    font-size: 0.78rem;
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    line-height: 1.5;
-    margin-bottom: 14px;
-  }
-
-  .phase-progress-bg {
-    height: 10px;
-    background: var(--surface2);
-    border-radius: 100px;
-    overflow: hidden;
-    margin-bottom: 8px;
-  }
-
-  .phase-progress-fill {
-    height: 100%;
-    border-radius: 100px;
-    transition: width 0.6s ease;
-  }
-
-  .phase-next-label {
-    font-size: 0.7rem;
-    font-family: 'DM Mono', monospace;
-    color: var(--muted);
-  }
-
-  .phase-stepper {
-    display: flex;
-    gap: 6px;
-    margin-top: 16px;
-  }
-
-  .phase-step {
-    flex: 1;
-    text-align: center;
-    padding: 8px 4px;
-    border-radius: 10px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    position: relative;
-  }
-
-  .phase-step.done {
-    background: rgba(78,205,196,0.1);
-    border-color: rgba(78,205,196,0.4);
-  }
-
-  .phase-step.current {
-    border-color: var(--phase-color, #c8ff00);
-    background: rgba(200,255,0,0.08);
-  }
-
-  .phase-step.locked { opacity: 0.4; }
-
-  .phase-step-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.1rem;
-    line-height: 1;
-  }
-
-  .phase-step-name {
-    font-size: 0.5rem;
-    font-family: 'DM Mono', monospace;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-top: 2px;
-    letter-spacing: 0.3px;
-  }
-
-  .phase-step-lock {
-    font-size: 0.7rem;
-    margin-top: 2px;
-  }
-
-  /* PHASE UNLOCK OVERLAY */
-  .phase-unlock-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.92);
-    backdrop-filter: blur(8px);
-    z-index: 300;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-  }
-
-  .phase-unlock-overlay.show {
-    display: flex;
-    animation: fadeIn 0.3s ease;
-  }
-
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-  .phase-unlock-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    padding: 40px 28px;
-    text-align: center;
-    max-width: 360px;
-    width: 100%;
-    animation: popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  @keyframes popIn {
-    from { transform: scale(0.7); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-  }
-
-  .unlock-emoji {
-    font-size: 4rem;
-    margin-bottom: 16px;
-    animation: bounce 1s ease infinite;
-  }
-
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-
-  .unlock-label {
-    font-size: 0.7rem;
-    font-family: 'DM Mono', monospace;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-  }
-
-  .unlock-phase-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.3rem;
-    letter-spacing: 1px;
-    margin-bottom: 4px;
-  }
-
-  .unlock-phase-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.4rem;
-    letter-spacing: 2px;
-    line-height: 1;
-    margin-bottom: 16px;
-    background: linear-gradient(135deg, var(--accent), var(--accent3));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .unlock-phase-desc {
-    font-size: 0.85rem;
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    line-height: 1.6;
-    margin-bottom: 24px;
-  }
-
-  .unlock-btn {
-    width: 100%;
-    padding: 16px;
-    background: var(--accent);
-    color: #0d0d0f;
-    border: none;
-    border-radius: 14px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.2rem;
-    letter-spacing: 2px;
-    cursor: pointer;
-  }
-
-  /* ═══ PRO UPGRADE ═══ */
-  body {
-    background:
-      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(200,255,0,0.06), transparent),
-      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(78,205,196,0.04), transparent),
-      var(--bg);
-  }
-
-  .stat-card, .phase-card, .meta-card, .beer-tracker, .fasting-card,
-  .progress-section, .notes-section, .history-item {
-    box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 8px 24px rgba(0,0,0,0.35);
-  }
-
-  .stat-card:active, .day-card:active, .beer-btn:active { transform: scale(0.96); }
-  .stat-card, .day-card, .beer-btn { transition: all 0.18s cubic-bezier(.2,.8,.4,1); }
-
-  /* QUOTE BAR */
-  .quote-bar {
-    background: linear-gradient(120deg, rgba(200,255,0,0.07), rgba(78,205,196,0.05));
-    border: 1px solid rgba(200,255,0,0.15);
-    border-radius: 14px;
-    padding: 14px 16px;
-    margin-bottom: 24px;
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-  }
-
-  .quote-mark {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem;
-    color: var(--accent);
-    line-height: 0.8;
-    flex-shrink: 0;
-  }
-
-  .quote-text {
-    font-size: 0.85rem;
-    line-height: 1.5;
-    color: var(--text);
-    font-style: italic;
-  }
-
-  .quote-author {
-    font-size: 0.65rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    margin-top: 4px;
-    font-style: normal;
-  }
-
-  /* LEVEL / XP */
-  .level-bar-wrap {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 16px;
-    margin-bottom: 24px;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 8px 24px rgba(0,0,0,0.35);
-  }
-
-  .level-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-
-  .level-name {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .level-icon {
-    width: 38px; height: 38px;
-    border-radius: 10px;
-    background: linear-gradient(135deg, var(--accent), var(--accent3));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.2rem;
-  }
-
-  .level-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.3rem;
-    letter-spacing: 1px;
-    line-height: 1;
-  }
-
-  .level-sub {
-    font-size: 0.62rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .level-xp {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--accent);
-  }
-
-  .xp-bar-bg {
-    height: 10px;
-    background: var(--surface2);
-    border-radius: 100px;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .xp-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent3), var(--accent));
-    border-radius: 100px;
-    transition: width 0.8s cubic-bezier(.2,.8,.3,1);
-    position: relative;
-  }
-
-  .xp-bar-fill::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
-    animation: shimmer 2.5s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.85; transform: scale(0.99); }
-  }
-
-  @keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-  }
-
-  /* STREAK */
-  .streak-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 24px;
-  }
-
-  .streak-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 16px;
-    text-align: center;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 8px 24px rgba(0,0,0,0.35);
-  }
-
-  .streak-flame { font-size: 1.8rem; margin-bottom: 4px; }
-
-  .streak-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.2rem;
-    line-height: 1;
-    color: var(--accent2);
-  }
-
-  .streak-card.trofeo .streak-num { color: var(--accent); }
-
-  .streak-label {
-    font-size: 0.6rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-top: 4px;
-  }
-
-  /* LOGROS */
-  .achievements-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 28px;
-  }
-
-  .ach-badge {
-    aspect-ratio: 1;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    padding: 6px;
-    cursor: pointer;
-    transition: all 0.2s;
-    position: relative;
-  }
-
-  .ach-badge.unlocked {
-    background: linear-gradient(135deg, rgba(200,255,0,0.12), rgba(78,205,196,0.08));
-    border-color: rgba(200,255,0,0.4);
-  }
-
-  .ach-badge.locked { opacity: 0.35; filter: grayscale(1); }
-
-  .ach-icon { font-size: 1.5rem; }
-
-  .ach-name {
-    font-size: 0.5rem;
-    font-family: 'DM Mono', monospace;
-    color: var(--muted);
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    line-height: 1.2;
-  }
-
-  .ach-badge.unlocked .ach-name { color: var(--accent); }
-
-  /* SPARKLINE PESO */
-  .sparkline-wrap { margin-top: 14px; }
-
-  .sparkline-label {
-    font-size: 0.6rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 6px;
-  }
-
-  /* CONFETTI */
-  .confetti-piece {
-    position: fixed;
-    width: 9px; height: 14px;
-    top: -20px;
-    z-index: 500;
-    pointer-events: none;
-    animation: confettiFall linear forwards;
-  }
-
-  @keyframes confettiFall {
-    to { transform: translateY(110vh) rotate(720deg); opacity: 0.8; }
-  }
-
-  /* TOAST XP */
-  .xp-toast {
-    position: fixed;
-    bottom: 80px;
-    left: 50%;
-    transform: translateX(-50%) translateY(60px) scale(0.8);
-    background: linear-gradient(135deg, var(--accent), var(--accent3));
-    color: #0d0d0f;
-    padding: 8px 20px;
-    border-radius: 100px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.1rem;
-    letter-spacing: 1px;
-    opacity: 0;
-    transition: all 0.4s cubic-bezier(.2,.8,.3,1.4);
-    z-index: 250;
-  }
-
-  .xp-toast.show {
-    transform: translateX(-50%) translateY(0) scale(1);
-    opacity: 1;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-  }
-
-  /* VICIOS TRACKER */
-  .vicios-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 28px;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 8px 24px rgba(0,0,0,0.35);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .vicios-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #ff6b35, #a855f7);
-    border-radius: 16px 16px 0 0;
-  }
-
-  .vicios-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-  }
-
-  .vicio-block {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 16px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.18s cubic-bezier(.2,.8,.4,1);
-    user-select: none;
-  }
-
-  .vicio-block:active { transform: scale(0.96); }
-
-  .vicio-icon { font-size: 2rem; margin-bottom: 8px; }
-
-  .vicio-days {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.6rem;
-    line-height: 1;
-    margin-bottom: 2px;
-  }
-
-  .vicio-block.alcohol .vicio-days { color: #ff6b35; }
-  .vicio-block.weed .vicio-days { color: #a855f7; }
-
-  .vicio-label {
-    font-size: 0.6rem;
-    font-family: 'DM Mono', monospace;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 10px;
-  }
-
-  .vicio-btns {
-    display: flex;
-    gap: 6px;
-    justify-content: center;
-  }
-
-  .vicio-btn {
-    flex: 1;
-    padding: 7px 4px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.75rem;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
-  .vicio-block.alcohol .vicio-btn:hover,
-  .vicio-block.alcohol .vicio-btn.reset-btn:hover { border-color: #ff6b35; color: #ff6b35; }
-
-  .vicio-block.weed .vicio-btn:hover,
-  .vicio-block.weed .vicio-btn.reset-btn:hover { border-color: #a855f7; color: #a855f7; }
-
-  .vicio-milestone {
-    font-size: 0.65rem;
-    font-family: 'DM Mono', monospace;
-    margin-top: 8px;
-    padding: 4px 8px;
-    border-radius: 100px;
-    display: inline-block;
-  }
-
-  .vicio-block.alcohol .vicio-milestone {
-    color: #ff6b35;
-    background: rgba(255,107,53,0.1);
-    border: 1px solid rgba(255,107,53,0.2);
-  }
-
-  .vicio-block.weed .vicio-milestone {
-    color: #a855f7;
-    background: rgba(168,85,247,0.1);
-    border: 1px solid rgba(168,85,247,0.2);
-  }
-
-  /* PESO DOMINICAL */
-  .peso-sunday-card {
-    background: linear-gradient(135deg, rgba(200,255,0,0.08), rgba(78,205,196,0.05));
-    border: 1px solid rgba(200,255,0,0.25);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 28px;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 8px 24px rgba(0,0,0,0.35);
-  }
-
-  .peso-sunday-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 14px;
-  }
-
-  .peso-sunday-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.3rem;
-    letter-spacing: 1px;
-    color: var(--accent);
-    line-height: 1;
-  }
-
-  .peso-sunday-sub {
-    font-size: 0.65rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    margin-top: 3px;
-  }
-
-  .peso-sunday-current {
-    text-align: right;
-  }
-
-  .peso-sunday-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.2rem;
-    color: var(--accent);
-    line-height: 1;
-  }
-
-  .peso-sunday-unit {
-    font-size: 0.7rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-  }
-
-  .peso-domingo-btn {
-    width: 100%;
-    padding: 13px;
-    background: var(--accent);
-    color: #0d0d0f;
-    border: none;
-    border-radius: 12px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.1rem;
-    letter-spacing: 2px;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-bottom: 10px;
-  }
-
-  .peso-domingo-btn:active { transform: scale(0.98); }
-
-  .peso-domingo-btn.disabled {
-    background: var(--surface2);
-    color: var(--muted);
-    cursor: default;
-  }
-
-  .peso-next-weigh {
-    font-size: 0.7rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    text-align: center;
-  }
-
-  .peso-delta-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-  }
-
-  .peso-delta-label {
-    font-size: 0.7rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    text-transform: uppercase;
-  }
-
-  .peso-delta-val {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.2rem;
-  }
-
-  .peso-delta-val.loss { color: var(--accent); }
-  .peso-delta-val.gain { color: var(--danger); }
-  .peso-delta-val.same { color: var(--muted); }
-
-  /* HEADER + NIVEL INTEGRADO */
-  .header-level-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 18px 18px 16px;
-    margin-bottom: 20px;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 12px 32px rgba(0,0,0,0.4);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .header-level-card::before {
-    content: 'IVANFIT';
-    position: absolute;
-    right: -16px; top: 50%;
-    transform: translateY(-50%);
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 5rem;
-    color: rgba(200,255,0,0.03);
-    letter-spacing: 4px;
-    pointer-events: none;
-  }
-
-  .header-level-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .header-left-col h1.app-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2rem, 7vw, 3.5rem);
-    letter-spacing: 2px;
-    line-height: 0.9;
-    background: linear-gradient(135deg, var(--accent), var(--accent3));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .app-date {
-    color: var(--muted);
-    font-size: 0.72rem;
-    font-family: 'DM Mono', monospace;
-    margin-top: 5px;
-  }
-
-  .header-right-col {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 8px;
-  }
-
-  .week-badge-inline {
-    text-align: right;
-  }
-
-  .week-badge-inline .week-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem;
-    color: var(--accent);
-    line-height: 1;
-  }
-
-  .week-badge-inline .week-label {
-    font-size: 0.55rem;
-    font-family: 'DM Mono', monospace;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .level-badge-inline {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 7px 10px;
-  }
-
-  .level-icon-sm {
-    width: 28px; height: 28px;
-    border-radius: 7px;
-    background: linear-gradient(135deg, var(--accent), var(--accent3));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.9rem;
-    flex-shrink: 0;
-  }
-
-  .level-title-sm {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-    line-height: 1;
-    color: var(--text);
-  }
-
-  .level-sub-sm {
-    font-size: 0.55rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-  }
-
-  .level-xp-sm {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--accent);
-    margin-left: 4px;
-  }
-
-  /* GYM WEEK CARD */
-  .gym-week-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 16px;
-    margin-bottom: 24px;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 8px 24px rgba(0,0,0,0.35);
-  }
-
-  .gym-week-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 14px;
-  }
-
-  .gym-week-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.2rem;
-    letter-spacing: 1px;
-    color: var(--text);
-    line-height: 1;
-  }
-
-  .gym-week-sub {
-    font-size: 0.62rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    margin-top: 3px;
-  }
-
-  .gym-week-count {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem;
-    color: var(--accent3);
-    line-height: 1;
-  }
-
-  .gym-week-denom {
-    font-size: 1rem;
-    color: var(--muted);
-  }
-
-  /* MONTHLY CALENDAR */
-  .monthly-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 28px;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 8px 24px rgba(0,0,0,0.35);
-  }
-
-  .monthly-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 14px;
-  }
-
-  .monthly-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.4rem;
-    letter-spacing: 2px;
-    color: var(--accent);
-    line-height: 1;
-  }
-
-  .monthly-legend {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
-
-  .legend-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    display: inline-block;
-  }
-
-  .legend-dot.gym { background: var(--accent3); }
-  .legend-dot.nobeers { background: #ff6b35; }
-  .legend-dot.perfect { background: var(--accent); }
-
-  .legend-label {
-    font-size: 0.55rem;
-    font-family: 'DM Mono', monospace;
-    color: var(--muted);
-    margin-right: 4px;
-  }
-
-  .monthly-weekdays {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 3px;
-    margin-bottom: 6px;
-  }
-
-  .monthly-weekdays div {
-    text-align: center;
-    font-size: 0.6rem;
-    font-family: 'DM Mono', monospace;
-    color: var(--muted);
-    text-transform: uppercase;
-    padding: 4px 0;
-  }
-
-  .monthly-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 3px;
-    margin-bottom: 14px;
-  }
-
-  .cal-day {
-    aspect-ratio: 1;
-    border-radius: 8px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    transition: all 0.15s;
-    cursor: default;
-  }
-
-  .cal-day.empty { background: transparent; border-color: transparent; }
-  .cal-day.today { border-color: var(--accent); border-width: 2px; }
-
-  .cal-day.has-gym { background: rgba(78,205,196,0.12); border-color: rgba(78,205,196,0.35); }
-  .cal-day.has-nobeers { background: rgba(255,107,53,0.1); border-color: rgba(255,107,53,0.3); }
-  .cal-day.perfect-day { background: linear-gradient(135deg, rgba(200,255,0,0.15), rgba(78,205,196,0.1)); border-color: rgba(200,255,0,0.5); }
-  .cal-day.future { opacity: 0.3; }
-
-  .cal-day-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--muted);
-    line-height: 1;
-  }
-
-  .cal-day.today .cal-day-num { color: var(--accent); font-weight: 600; }
-  .cal-day.has-gym .cal-day-num,
-  .cal-day.perfect-day .cal-day-num { color: var(--text); }
-
-  .cal-day-dots {
-    display: flex;
-    gap: 2px;
-    margin-top: 2px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .cal-dot {
-    width: 4px; height: 4px;
-    border-radius: 50%;
-  }
-
-  .cal-dot.gym { background: var(--accent3); }
-  .cal-dot.nobeers { background: #ff6b35; }
-  .cal-dot.weed { background: #a855f7; }
-  .cal-dot.weigh { background: var(--accent); }
-
-  .monthly-stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    padding-top: 12px;
-    border-top: 1px solid var(--border);
-  }
-
-  .monthly-stat {
-    text-align: center;
-  }
-
-  .monthly-stat-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.6rem;
-    line-height: 1;
-  }
-
-  .monthly-stat-num.gym-col { color: var(--accent3); }
-  .monthly-stat-num.perf-col { color: var(--accent); }
-  .monthly-stat-num.alc-col { color: #ff6b35; }
-
-  .monthly-stat-label {
-    font-size: 0.55rem;
-    font-family: 'DM Mono', monospace;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    margin-top: 2px;
-  }
-
-  /* FIX: gym-week-card day grid visibility */
-  .gym-week-card .days-grid {
-    margin-bottom: 0;
-  }
-  .gym-week-card .day-card {
-    min-height: 54px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
+  
 </style>
 </head>
 <body>
 
-
-<!-- IMPORT DATA BANNER -->
-<div id="importBanner" style="display:none; background:rgba(200,255,0,0.08); border:1px solid rgba(200,255,0,0.25); border-radius:12px; padding:14px; margin-bottom:20px; font-family:'DM Sans',sans-serif; font-size:0.82rem; color:var(--text);">
-  <div style="font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:1px; color:var(--accent); margin-bottom:8px;">¿Cambiaste de URL?</div>
-  Si ya tenías datos guardados y cambiaste de Netlify a GitHub (o viceversa), tus datos están en el navegador anterior.
-  Abre la app en el navegador viejo, ve al final de la página y toca <strong>"Exportar mis datos"</strong> para copiarlos aquí.
-  <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
-    <textarea id="importInput" placeholder="Pega aquí tus datos exportados..." style="width:100%; min-height:60px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:'DM Mono',monospace; font-size:0.72rem; padding:8px; resize:none; outline:none;"></textarea>
-    <button onclick="importData()" style="padding:10px 20px; background:var(--accent); color:#0d0d0f; border:none; border-radius:8px; font-family:'Bebas Neue',sans-serif; font-size:1rem; cursor:pointer;">IMPORTAR</button>
-    <button onclick="document.getElementById('importBanner').style.display='none'" style="padding:10px 16px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; color:var(--muted); font-family:'DM Mono',monospace; font-size:0.75rem; cursor:pointer;">Cerrar</button>
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo">Ivan<span>Fit</span></div>
+  <div class="topbar-meta">
+    <div class="topbar-date" id="currentDate">—</div>
+    <div class="topbar-week">S<span id="weekNum">01</span></div>
+    <button id="modeToggle" onclick="toggleMode()" style="background:var(--s2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:14px;cursor:pointer;line-height:1;transition:none">🌙</button>
   </div>
 </div>
 
-<!-- FRASE DEL DÍA -->
-<div class="quote-bar">
-  <div class="quote-mark">"</div>
-  <div>
+<!-- ══════════════════════════════
+     PAGE: INICIO
+══════════════════════════════ -->
+<div class="page active" id="page-inicio">
+
+  <!-- Quote -->
+  <div class="quote-card">
     <div class="quote-text" id="quoteText">La disciplina es elegir entre lo que quieres ahora y lo que quieres más.</div>
     <div class="quote-author" id="quoteAuthor">— Abraham Lincoln</div>
   </div>
-</div>
 
-<!-- HEADER + NIVEL INTEGRADO -->
-<div class="header-level-card">
-  <div class="header-level-top">
-    <div class="header-left-col">
-      <h1 class="app-title">IVAN<br>FIT</h1>
-      <p class="app-date" id="currentDate">— — —</p>
-    </div>
-    <div class="header-right-col">
-      <div class="week-badge-inline">
-        <div class="week-num" id="weekNum">01</div>
-        <div class="week-label">Semana</div>
+  <!-- Hero progress card -->
+  <div class="hero-card">
+    <div class="hero-top">
+      <div>
+        <div class="hero-greeting">Tu progreso</div>
+        <div class="hero-name">Ivan 💪</div>
       </div>
-      <div class="level-badge-inline">
-        <div class="level-icon-sm" id="levelIcon">🥊</div>
-        <div>
-          <div class="level-title-sm" id="levelTitle">NOVATO</div>
-          <div class="level-sub-sm" id="levelSub">Nivel 1</div>
-        </div>
-        <div class="level-xp-sm" id="levelXp">0 XP</div>
+      <div class="hero-phase-badge">
+        <div class="hero-phase-label">Fase actual</div>
+        <div class="hero-phase-name" id="heroPhaseName">FUNDACIÓN</div>
       </div>
     </div>
-  </div>
-  <div class="xp-bar-bg" style="margin-top:12px">
-    <div class="xp-bar-fill" id="xpBarFill" style="width:0%"></div>
-  </div>
-</div>
 
-<!-- RACHAS -->
-<div class="streak-row">
-  <div class="streak-card">
-    <div class="streak-flame">🔥</div>
-    <div class="streak-num" id="streakNum">0</div>
-    <div class="streak-label">Semanas seguidas<br>cumpliendo gym</div>
-  </div>
-  <div class="streak-card trofeo">
-    <div class="streak-flame">🏆</div>
-    <div class="streak-num" id="bestStreakNum">0</div>
-    <div class="streak-label">Mejor racha<br>histórica</div>
-  </div>
-</div>
-
-<!-- DÍAS DE GYM -->
-<div class="gym-week-card">
-  <div class="gym-week-header">
-    <div>
-      <div class="gym-week-title">💪 Gym esta semana</div>
-      <div class="gym-week-sub" id="gymWeekSub">Toca un día para ver la rutina</div>
-    </div>
-    <div class="gym-week-count">
-      <span id="gymDaysCount">0</span><span class="gym-week-denom">/3</span>
-    </div>
-  </div>
-  <div class="days-grid" id="daysGrid">
-    <!-- Rendered by JS -->
-  </div>
-</div>
-
-<!-- VICIOS TRACKER -->
-<div class="section-title">Días sin vicios</div>
-<div class="vicios-card">
-  <div style="font-size:0.65rem;color:var(--muted);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;">Toca + para sumar un día sin vicio · Toca reset si recaíste</div>
-  <div class="vicios-grid">
-    <div class="vicio-block alcohol">
-      <div class="vicio-icon">🍺</div>
-      <div class="vicio-days" id="alcoholDays">0</div>
-      <div class="vicio-label">días sin alcohol</div>
-      <div class="vicio-milestone" id="alcoholMilestone">Empieza hoy</div>
-      <div class="vicio-btns">
-        <button class="vicio-btn reset-btn" onclick="resetVicio('alcohol')">Reset</button>
-        <button class="vicio-btn" onclick="addVicioDays('alcohol', 1)">+ Día</button>
+    <!-- Three progress rings -->
+    <div class="rings-row">
+      <div class="ring-item">
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="32" fill="none" stroke="#1a1a1a" stroke-width="7"/>
+          <circle id="ringPeso" cx="40" cy="40" r="32" fill="none" stroke="#c8ff00" stroke-width="7"
+            stroke-dasharray="201" stroke-dashoffset="201" stroke-linecap="round"
+            transform="rotate(-90 40 40)" style="transition:stroke-dashoffset .8s ease"/>
+          <text x="40" y="38" text-anchor="middle" font-family="Syne,sans-serif" font-size="14" font-weight="800" fill="#f0f0f0" id="ringPesoVal">0%</text>
+          <text x="40" y="50" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#666">META</text>
+        </svg>
+        <div class="ring-title">Peso</div>
+      </div>
+      <div class="ring-item">
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="32" fill="none" stroke="#1a1a1a" stroke-width="7"/>
+          <circle id="ringGym" cx="40" cy="40" r="32" fill="none" stroke="#38c8ff" stroke-width="7"
+            stroke-dasharray="201" stroke-dashoffset="201" stroke-linecap="round"
+            transform="rotate(-90 40 40)" style="transition:stroke-dashoffset .8s ease"/>
+          <text x="40" y="38" text-anchor="middle" font-family="Syne,sans-serif" font-size="14" font-weight="800" fill="#f0f0f0" id="ringGymVal">0%</text>
+          <text x="40" y="50" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#666">GYM</text>
+        </svg>
+        <div class="ring-title">Gym</div>
+      </div>
+      <div class="ring-item">
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="32" fill="none" stroke="#1a1a1a" stroke-width="7"/>
+          <circle id="ringVicios" cx="40" cy="40" r="32" fill="none" stroke="#a855f7" stroke-width="7"
+            stroke-dasharray="201" stroke-dashoffset="201" stroke-linecap="round"
+            transform="rotate(-90 40 40)" style="transition:stroke-dashoffset .8s ease"/>
+          <text x="40" y="38" text-anchor="middle" font-family="Syne,sans-serif" font-size="14" font-weight="800" fill="#f0f0f0" id="ringViciosVal">0</text>
+          <text x="40" y="50" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#666">DÍAS</text>
+        </svg>
+        <div class="ring-title">Sin vicios</div>
       </div>
     </div>
-    <div class="vicio-block weed">
-      <div class="vicio-icon">🌿</div>
-      <div class="vicio-days" id="weedDays">0</div>
-      <div class="vicio-label">días sin weed</div>
-      <div class="vicio-milestone" id="weedMilestone">Empieza hoy</div>
-      <div class="vicio-btns">
-        <button class="vicio-btn reset-btn" onclick="resetVicio('weed')">Reset</button>
-        <button class="vicio-btn" onclick="addVicioDays('weed', 1)">+ Día</button>
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- PESO SEMANAL -->
-<div class="section-title">Peso semanal</div>
-<div class="peso-sunday-card">
-  <div class="peso-sunday-header">
-    <div>
-      <div class="peso-sunday-title">⚖️ Mi peso</div>
-      <div class="peso-sunday-sub" id="pesoSundaySub">Pésate cada domingo en ayunas</div>
-    </div>
-    <div class="peso-sunday-current">
-      <div class="peso-sunday-num" id="pesoSundayNum">96.0</div>
-      <div class="peso-sunday-unit">kg</div>
-    </div>
-  </div>
-  <div class="peso-delta-row" id="pesoDeltaRow" style="display:none">
-    <div class="peso-delta-label">vs semana anterior</div>
-    <div class="peso-delta-val" id="pesoDeltaVal">—</div>
-  </div>
-  <button class="peso-domingo-btn" id="pesoDomingoBtn" onclick="openPesoModal()">
-    ⚖️ REGISTRAR PESO DE HOY
-  </button>
-  <div class="peso-next-weigh" id="pesoNextWeigh"></div>
-</div>
-
-<!-- META PROGRESS -->
-<div class="meta-card">
-  <div style="font-size:0.7rem; color:var(--muted); font-family:'DM Mono',monospace; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">Progreso hacia la meta</div>
-  <div class="meta-numbers">
-    <div class="meta-current" id="metaCurrent">96.0</div>
-    <div class="meta-unit">kg</div>
-    <div class="meta-arrow">→</div>
-    <div class="meta-target">86</div>
-    <div class="meta-unit">kg meta</div>
-  </div>
-  <div class="meta-bar-bg">
-    <div class="meta-bar-fill" id="metaBar" style="width:0%"></div>
-  </div>
-  <div class="meta-caption" id="metaCaption">0.0 kg perdidos · 10.0 kg restantes</div>
-  <div class="sparkline-wrap" id="sparklineWrap" style="display:none">
-    <div class="sparkline-label">Tu peso semana a semana</div>
-    <svg id="weightSparkline" width="100%" height="50" preserveAspectRatio="none"></svg>
-  </div>
-</div>
-
-<!-- SISTEMA DE FASES -->
-<div class="phase-card" id="phaseCard">
-  <div class="phase-top">
-    <div>
-      <div class="phase-badge-num" id="phaseBadgeNum">Fase 1 de 4</div>
-      <div class="phase-name" id="phaseName">FUNDACIÓN</div>
-    </div>
-    <div class="phase-counter">
-      <div class="phase-counter-num" id="phaseCounterNum">0</div>
-      <div class="phase-counter-label">entrenos<br>totales</div>
-    </div>
-  </div>
-  <div class="phase-desc" id="phaseDesc">Aprende la técnica perfecta y prepara tendones y articulaciones.</div>
-  <div class="phase-progress-bg">
-    <div class="phase-progress-fill" id="phaseProgressFill" style="width:0%"></div>
-  </div>
-  <div class="phase-next-label" id="phaseNextLabel">— entrenos para la siguiente fase</div>
-  <div class="phase-stepper" id="phaseStepper"></div>
-</div>
-
-<!-- LOGROS -->
-<div class="section-title">Logros</div>
-<div class="achievements-grid" id="achievementsGrid"></div>
-
-<!-- STATS ROW -->
-<div class="stats-row">
-  <div class="stat-card peso" onclick="openPesoModal()">
-    <div class="stat-label">Peso</div>
-    <div class="stat-value" id="statPeso">96.0</div>
-    <div class="stat-delta" id="statPesoDelta">— kg</div>
-    <div class="tap-hint">toca para editar</div>
-  </div>
-  <div class="stat-card cervezas">
-    <div class="stat-label">Cervezas</div>
-    <div class="stat-value" id="statCervezas">0</div>
-    <div class="stat-delta" id="statCervezasDelta">meta: 6</div>
-  </div>
-  <div class="stat-card gym">
-    <div class="stat-label">Gym</div>
-    <div class="stat-value" id="statGym">0</div>
-    <div class="stat-delta">meta: 3</div>
-  </div>
-</div>
-
-<!-- CERVEZA TRACKER -->
-<div class="section-title">Cervezas esta semana</div>
-<div class="beer-tracker">
-  <div class="beer-header">
-    <div class="beer-title">🍺 500ml c/u</div>
-    <div class="beer-count-display">
-      <span id="beerCountBig">0</span> <span>/ 6</span>
-    </div>
-  </div>
-  <div class="beer-grid" id="beerGrid">
-    <!-- Rendered by JS -->
-  </div>
-  <div class="beer-controls">
-    <button class="ctrl-btn" onclick="changeBeer(-1)">− Quitar</button>
-    <button class="ctrl-btn" onclick="changeBeer(1)">+ Añadir 🍺</button>
-  </div>
-</div>
-
-<!-- AYUNO INTERMITENTE -->
-<div class="section-title">Ayuno intermitente</div>
-<div class="fasting-card">
-  <div class="fasting-top">
-    <div class="fasting-label">⏱ Última comida del día</div>
-    <div class="fasting-protocol">16:8</div>
-  </div>
-  <button class="fasting-set-btn" id="fastingSetBtn" onclick="openFastingModal()">
-    🍽 Toca para registrar tu última comida
-  </button>
-  <div class="fasting-result" id="fastingResult">
-    <div class="fasting-result-row">
-      <div class="fasting-result-label">Última comida</div>
-      <div class="fasting-result-value" id="fastingLastMeal">—</div>
-    </div>
-    <div class="fasting-result-row">
-      <div class="fasting-result-label">Puedes comer a partir de</div>
-      <div class="fasting-result-value" id="fastingEatTime" style="color:var(--accent)">—</div>
-    </div>
-    <div class="fasting-result-row">
-      <div class="fasting-result-label">Horas de ayuno</div>
-      <div class="fasting-result-value" id="fastingHours" style="color:#c084fc">16h</div>
-    </div>
-    <div class="fasting-countdown" id="fastingCountdown">
-      <div class="fasting-countdown-label">Tiempo restante de ayuno</div>
-      <div class="fasting-countdown-time waiting" id="fastingTimer">00:00:00</div>
-    </div>
-    <div class="fasting-tip" id="fastingTip"></div>
-  </div>
-</div>
-
-<!-- PROGRESO SEMANAL -->
-<div class="section-title">Adherencia semanal</div>
-<div class="progress-section">
-  <div class="progress-item">
-    <div class="progress-header">
-      <div class="progress-label">💪 Gym (3 sesiones)</div>
-      <div class="progress-value" id="gymPct">0%</div>
-    </div>
-    <div class="progress-bar-bg">
-      <div class="progress-bar-fill" id="gymBar" style="width:0%; background:var(--accent3)"></div>
-    </div>
-  </div>
-  <div class="progress-item">
-    <div class="progress-header">
-      <div class="progress-label">🍺 Cervezas (máx 6)</div>
-      <div class="progress-value" id="beerPct">100%</div>
-    </div>
-    <div class="progress-bar-bg">
-      <div class="progress-bar-fill" id="beerBar" style="width:100%; background:var(--accent3)"></div>
-    </div>
-  </div>
-</div>
-
-<!-- NOTA -->
-<div class="section-title">Nota de la semana</div>
-<div class="notes-section">
-  <div class="notes-label">¿Cómo te sentiste? ¿Algo que destacar?</div>
-  <textarea class="notes-textarea" id="weekNote" placeholder="Ej: Me costó la primera semana pero me sentí con más energía al final..."></textarea>
-</div>
-
-<!-- GUARDAR -->
-<button class="save-btn" onclick="saveWeek()">GUARDAR SEMANA ↓</button>
-
-<!-- EXPORTAR DATOS -->
-<div style="margin-bottom:16px; display:flex; gap:10px;">
-  <button onclick="exportData()" style="flex:1; padding:12px; background:var(--surface); border:1px solid var(--border); border-radius:12px; color:var(--muted); font-family:'DM Mono',monospace; font-size:0.75rem; cursor:pointer; text-align:center;">
-    💾 Exportar mis datos
-  </button>
-  <button onclick="document.getElementById('importBanner').style.display='block'; window.scrollTo({top:0,behavior:'smooth'})" style="flex:1; padding:12px; background:var(--surface); border:1px solid var(--border); border-radius:12px; color:var(--muted); font-family:'DM Mono',monospace; font-size:0.75rem; cursor:pointer; text-align:center;">
-    📥 Importar datos
-  </button>
-</div>
-
-<!-- HISTORIAL -->
-<div class="section-title">Historial</div>
-<div class="history-section" id="historyList">
-  <div style="text-align:center; padding:30px; color:var(--muted); font-family:'DM Mono',monospace; font-size:0.8rem;">
-    Aún no hay semanas guardadas.<br>¡Registra tu primera!
-  </div>
-</div>
-
-
-<!-- CALENDARIO MENSUAL -->
-<div class="section-title">Este mes</div>
-<div class="monthly-card">
-  <div class="monthly-header">
-    <div class="monthly-title" id="monthlyTitle">JUNIO 2026</div>
-    <div class="monthly-legend">
-      <span class="legend-dot gym"></span><span class="legend-label">Gym</span>
-      <span class="legend-dot nobeers"></span><span class="legend-label">Sin alcohol</span>
-      <span class="legend-dot perfect"></span><span class="legend-label">Día perfecto</span>
-    </div>
-  </div>
-  <div class="monthly-weekdays">
-    <div>L</div><div>M</div><div>X</div><div>J</div><div>V</div><div>S</div><div>D</div>
-  </div>
-  <div class="monthly-grid" id="monthlyGrid"></div>
-  <div class="monthly-stats" id="monthlyStats"></div>
-</div>
-
-
-<!-- MODAL RUTINA -->
-<div class="workout-modal-overlay" id="workoutModal">
-  <div class="workout-modal" id="workoutModalInner">
-    <!-- rendered by JS -->
-  </div>
-</div>
-
-<!-- MODAL AYUNO -->
-<div class="modal-overlay" id="fastingModal">
-  <div class="modal">
-    <div class="modal-title">¿A qué hora fue tu última comida?</div>
-    <div style="font-size:0.7rem; color:var(--muted); font-family:'DM Mono',monospace; margin-bottom:14px; text-transform:uppercase; letter-spacing:1px;">Horas comunes</div>
-    <div class="fasting-time-picker" id="fastingQuickPicks">
+    <!-- Weekly history bars -->
+    <div class="section-label" style="margin-bottom:8px">Últimas 8 semanas</div>
+    <div class="bars-chart" id="weeksBarChart">
       <!-- rendered by JS -->
     </div>
-    <div style="font-size:0.7rem; color:var(--muted); font-family:'DM Mono',monospace; margin-bottom:10px; text-transform:uppercase; letter-spacing:1px;">O escribe la hora</div>
+  </div>
+
+  <!-- Level -->
+  <div class="level-strip">
+    <div class="level-icon" id="levelIcon">🥊</div>
+    <div class="level-info">
+      <div class="level-name" id="levelTitle">NOVATO</div>
+      <div class="level-sub" id="levelSub">Nivel 1 de 8</div>
+      <div class="xp-track"><div class="xp-fill" id="xpBarFill" style="width:0%"></div></div>
+    </div>
+    <div class="level-xp" id="levelXp">0 XP</div>
+  </div>
+
+  <!-- Rachas -->
+  <div class="section-label">Rachas</div>
+  <div class="streak-row">
+    <div class="streak-tile fire">
+      <div class="streak-tile-top">
+        <div class="streak-tile-label">Semanas seguidas</div>
+        <div class="streak-tile-icon">🔥</div>
+      </div>
+      <div class="streak-tile-num" id="streakNum">0</div>
+      <div class="streak-tile-unit">semanas de gym completas</div>
+    </div>
+    <div class="streak-tile trophy">
+      <div class="streak-tile-top">
+        <div class="streak-tile-label">Mejor racha</div>
+        <div class="streak-tile-icon">🏆</div>
+      </div>
+      <div class="streak-tile-num" id="bestStreakNum">0</div>
+      <div class="streak-tile-unit">semanas histórico</div>
+    </div>
+  </div>
+
+  <!-- Gym days this week (home preview) -->
+  <div class="section-label">Gym esta semana</div>
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <div style="font-size:13px;font-weight:600">Días de entrenamiento</div>
+        <div class="mono-sm" id="gymWeekSub" style="margin-top:2px">Toca un día para ver la rutina</div>
+      </div>
+      <div class="gym-counter"><span id="gymDaysCount">0</span><span>/3</span></div>
+    </div>
+    <div style="padding:14px">
+      <div class="days-row" id="daysGrid"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════
+     PAGE: ENTRENO
+══════════════════════════════ -->
+<div class="page" id="page-entreno">
+
+  <!-- Stats row -->
+  <div class="section-label">Esta semana</div>
+  <div class="stats-row">
+    <div class="stat-tile peso" onclick="openPesoModal()">
+      <div class="stat-tile-label">Peso</div>
+      <div class="stat-tile-num" id="statPeso">96.0</div>
+      <div class="stat-tile-delta" id="statPesoDelta">— kg</div>
+      <div class="stat-tile-hint">toca para editar</div>
+    </div>
+    <div class="stat-tile cerveza">
+      <div class="stat-tile-label">Cervezas</div>
+      <div class="stat-tile-num" id="statCervezas">0</div>
+      <div class="stat-tile-delta" id="statCervezasDelta">meta: 6</div>
+    </div>
+    <div class="stat-tile gym">
+      <div class="stat-tile-label">Gym</div>
+      <div class="stat-tile-num" id="statGym">0</div>
+      <div class="stat-tile-delta">meta: 3</div>
+    </div>
+  </div>
+
+  <!-- Beer tracker -->
+  <div class="section-label">Cervezas esta semana</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="card-head-label">🍺 500ml c/u</div>
+      <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--a2);letter-spacing:-0.5px">
+        <span id="beerCountBig">0</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);font-weight:400"> / 6</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="beer-grid" id="beerGrid"></div>
+      <div class="beer-controls">
+        <button class="ctrl-btn" onclick="changeBeer(-1)">− Quitar</button>
+        <button class="ctrl-btn" onclick="changeBeer(1)">+ Añadir 🍺</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progreso -->
+  <div class="section-label">Adherencia</div>
+  <div class="card">
+    <div class="card-body">
+      <div class="prog-item">
+        <div class="prog-head">
+          <div class="prog-label">💪 Gym (3 sesiones)</div>
+          <div class="prog-val" id="gymPct">0%</div>
+        </div>
+        <div class="prog-track"><div class="prog-fill" id="gymBar" style="width:0%;background:var(--a3)"></div></div>
+      </div>
+      <div class="prog-item">
+        <div class="prog-head">
+          <div class="prog-label">🍺 Cervezas (máx 6)</div>
+          <div class="prog-val" id="beerPct">100%</div>
+        </div>
+        <div class="prog-track"><div class="prog-fill" id="beerBar" style="width:100%;background:var(--a3)"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nota semanal -->
+  <div class="section-label">Nota de la semana</div>
+  <div class="card">
+    <div class="card-body">
+      <div class="notes-label">¿Cómo te sentiste esta semana?</div>
+      <textarea class="notes-textarea" id="weekNote" placeholder="Ej: Me costó arrancar pero al final me sentí bien..."></textarea>
+    </div>
+  </div>
+
+  <button class="btn btn-accent" onclick="saveWeek()" style="margin-bottom:20px">Cerrar semana y guardar</button>
+
+  <!-- Historial -->
+  <div class="section-label">Historial</div>
+  <div id="historyList">
+    <div style="text-align:center;padding:28px 0;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px">Aún no hay semanas guardadas.</div>
+  </div>
+
+  <!-- Calendario -->
+  <div class="section-label" style="margin-top:4px">Este mes</div>
+  <div class="card">
+    <div class="card-head">
+      <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;letter-spacing:-0.3px" id="monthlyTitle">JUNIO 2026</div>
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--a3);display:inline-block"></span><span class="mono-xs" style="margin-right:4px">Gym</span>
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--a2);display:inline-block"></span><span class="mono-xs" style="margin-right:4px">Sin alcohol</span>
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block"></span><span class="mono-xs">Perfecto</span>
+      </div>
+    </div>
+    <div class="card-body" style="padding-top:12px">
+      <div class="monthly-weekdays">
+        <div>L</div><div>M</div><div>X</div><div>J</div><div>V</div><div>S</div><div>D</div>
+      </div>
+      <div class="monthly-grid" id="monthlyGrid"></div>
+      <div class="monthly-foot" id="monthlyStats"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════
+     PAGE: VICIOS
+══════════════════════════════ -->
+<div class="page" id="page-vicios">
+
+  <!-- Alcohol hero -->
+  <div class="section-label">Alcohol</div>
+  <div class="vicio-hero alcohol">
+    <div class="vicio-hero-top">
+      <div class="vicio-hero-icon">🍺</div>
+      <div class="vicio-hero-badge">Alcohol</div>
+    </div>
+    <div class="vicio-hero-num" id="alcoholDays">0</div>
+    <div class="vicio-hero-unit">días sin beber</div>
+    <div class="vicio-hero-milestone" id="alcoholMilestone">Empieza hoy</div>
+    <div class="vicio-btns">
+      <button class="vicio-btn-reset" onclick="resetVicio('alcohol')">Reiniciar</button>
+      <button class="vicio-btn-add" onclick="addVicioDays('alcohol',1)">+ Un día más 💪</button>
+    </div>
+  </div>
+
+  <!-- Alcohol milestones -->
+  <div class="section-label">Hitos de alcohol</div>
+  <div class="milestones-list" id="alcMilestonesList"></div>
+
+  <!-- Weed hero -->
+  <div class="section-label" style="margin-top:20px">Weed</div>
+  <div class="vicio-hero weed">
+    <div class="vicio-hero-top">
+      <div class="vicio-hero-icon">🌿</div>
+      <div class="vicio-hero-badge">Weed</div>
+    </div>
+    <div class="vicio-hero-num" id="weedDays">0</div>
+    <div class="vicio-hero-unit">días sin fumar</div>
+    <div class="vicio-hero-milestone" id="weedMilestone">Empieza hoy</div>
+    <div class="vicio-btns">
+      <button class="vicio-btn-reset" onclick="resetVicio('weed')">Reiniciar</button>
+      <button class="vicio-btn-add" onclick="addVicioDays('weed',1)">+ Un día más 💪</button>
+    </div>
+  </div>
+
+  <!-- Weed milestones -->
+  <div class="section-label">Hitos de weed</div>
+  <div class="milestones-list" id="weedMilestonesList"></div>
+
+</div>
+
+<!-- ══════════════════════════════
+     PAGE: AYUNO
+══════════════════════════════ -->
+<div class="page" id="page-ayuno">
+
+  <div class="fasting-hero">
+    <div class="fasting-protocol-tag">Protocolo 16:8</div>
+    <div class="fasting-time-display inactive" id="fastingTimer">--:--:--</div>
+    <div class="fasting-status-label" id="fastingStatusLabel">Registra tu última comida</div>
+    <button class="fasting-set-btn" id="fastingSetBtn" onclick="openFastingModal()">
+      🍽 Toca para registrar tu última comida
+    </button>
+    <div class="fasting-result" id="fastingResult">
+      <div class="fasting-info-row">
+        <div class="fasting-info-label">Última comida</div>
+        <div class="fasting-info-val" id="fastingLastMeal">—</div>
+      </div>
+      <div class="fasting-info-row">
+        <div class="fasting-info-label">Puedes comer a partir de</div>
+        <div class="fasting-info-val" id="fastingEatTime" style="color:var(--accent)">—</div>
+      </div>
+      <div class="fasting-info-row">
+        <div class="fasting-info-label">Horas de ayuno</div>
+        <div class="fasting-info-val" id="fastingHours" style="color:var(--purple)">16h</div>
+      </div>
+      <div class="fasting-tip-box" id="fastingTip"></div>
+    </div>
+  </div>
+
+  <!-- Info boxes -->
+  <div class="section-label">¿Por qué 16:8?</div>
+  <div class="card">
+    <div class="card-body" style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:20px;flex-shrink:0">🔥</div>
+        <div><div style="font-size:13px;font-weight:600;margin-bottom:3px">Quema grasa real</div><div style="font-size:12px;color:var(--muted);line-height:1.55">Después de 12h sin comer tu cuerpo activa la quema de grasa. A las 16h está al máximo.</div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:20px;flex-shrink:0">💪</div>
+        <div><div style="font-size:13px;font-weight:600;margin-bottom:3px">Sin perder músculo</div><div style="font-size:12px;color:var(--muted);line-height:1.55">El protocolo 16:8 es el más estudiado para quemar grasa sin catabolismo muscular.</div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:20px;flex-shrink:0">🧠</div>
+        <div><div style="font-size:13px;font-weight:600;margin-bottom:3px">Claridad mental</div><div style="font-size:12px;color:var(--muted);line-height:1.55">En ayunas el cerebro usa cetonas — muchas personas reportan más enfoque y energía.</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════
+     PAGE: CUENTA
+══════════════════════════════ -->
+<div class="page" id="page-cuenta">
+
+  <!-- Profile header -->
+  <div class="account-header">
+    <div class="account-avatar">💪</div>
+    <div>
+      <div class="account-name">Ivan</div>
+      <div class="account-since" id="accountSince">Semana 1</div>
+      <div class="account-xp" id="accountXp">0 XP total</div>
+    </div>
+  </div>
+
+  <!-- Peso card -->
+  <div class="section-label">Peso semanal</div>
+  <div class="peso-card">
+    <div class="peso-top">
+      <div>
+        <div class="peso-label">⚖️ Mi peso actual</div>
+        <div class="peso-hint" id="pesoSundaySub">Pésate cada domingo en ayunas</div>
+      </div>
+      <div>
+        <div class="peso-big-num" id="pesoSundayNum">96.0</div>
+        <div class="peso-big-unit">kg</div>
+      </div>
+    </div>
+    <div class="peso-delta-row" id="pesoDeltaRow" style="display:none">
+      <div class="peso-delta-label">vs semana anterior</div>
+      <div class="peso-delta-val" id="pesoDeltaVal">—</div>
+    </div>
+    <div class="peso-action">
+      <button class="btn btn-accent" id="pesoDomingoBtn" onclick="openPesoModal()">⚖️ Registrar peso de hoy</button>
+      <div class="peso-next" id="pesoNextWeigh"></div>
+    </div>
+  </div>
+
+  <!-- Meta -->
+  <div class="section-label">Meta de peso</div>
+  <div class="meta-block">
+    <div class="meta-nums">
+      <div class="meta-current" id="metaCurrent">96.0</div>
+      <div class="meta-unit">kg</div>
+      <div class="meta-arrow">→</div>
+      <div class="meta-target">86</div>
+      <div class="meta-unit">meta</div>
+    </div>
+    <div class="meta-track"><div class="meta-fill" id="metaBar" style="width:0%"></div></div>
+    <div class="meta-caption" id="metaCaption">0.0 kg perdidos · 10.0 kg restantes</div>
+    <div class="sparkline-wrap" id="sparklineWrap" style="display:none">
+      <div class="sparkline-label">Tendencia</div>
+      <svg id="weightSparkline" width="100%" height="50" preserveAspectRatio="none"></svg>
+    </div>
+  </div>
+
+  <!-- Progresión de fases -->
+  <div class="section-label">Progresión</div>
+  <div class="phase-block" id="phaseCard">
+    <div class="phase-block-head">
+      <div>
+        <div class="phase-tag" id="phaseBadgeNum">Fase 1 de 4</div>
+        <div class="phase-name" id="phaseName">FUNDACIÓN</div>
+      </div>
+      <div>
+        <div class="phase-counter-num" id="phaseCounterNum">0</div>
+        <div class="phase-counter-label">entrenos</div>
+      </div>
+    </div>
+    <div class="phase-desc" id="phaseDesc">Aprende la técnica perfecta.</div>
+    <div class="phase-track"><div class="phase-fill" id="phaseProgressFill" style="width:0%"></div></div>
+    <div class="phase-next-label" id="phaseNextLabel">— entrenos para la siguiente fase</div>
+    <div class="phase-steps" id="phaseStepper"></div>
+  </div>
+
+  <!-- Logros -->
+  <div class="section-label">Logros</div>
+  <div class="achievements-grid" id="achievementsGrid"></div>
+
+  <!-- Data management — discrete -->
+  <div class="section-label">Mis datos</div>
+  <div class="data-section">
+    <div class="data-row" onclick="exportData()">
+      <div class="data-row-left">
+        <div class="data-row-icon">💾</div>
+        <div>
+          <div class="data-row-label">Exportar datos</div>
+          <div class="data-row-sub">Descarga una copia de seguridad</div>
+        </div>
+      </div>
+      <div class="data-row-arrow">→</div>
+    </div>
+    <div class="data-row" onclick="toggleImportPanel()">
+      <div class="data-row-left">
+        <div class="data-row-icon">📥</div>
+        <div>
+          <div class="data-row-label">Importar datos</div>
+          <div class="data-row-sub">Restaurar desde otra URL o dispositivo</div>
+        </div>
+      </div>
+      <div class="data-row-arrow" id="importArrow">→</div>
+    </div>
+    <div class="import-panel" id="importPanel">
+      <div class="mono-sm" style="margin-bottom:8px">Pega aquí los datos exportados:</div>
+      <textarea class="import-textarea" id="importInput" placeholder="Pega el JSON aquí..."></textarea>
+      <div class="import-row">
+        <button class="btn-sm accent" onclick="importData()">Importar</button>
+        <button class="btn-sm ghost" onclick="toggleImportPanel()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════
+     BOTTOM NAV
+══════════════════════════════ -->
+<nav class="bottom-nav">
+  <button class="nav-item" onclick="switchPage('vicios',this)">
+    <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2c0 4-4 6-4 10a4 4 0 008 0c0-4-4-6-4-10z"/>
+      <path d="M12 12c0 2-1.5 3-1.5 4.5a1.5 1.5 0 003 0C13.5 15 12 14 12 12z"/>
+    </svg>
+    <div class="nav-label">Vicios</div>
+    <div class="nav-dot"></div>
+  </button>
+  <button class="nav-item" onclick="switchPage('entreno',this)">
+    <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="10" width="4" height="4" rx="1"/>
+      <rect x="18" y="10" width="4" height="4" rx="1"/>
+      <rect x="5" y="8" width="3" height="8" rx="1"/>
+      <rect x="16" y="8" width="3" height="8" rx="1"/>
+      <line x1="8" y1="12" x2="16" y2="12"/>
+    </svg>
+    <div class="nav-label">Entreno</div>
+    <div class="nav-dot"></div>
+  </button>
+  <button class="nav-item nav-center active" onclick="switchPage('inicio',this)">
+    <svg class="nav-icon-center" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/>
+      <path d="M9 21V12h6v9"/>
+    </svg>
+    <div class="nav-label">Inicio</div>
+    <div class="nav-dot"></div>
+  </button>
+  <button class="nav-item" onclick="switchPage('ayuno',this)">
+    <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="13" r="8"/>
+      <path d="M12 9v4l3 2"/>
+      <path d="M9 2h6"/>
+    </svg>
+    <div class="nav-label">Ayuno</div>
+    <div class="nav-dot"></div>
+  </button>
+  <button class="nav-item" onclick="switchPage('cuenta',this)">
+    <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="7" r="4"/>
+      <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>
+    </svg>
+    <div class="nav-label">Cuenta</div>
+    <div class="nav-dot"></div>
+  </button>
+</nav>
+
+<!-- ══════════════════════════════
+     MODALS
+══════════════════════════════ -->
+<div class="workout-modal-overlay" id="workoutModal">
+  <div class="workout-modal" id="workoutModalInner"></div>
+</div>
+
+<div class="modal-overlay" id="fastingModal">
+  <div class="modal">
+    <div class="modal-title">¿Última comida?</div>
+    <div class="mono-xs" style="margin-bottom:12px">Horas comunes</div>
+    <div class="fasting-time-picker" id="fastingQuickPicks"></div>
+    <div class="mono-xs" style="margin-bottom:10px">O escribe la hora</div>
     <input type="time" class="custom-time-input" id="fastingTimeInput">
     <div class="modal-btns">
       <button class="modal-cancel" onclick="closeFastingModal()">Cancelar</button>
-      <button class="modal-confirm" style="background:linear-gradient(135deg,#a855f7,#ec4899); color:white;" onclick="confirmFasting()">CALCULAR AYUNO</button>
+      <button class="modal-confirm" style="background:var(--purple);color:#fff" onclick="confirmFasting()">Calcular ayuno</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL PESO -->
 <div class="modal-overlay" id="pesoModal">
   <div class="modal">
-    <div class="modal-title">Actualizar Peso</div>
+    <div class="modal-title">Registrar peso</div>
     <input type="number" class="modal-input" id="pesoInput" placeholder="96.0" step="0.1" min="40" max="200">
     <div class="modal-hint">Pésate en ayunas, domingo por la mañana</div>
     <div class="modal-btns">
       <button class="modal-cancel" onclick="closeModal()">Cancelar</button>
-      <button class="modal-confirm" onclick="confirmPeso()">GUARDAR PESO</button>
+      <button class="modal-confirm" onclick="confirmPeso()">Guardar</button>
     </div>
   </div>
 </div>
 
-<!-- PHASE UNLOCK OVERLAY -->
 <div class="phase-unlock-overlay" id="phaseUnlockOverlay">
   <div class="phase-unlock-card">
     <div class="unlock-emoji">🎉</div>
@@ -2553,15 +1071,141 @@
     <div class="unlock-phase-name" id="unlockPhaseName">FASE 2</div>
     <div class="unlock-phase-title" id="unlockPhaseTitle">CONSTRUCCIÓN</div>
     <div class="unlock-phase-desc" id="unlockPhaseDesc"></div>
-    <button class="unlock-btn" onclick="closePhaseUnlock()">¡VAMOS! 💪</button>
+    <button class="unlock-btn" onclick="closePhaseUnlock()">¡Vamos! 💪</button>
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast">✓ Guardado</div>
 <div class="xp-toast" id="xpToast">+50 XP</div>
 
+</body>
+</html>
+
 <script>
+
+// ── PAGE NAVIGATION ──────────────────────────────────────────
+function switchPage(name, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  if (el) el.classList.add('active');
+  if (name === 'inicio') { renderRings(); renderWeekBars(); }
+  if (name === 'vicios') { renderMilestoneLists(); }
+  if (name === 'cuenta') { renderAccountHeader(); }
+}
+
+// ── HERO RINGS ────────────────────────────────────────────────
+function renderRings() {
+  const START = 96, TARGET = 86;
+  const lost = Math.max(0, START - (state.peso || START));
+  const pesoPct = Math.min(100, (lost / (START - TARGET)) * 100);
+  setRing('ringPeso', pesoPct, 'ringPesoVal', Math.round(pesoPct) + '%');
+  const gymPct2 = Math.min(100, ((state.gymDays||[]).length / 3) * 100);
+  setRing('ringGym', gymPct2, 'ringGymVal', (state.gymDays||[]).length + '/3');
+  const alcDays = state.alcoholDays || 0;
+  const weedDays2 = state.weedDays || 0;
+  const avgVicios = Math.round((alcDays + weedDays2) / 2);
+  const viciosPct = Math.min(100, (avgVicios / 30) * 100);
+  setRing('ringVicios', viciosPct, 'ringViciosVal', avgVicios + 'd');
+  const ph = getCurrentPhase();
+  const hpn = document.getElementById('heroPhaseName');
+  if (hpn) hpn.textContent = ph.name;
+}
+
+function setRing(ringId, pct, valId, label) {
+  const r = document.getElementById(ringId);
+  const v = document.getElementById(valId);
+  if (!r || !v) return;
+  const circ = 201;
+  r.style.strokeDashoffset = circ - (circ * pct / 100);
+  v.textContent = label;
+}
+
+// ── WEEKLY BARS CHART ─────────────────────────────────────────
+function renderWeekBars() {
+  const chart = document.getElementById('weeksBarChart');
+  if (!chart) return;
+  const history = (state.history || []).slice(0, 8).reverse();
+  if (history.length === 0) {
+    chart.innerHTML = '<div style="font-family:JetBrains Mono,monospace;font-size:10px;color:#666;width:100%;text-align:center;padding:16px 0">Guarda tu primera semana para ver la gráfica</div>';
+    return;
+  }
+  const weeks = [];
+  for (let i = 0; i < 8; i++) {
+    if (i < history.length) weeks.push(history[i]);
+    else weeks.push(null);
+  }
+  const pesos = weeks.filter(w => w && w.peso).map(w => w.peso);
+  const maxP = pesos.length ? Math.max(...pesos) : 96;
+  const minP = pesos.length ? Math.min(...pesos) - 0.5 : 85;
+  chart.innerHTML = weeks.map((w, i) => {
+    if (!w) {
+      return '<div class="bar-col"><div class="bar-track"><div class="bar-fill" style="height:10%;background:var(--s3)"></div></div><div class="bar-label">S' + (i+1) + '</div></div>';
+    }
+    const pct = Math.max(10, Math.min(95, ((w.peso - minP) / (maxP - minP + 0.1)) * 85 + 10));
+    const inv = 100 - pct;
+    const gymOk = (w.gymDays||[]).length >= 3;
+    const beerOk = w.beers <= 6;
+    const perfect = gymOk && beerOk;
+    const color = perfect ? 'var(--accent)' : gymOk ? 'var(--a3)' : 'var(--s3)';
+    return '<div class="bar-col"><div class="bar-track"><div class="bar-fill" style="height:' + inv + '%;background:' + color + '"></div></div><div class="bar-label">S' + (w.week||i+1) + '</div></div>';
+  }).join('');
+}
+
+// ── MILESTONE LISTS ───────────────────────────────────────────
+function renderMilestoneLists() {
+  const alcEl = document.getElementById('alcMilestonesList');
+  const weedEl = document.getElementById('weedMilestonesList');
+  if (alcEl) alcEl.innerHTML = ALCOHOL_MILESTONES.map(function(m) {
+    var d = m[0], t = m[1];
+    var reached = (state.alcoholDays||0) >= d || (state.bestAlcoholStreak||0) >= d;
+    return '<div class="milestone-item ' + (reached ? 'reached alc' : '') + '"><div class="ms-days">' + d + '</div><div class="ms-label">' + t + '</div><div class="ms-check">✓</div></div>';
+  }).join('');
+  if (weedEl) weedEl.innerHTML = WEED_MILESTONES.map(function(m) {
+    var d = m[0], t = m[1];
+    var reached = (state.weedDays||0) >= d || (state.bestWeedStreak||0) >= d;
+    return '<div class="milestone-item ' + (reached ? 'reached weed' : '') + '"><div class="ms-days">' + d + '</div><div class="ms-label">' + t + '</div><div class="ms-check">✓</div></div>';
+  }).join('');
+}
+
+// ── ACCOUNT HEADER ────────────────────────────────────────────
+function renderAccountHeader() {
+  var since = document.getElementById('accountSince');
+  var xpEl = document.getElementById('accountXp');
+  if (since) since.textContent = 'Semana ' + (state.weekNum || 1);
+  if (xpEl) xpEl.textContent = (state.xp || 0) + ' XP total';
+}
+
+// ── IMPORT PANEL TOGGLE ───────────────────────────────────────
+function toggleImportPanel() {
+  var panel = document.getElementById('importPanel');
+  var arrow = document.getElementById('importArrow');
+  if (!panel) return;
+  panel.classList.toggle('open');
+  if (arrow) arrow.textContent = panel.classList.contains('open') ? '↓' : '→';
+}
+
+// ── SUNDAY PESO BUTTON ────────────────────────────────────────
+function updatePesoBtn() {
+  var btn = document.getElementById('pesoDomingoBtn');
+  var sub = document.getElementById('pesoSundaySub');
+  var next = document.getElementById('pesoNextWeigh');
+  if (!btn) return;
+  if (isSunday()) {
+    btn.classList.add('btn-sunday');
+    btn.textContent = '⚖️ ¡Hoy es domingo! Registra tu peso';
+    if (sub) sub.textContent = '¡Hoy es el día! Pésate en ayunas antes de comer.';
+    if (next) next.textContent = '';
+  } else {
+    btn.classList.remove('btn-sunday');
+    btn.textContent = '⚖️ Registrar peso de hoy';
+    var days = daysUntilSunday();
+    if (sub) sub.textContent = 'Pésate cada domingo en ayunas · misma hora siempre';
+    if (next) next.textContent = 'Próximo pesaje en ' + days + ' día' + (days === 1 ? '' : 's') + ' (domingo)';
+  }
+}
+
+
 const DAYS = ['LUN','MAR','MIÉ','JUE','VIE','SÁB','DOM'];
 const DAY_ICONS = ['💪','🚶','💪','🚶','💪','🏃','😴'];
 const GYM_DAYS = [0, 2, 4]; // LUN, MIÉ, VIE
@@ -3123,6 +1767,7 @@ function markDayDone(dayIndex) {
       renderAchievements();
       renderMonthlyCalendar();
       updateGymWeekCount();
+      renderRings();
       if (phaseAfter.id > phaseBefore.id) {
         setTimeout(() => showPhaseUnlock(phaseAfter), 400);
       } else {
@@ -3157,6 +1802,41 @@ document.getElementById('workoutModal').addEventListener('click', function(e) {
 });
 
 function loadState() {
+  // Seed data — Ivan's progress baked in
+  const SEED = {
+  "peso": 94.5,
+  "prevPeso": 94.5,
+  "beers": 4,
+  "gymDays": [0,2,4],
+  "note": "",
+  "weekNum": 3,
+  "history": [
+    {"week":2,"date":"21 jun 2026","peso":94.5,"prevPeso":96,"beers":8,"gymDays":[0,2,4],"note":""},
+    {"week":1,"date":"14 jun 2026","peso":96,"prevPeso":null,"beers":8,"gymDays":[2,4,0],"note":""}
+  ],
+  "totalWorkouts": 9,
+  "startDate": "2026-06-12T17:08:42.473Z",
+  "xp": 1375,
+  "achievements": ["first_workout","fasting_user","first_week","streak_2"],
+  "lastMealTime": "2026-06-23T23:00:00.000Z",
+  "streak": 2,
+  "bestStreak": 2,
+  "alcoholDays": 0,
+  "weedDays": 0,
+  "monthlyLog": {
+    "2026-06-14": {"weigh":true,"noBeers":true,"noWeed":true},
+    "2026-06-15": {"gym":true,"noBeers":true,"noWeed":true},
+    "2026-06-17": {"gym":true,"noBeers":true,"noWeed":true},
+    "2026-06-19": {"gym":true},
+    "2026-06-21": {"weigh":true},
+    "2026-06-22": {"gym":true},
+    "2026-06-24": {"gym":true,"noBeers":true,"noWeed":true},
+    "2026-06-26": {"gym":true}
+  },
+  "bestWeedStreak": 4,
+  "bestAlcoholStreak": 4
+};
+
   // Try current key first, then legacy keys for URL migration
   const keys = ['ivanfit_state', 'ivanfit', 'fitness_state'];
   for (const k of keys) {
@@ -3164,12 +1844,14 @@ function loadState() {
       const saved = localStorage.getItem(k);
       if (saved) {
         const parsed = JSON.parse(saved);
-        // Migrate to canonical key
         if (k !== 'ivanfit_state') localStorage.setItem('ivanfit_state', saved);
         return parsed;
       }
     } catch(e) {}
   }
+  // No saved data found — use seed and persist it
+  localStorage.setItem('ivanfit_state', JSON.stringify(SEED));
+  return SEED;
   return {
     peso: 96.0,
     prevPeso: null,
@@ -3412,7 +2094,9 @@ function addVicioDays(type, n) {
   }
   saveState();
   renderVicios();
+  renderMilestoneLists();
   renderMonthlyCalendar();
+  renderRings();
   checkAchievements(false);
 }
 
@@ -3726,7 +2410,58 @@ function checkFirstRun() {
   }
 }
 
+
+// ── DAY / NIGHT MODE ─────────────────────────────────────────
+
+function getAutoMode() {
+  const h = new Date().getHours();
+  // Day: 7am-7pm, Night: 7pm-7am
+  return (h >= 7 && h < 19) ? 'day' : 'night';
+}
+
+function applyMode(mode) {
+  const root = document.documentElement;
+  const btn = document.getElementById('modeToggle');
+  if (mode === 'day') {
+    root.classList.add('day');
+    if (btn) btn.textContent = '☀️';
+  } else {
+    root.classList.remove('day');
+    if (btn) btn.textContent = '🌙';
+  }
+  localStorage.setItem('ivanfit_mode', mode);
+}
+
+function toggleMode() {
+  const isDay = document.documentElement.classList.contains('day');
+  applyMode(isDay ? 'night' : 'day');
+  // Mark as manual override for 12h
+  localStorage.setItem('ivanfit_mode_override', Date.now().toString());
+}
+
+function initMode() {
+  const saved = localStorage.getItem('ivanfit_mode');
+  const overrideTs = parseInt(localStorage.getItem('ivanfit_mode_override') || '0');
+  const overrideActive = Date.now() - overrideTs < 12 * 60 * 60 * 1000; // 12h
+
+  if (saved && overrideActive) {
+    // User manually overrode — respect it for 12h
+    applyMode(saved);
+  } else {
+    // Auto mode based on time
+    applyMode(getAutoMode());
+  }
+}
+
+// Re-check mode every 5 minutes in case day/night boundary crossed
+setInterval(function() {
+  const overrideTs = parseInt(localStorage.getItem('ivanfit_mode_override') || '0');
+  const overrideActive = Date.now() - overrideTs < 12 * 60 * 60 * 1000;
+  if (!overrideActive) applyMode(getAutoMode());
+}, 5 * 60 * 1000);
+
 function init() {
+  initMode();
   renderDate();
   renderWeekNum();
   renderDays();
@@ -3743,6 +2478,11 @@ function init() {
   renderPesoDominical();
   updateGymWeekCount();
   renderMonthlyCalendar();
+  renderRings();
+  renderWeekBars();
+  renderMilestoneLists();
+  renderAccountHeader();
+  updatePesoBtn();
   checkFirstRun();
   if (state.lastMealTime) renderFasting();
 }
@@ -3927,6 +2667,8 @@ function saveWeek() {
   renderLevel();
   renderStreak();
   renderSparkline();
+  renderRings();
+  renderWeekBars();
   checkAchievements(true);
   showToast('¡Semana ' + entry.week + ' guardada! +' + weekXP + ' XP');
   launchConfetti();
@@ -3979,6 +2721,7 @@ function confirmPeso() {
   saveState();
   updateAllStats();
   renderPesoDominical();
+  updatePesoBtn();
   logPesoInCalendar();
   renderMonthlyCalendar();
   closeModal();
@@ -4134,6 +2877,7 @@ document.getElementById('fastingModal').addEventListener('click', function(e) {
 });
 
 init();
+
 </script>
 </body>
 </html>
