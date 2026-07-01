@@ -4,765 +4,608 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>IvanFit</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  /* ── DARK (night) ── */
-  --bg:      #0a0a0a;
-  --s1:      #111;
-  --s2:      #1a1a1a;
-  --s3:      #222;
-  --border:  #2a2a2a;
-  --text:    #f0f0f0;
-  --muted:   #666;
-  --dim:     #3a3a3a;
-  --accent:  #c8ff00;
-  --a2:      #ff5c38;
-  --a3:      #38c8ff;
-  --purple:  #a855f7;
-  --green:   #22c55e;
+  --bg:      #000000;
+  --s1:      #1c1c1e;
+  --s2:      #2c2c2e;
+  --s3:      #3a3a3c;
+  --border:  #38383a;
+  --text:    #ffffff;
+  --text2:   #ebebf5;
+  --muted:   #8e8e93;
+  --dim:     #48484a;
+  --move:    #c8ff00;
+  --exercise:#38c8ff;
+  --stand:   #ff5c38;
+  --purple:  #bf5af2;
+  --green:   #30d158;
+  --red:     #ff453a;
   --mode-icon: '🌙';
 }
-
-/* ── LIGHT (day) ── */
 :root.day {
-  --bg:      #f4f4f0;
+  --bg:      #f2f2f7;
   --s1:      #ffffff;
-  --s2:      #f0f0ec;
-  --s3:      #e8e8e4;
-  --border:  #ddddd8;
-  --text:    #111111;
-  --muted:   #888888;
-  --dim:     #cccccc;
-  --accent:  #6abf00;
-  --a2:      #e04020;
-  --a3:      #0090cc;
-  --purple:  #8b3fdb;
-  --green:   #1a9e40;
+  --s2:      #f2f2f7;
+  --s3:      #e5e5ea;
+  --border:  #d1d1d6;
+  --text:    #000000;
+  --text2:   #1c1c1e;
+  --muted:   #8e8e93;
+  --dim:     #c7c7cc;
+  --move:    #76b900;
+  --exercise:#007aff;
+  --stand:   #ff3b30;
+  --purple:  #af52de;
+  --green:   #34c759;
+  --red:     #ff3b30;
   --mode-icon: '☀️';
 }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;
+  transition-property:background-color,border-color,color;transition-duration:.35s;transition-timing-function:ease}
+.confetti-piece,.toast,.xp-toast,.modal,.workout-modal,.phase-unlock-card,.sos-modal{transition:none!important}
+html,body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
+body{padding-bottom:88px}
 
-/* Smooth color transitions */
-*, *::before, *::after {
-  transition-property: background-color, border-color, color, box-shadow;
-  transition-duration: 0.4s;
-  transition-timing-function: ease;
-}
-
-/* But NOT on animations or transforms */
-.confetti-piece, .toast, .xp-toast, .modal, .workout-modal,
-.phase-unlock-card, .nav-icon {
-  transition: none !important;
-}
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
-body{padding-bottom:72px}
-
-/* ── TOPBAR ── */
-.topbar{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 16px 12px;
-  background:rgba(10,10,10,0.96);
-  backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border);
-  position:sticky;top:0;z-index:40;
-}
-.logo{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;letter-spacing:-0.3px}
-.logo span{color:var(--accent)}
-.topbar-meta{display:flex;align-items:center;gap:8px}
-.topbar-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
-.topbar-week{background:var(--s2);border:1px solid var(--border);border-radius:5px;padding:3px 8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:0.5px}
+/* ── LARGE TITLE HEADER (Apple style) ── */
+.header{padding:54px 20px 8px;display:flex;justify-content:space-between;align-items:flex-end}
+.header-title{font-size:32px;font-weight:800;letter-spacing:-0.8px;line-height:1}
+.header-meta{display:flex;align-items:center;gap:8px;padding-bottom:4px}
+.header-date{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase}
+.mode-btn{background:var(--s1);border:none;border-radius:50%;width:32px;height:32px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 
 /* ── PAGES ── */
-.page{display:none;padding:16px 16px 8px;animation:fadeIn 0.2s ease}
+.page{display:none;padding:12px 16px 8px;animation:pFade .22s ease}
 .page.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── BOTTOM NAV ── */
-.bottom-nav{
-  position:fixed;bottom:0;left:0;right:0;
-  background:rgba(10,10,10,0.97);
-  backdrop-filter:blur(20px);
-  border-top:1px solid var(--border);
-  display:flex;
-  z-index:50;
-  padding-bottom:env(safe-area-inset-bottom);
-}
-.nav-item{
-  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:10px 4px 8px;cursor:pointer;transition:all 0.15s;
-  border:none;background:transparent;color:var(--muted);
-  -webkit-tap-highlight-color:transparent;
-}
-.nav-item.active{color:var(--accent)}
-.nav-icon{width:22px;height:22px;margin-bottom:3px;transition:transform 0.2s cubic-bezier(.2,.8,.4,1.4);color:var(--muted)}.nav-item.active .nav-icon{color:var(--accent)}
-.nav-item.active .nav-icon{transform:scale(1.15)}
-.nav-label{font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:0.5px}
-.nav-dot{width:4px;height:4px;border-radius:50%;background:var(--accent);margin:0 auto;margin-top:3px;opacity:0;transition:opacity 0.2s}
-.nav-item.active .nav-dot{opacity:1}
+/* ── APPLE CARDS ── */
+.acard{background:var(--s1);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.acard-pad{padding:16px}
+.acard-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px 0}
+.acard-title{font-size:15px;font-weight:600}
+.acard-link{font-size:13px;color:var(--exercise);font-weight:500;cursor:pointer;border:none;background:none}
+.sec-header{font-size:20px;font-weight:800;letter-spacing:-0.4px;margin:20px 4px 10px}
+.sec-header:first-child{margin-top:4px}
+.sub{font-size:12px;color:var(--muted)}
+.mono{font-family:'JetBrains Mono',monospace}
 
-/* ── COMMON ── */
-.section-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
-.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
-.card{background:var(--s1);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
-.card-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border)}
-.card-head-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
-.card-body{padding:16px}
+/* ── ACTIVITY RINGS (big, Apple style) ── */
+.rings-hero{display:flex;align-items:center;gap:20px;padding:20px 16px}
+.rings-svg-wrap{flex-shrink:0}
+.rings-legend{flex:1;display:flex;flex-direction:column;gap:12px}
+.legend-row{display:flex;flex-direction:column}
+.legend-name{font-size:13px;font-weight:600}
+.legend-val{font-size:20px;font-weight:800;letter-spacing:-0.5px;line-height:1.15}
+.legend-val.move{color:var(--move)}
+.legend-val.exercise{color:var(--exercise)}
+.legend-val.stand{color:var(--stand)}
+.legend-val small{font-size:12px;font-weight:600;color:var(--muted)}
 
-/* ── TYPOGRAPHY ── */
-.num-xl{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;line-height:1;letter-spacing:-2px}
-.num-lg{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;line-height:1;letter-spacing:-1px}
-.num-md{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;line-height:1;letter-spacing:-0.5px}
-.unit{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
-.mono-sm{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
-.mono-xs{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
+/* ── INSIGHT BANNER (motivational) ── */
+.insight{background:linear-gradient(135deg,var(--s1),var(--s2));border-radius:14px;padding:14px 16px;margin-bottom:12px;display:flex;gap:12px;align-items:center}
+.insight-icon{font-size:24px;flex-shrink:0}
+.insight-text{font-size:14px;font-weight:600;line-height:1.4}
+.insight-sub{font-size:12px;color:var(--muted);font-weight:400;margin-top:2px}
 
-/* ── BUTTONS ── */
-.btn{width:100%;padding:13px;border:none;border-radius:10px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s}
-.btn:active{transform:scale(0.97)}
-.btn-accent{background:var(--accent);color:#0a0a0a}
-.btn-ghost{background:var(--s2);border:1px solid var(--border);color:var(--muted)}
-.btn-ghost:hover{border-color:var(--dim);color:var(--text)}
-.btn-sunday{background:var(--accent);color:#0a0a0a;animation:pulseSun 2s ease infinite}
-@keyframes pulseSun{0%,100%{box-shadow:0 0 0 0 rgba(200,255,0,.4)}50%{box-shadow:0 0 0 8px rgba(200,255,0,0)}}
+/* ── DAILY CHALLENGE ── */
+.challenge{border:1.5px solid var(--move);background:transparent;border-radius:14px;padding:14px 16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.challenge-tag{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--move);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+.challenge-text{font-size:14px;font-weight:600}
+.challenge-check{width:30px;height:30px;border-radius:50%;border:2px solid var(--dim);background:none;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:transparent}
+.challenge-check.done{background:var(--move);border-color:var(--move);color:#000}
 
-/* ── PROGRESS RING SVG ── */
-.ring-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center}
-.ring-label{position:absolute;text-align:center}
+/* ── METRIC TILES (2-col grid) ── */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.tile{background:var(--s1);border-radius:14px;padding:14px;cursor:pointer;transition:transform .12s}
+.tile:active{transform:scale(.96)}
+.tile-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.tile-name{font-size:13px;font-weight:600;color:var(--muted)}
+.tile-ico{font-size:15px}
+.tile-val{font-size:26px;font-weight:800;letter-spacing:-0.8px;line-height:1}
+.tile-val small{font-size:13px;font-weight:600;color:var(--muted)}
+.tile-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.tile-sub.good{color:var(--green)}
+.tile-sub.bad{color:var(--red)}
 
-/* ─────────────────────────────────────────────
-   PAGE 1: INICIO
-───────────────────────────────────────────── */
+/* ── TREND BARS ── */
+.bars-chart{display:flex;gap:4px;align-items:flex-end;height:64px;padding:0 2px}
+.bar-col{display:flex;flex-direction:column;align-items:center;flex:1;gap:4px;height:100%}
+.bar-track{width:100%;background:var(--s2);border-radius:4px;flex:1;position:relative;overflow:hidden;min-height:4px}
+.bar-fill{position:absolute;bottom:0;left:0;right:0;border-radius:4px;transition:height .6s cubic-bezier(.2,.8,.4,1)}
+.bar-label{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted)}
 
-/* Hero card */
-.hero-card{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px;position:relative;overflow:hidden}
-.hero-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(200,255,0,0.06),transparent);pointer-events:none}
-
-.hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
-.hero-greeting{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
-.hero-name{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.5px}
-.hero-phase-badge{background:var(--s2);border:1px solid var(--border);border-radius:6px;padding:6px 10px;text-align:right}
-.hero-phase-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
-.hero-phase-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--accent);letter-spacing:0.5px}
-
-/* Three rings */
-.rings-row{display:flex;justify-content:space-around;align-items:center;margin-bottom:20px}
-
-.ring-item{display:flex;flex-direction:column;align-items:center;gap:8px}
-.ring-title{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;text-align:center}
-
-/* Progress chart — weekly bars */
-.bars-chart{display:flex;gap:3px;align-items:flex-end;height:48px}
-.bar-col{display:flex;flex-direction:column;align-items:center;flex:1;gap:2px}
-.bar-track{width:100%;background:var(--s3);border-radius:3px;flex:1;position:relative;overflow:hidden;min-height:4px}
-.bar-fill{position:absolute;bottom:0;left:0;right:0;border-radius:3px;transition:height 0.6s cubic-bezier(.2,.8,.4,1)}
-.bar-label{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);text-transform:uppercase}
-
-/* Quote */
-.quote-card{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:16px}
-.quote-text{font-size:13px;color:rgba(240,240,240,.75);line-height:1.6;font-style:italic;margin-bottom:6px}
-.quote-author{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
-
-/* Level strip */
-.level-strip{display:flex;align-items:center;gap:12px;background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:16px}
-.level-icon{width:36px;height:36px;background:var(--s3);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.level-info{flex:1;min-width:0}
-.level-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text);letter-spacing:0.3px}
-.level-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:1px}
-.xp-track{width:100%;height:3px;background:var(--s3);border-radius:100px;margin-top:7px;overflow:hidden}
-.xp-fill{height:100%;background:var(--accent);border-radius:100px;transition:width 0.6s ease}
-.level-xp{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);flex-shrink:0}
-
-/* Streak tiles */
-.streak-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
-.streak-tile{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:14px}
-.streak-tile-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.streak-tile-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
-.streak-tile-icon{font-size:14px}
-.streak-tile-num{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;line-height:1;letter-spacing:-1px}
-.streak-tile.fire .streak-tile-num{color:var(--a2)}
-.streak-tile.trophy .streak-tile-num{color:var(--accent)}
-.streak-tile-unit{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:3px}
-
-/* Gym days (home preview) */
-.days-row{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
-.day-card{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:8px 3px;text-align:center;cursor:pointer;transition:all 0.15s;user-select:none}
-.day-card:active{transform:scale(0.93)}
-.day-card.active{background:var(--accent);border-color:var(--accent)}
-.day-name{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:0.3px;margin-bottom:4px}
-.day-card.active .day-name{color:#0a0a0a}
-.day-icon{font-size:13px}
+/* ── GYM DAYS ── */
+.days-row{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.day-card{background:var(--s2);border-radius:10px;padding:9px 3px;text-align:center;cursor:pointer;transition:all .14s;user-select:none;border:none}
+.day-card:active{transform:scale(.92)}
+.day-card.active{background:var(--move)}
+.day-name{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);text-transform:uppercase;margin-bottom:4px}
+.day-card.active .day-name{color:#000}
+.day-icon{font-size:14px}
 .day-tap{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--dim);margin-top:2px}
-.day-card.active .day-tap{color:rgba(10,10,10,.5)}
+.day-card.active .day-tap{color:rgba(0,0,0,.45)}
 
-/* ─────────────────────────────────────────────
-   PAGE 2: ENTRENO
-───────────────────────────────────────────── */
-.gym-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
-.gym-counter{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--a3);letter-spacing:-1px;line-height:1}
-.gym-counter span{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--muted);font-weight:400}
-.gym-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:3px}
+/* ── LIST ROWS (Apple settings style) ── */
+.list{background:var(--s1);border-radius:14px;overflow:hidden;margin-bottom:12px}
+.lrow{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:.5px solid var(--border);cursor:pointer;background:none;width:100%;border-left:none;border-right:none;border-top:none;text-align:left;color:var(--text)}
+.lrow:last-child{border-bottom:none}
+.lrow:active{background:var(--s2)}
+.lrow-ico{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.lrow-body{flex:1;min-width:0}
+.lrow-title{font-size:15px;font-weight:500}
+.lrow-sub{font-size:12px;color:var(--muted);margin-top:1px}
+.lrow-val{font-size:15px;color:var(--muted);font-weight:500}
+.lrow-arrow{color:var(--dim);font-size:14px}
 
-/* Stats 3-col */
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
-.stat-tile{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:14px 12px;cursor:pointer;position:relative;overflow:hidden;transition:all 0.15s}
-.stat-tile:active{transform:scale(0.95)}
-.stat-tile::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px}
-.stat-tile.peso::after{background:var(--accent)}
-.stat-tile.cerveza::after{background:var(--a2)}
-.stat-tile.gym::after{background:var(--a3)}
-.stat-tile-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
-.stat-tile-num{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;line-height:1;letter-spacing:-1px;margin-bottom:3px}
-.stat-tile.peso .stat-tile-num{color:var(--accent)}
-.stat-tile.cerveza .stat-tile-num{color:var(--a2)}
-.stat-tile.gym .stat-tile-num{color:var(--a3)}
-.stat-tile-delta{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted)}
-.stat-tile-delta.good{color:var(--accent)}
-.stat-tile-delta.bad{color:var(--a2)}
-.stat-tile-hint{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--dim);margin-top:2px}
+/* ── PROGRESS BARS ── */
+.pbar-item{margin-bottom:14px}
+.pbar-item:last-child{margin-bottom:0}
+.pbar-head{display:flex;justify-content:space-between;margin-bottom:6px}
+.pbar-label{font-size:13px;font-weight:600}
+.pbar-val{font-size:13px;font-weight:700}
+.pbar-track{height:5px;background:var(--s2);border-radius:100px;overflow:hidden}
+.pbar-fill{height:100%;border-radius:100px;transition:width .5s ease}
 
-/* Beer */
-.beer-grid{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
-.beer-btn{width:36px;height:36px;background:var(--s2);border:1px solid var(--border);border-radius:7px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.12s}
-.beer-btn:active{transform:scale(0.88)}
-.beer-btn.filled{background:rgba(255,92,56,.1);border-color:rgba(255,92,56,.35)}
+/* ── BEER GRID ── */
+.beer-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.beer-btn{width:38px;height:38px;background:var(--s2);border:none;border-radius:9px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s}
+.beer-btn:active{transform:scale(.88)}
+.beer-btn.filled{background:rgba(255,92,56,.18)}
 .beer-controls{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.ctrl-btn{padding:9px;border:1px solid var(--border);border-radius:8px;background:var(--s2);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;transition:all 0.12s}
+.ctrl-btn{padding:10px;border:none;border-radius:10px;background:var(--s2);color:var(--text);font-size:13px;font-weight:600;cursor:pointer}
 
-/* Progress bars */
-.prog-item{margin-bottom:14px}
-.prog-item:last-child{margin-bottom:0}
-.prog-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-.prog-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
-.prog-val{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text)}
-.prog-track{height:4px;background:var(--s3);border-radius:100px;overflow:hidden}
-.prog-fill{height:100%;border-radius:100px;transition:width 0.5s ease}
+/* ── BIG NUMBER HERO ── */
+.hero-num-card{text-align:center;padding:24px 16px}
+.hero-num{font-size:64px;font-weight:800;letter-spacing:-3px;line-height:1}
+.hero-num-unit{font-size:13px;color:var(--muted);font-weight:600;margin-top:4px}
+.hero-num-milestone{font-size:13px;font-weight:600;margin-top:10px;min-height:20px}
 
-/* Notes */
-.notes-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
-.notes-textarea{width:100%;min-height:72px;background:var(--s2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Inter',sans-serif;font-size:13px;line-height:1.5;padding:10px 12px;resize:none;outline:none;transition:border-color 0.15s}
-.notes-textarea:focus{border-color:var(--accent)}
-.notes-textarea::placeholder{color:var(--dim)}
+/* ── SOBRIETY STATS ── */
+.sober-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.sober-stat{background:var(--s1);border-radius:14px;padding:14px;text-align:center}
+.sober-stat-val{font-size:24px;font-weight:800;letter-spacing:-0.8px;color:var(--green)}
+.sober-stat-label{font-size:11px;color:var(--muted);margin-top:3px}
 
-/* Monthly calendar */
-.monthly-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px}
-.monthly-weekdays div{text-align:center;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;padding:3px 0}
-.monthly-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:14px}
-.cal-day{aspect-ratio:1;border-radius:5px;background:var(--s2);border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all 0.12s}
-.cal-day.empty{background:transparent;border-color:transparent}
-.cal-day.today{border-color:var(--accent);border-width:2px}
-.cal-day.has-gym{background:rgba(56,200,255,.07);border-color:rgba(56,200,255,.2)}
-.cal-day.has-nobeers{background:rgba(255,92,56,.06);border-color:rgba(255,92,56,.18)}
-.cal-day.perfect-day{background:rgba(200,255,0,.07);border-color:rgba(200,255,0,.28)}
-.cal-day.future{opacity:.2}
+/* ── HEALTH TIMELINE ── */
+.timeline{display:flex;flex-direction:column}
+.tl-item{display:flex;gap:14px;padding:12px 16px;border-bottom:.5px solid var(--border);opacity:.45}
+.tl-item:last-child{border-bottom:none}
+.tl-item.reached{opacity:1}
+.tl-dot{width:10px;height:10px;border-radius:50%;background:var(--dim);margin-top:5px;flex-shrink:0}
+.tl-item.reached .tl-dot{background:var(--green)}
+.tl-when{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.tl-what{font-size:13px;font-weight:500;margin-top:1px;line-height:1.45}
+
+/* ── SOS BUTTON ── */
+.sos-btn{width:100%;padding:16px;background:var(--red);color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:12px;transition:transform .12s}
+.sos-btn:active{transform:scale(.97)}
+
+/* ── SOS MODAL ── */
+.sos-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);z-index:400;align-items:center;justify-content:center;padding:20px}
+.sos-modal-overlay.show{display:flex;animation:pFade .25s ease}
+.sos-modal{background:var(--s1);border-radius:20px;padding:28px 22px;max-width:380px;width:100%;max-height:86vh;overflow-y:auto;text-align:center}
+.sos-breath-circle{width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,rgba(48,209,88,.25),transparent 70%);border:2.5px solid var(--green);margin:16px auto;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:var(--green);animation:breathe 8s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(.82)}50%{transform:scale(1.12)}}
+.sos-title{font-size:22px;font-weight:800;letter-spacing:-0.5px;margin-bottom:6px}
+.sos-sub{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:6px}
+.sos-tips{text-align:left;margin:16px 0;display:flex;flex-direction:column;gap:10px}
+.sos-tip{display:flex;gap:10px;font-size:13px;line-height:1.5;background:var(--s2);border-radius:10px;padding:10px 12px}
+.sos-tip b{color:var(--green)}
+.sos-close{width:100%;padding:14px;background:var(--green);color:#000;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px}
+
+/* ── SPARKLINE / META ── */
+.meta-nums{display:flex;align-items:baseline;gap:8px;margin-bottom:10px}
+.meta-current{font-size:42px;font-weight:800;color:var(--move);letter-spacing:-2px;line-height:1}
+.meta-arrow{color:var(--dim);font-size:15px}
+.meta-target{font-size:24px;font-weight:700;color:var(--muted);letter-spacing:-.8px}
+.meta-unit{font-size:11px;color:var(--muted);font-weight:600;align-self:flex-end;padding-bottom:4px}
+.meta-track{height:6px;background:var(--s2);border-radius:100px;overflow:hidden;margin-bottom:6px}
+.meta-fill{height:100%;background:linear-gradient(90deg,var(--exercise),var(--move));border-radius:100px;transition:width .6s ease}
+
+/* ── PHASE ── */
+.phase-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}
+.phase-step{background:var(--s2);border-radius:9px;padding:9px 4px;text-align:center;border:1.5px solid transparent}
+.phase-step.done{border-color:rgba(200,255,0,.25)}
+.phase-step.current{border-color:var(--move)}
+.phase-step.locked{opacity:.32}
+.phase-step-num{font-size:16px;font-weight:800}
+.phase-step.current .phase-step-num{color:var(--move)}
+.phase-step-name{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);margin-top:2px;text-transform:uppercase}
+.phase-step-lock{font-size:9px;margin-top:2px}
+.phase-track{height:5px;background:var(--s2);border-radius:100px;overflow:hidden;margin:8px 0 6px}
+.phase-fill{height:100%;border-radius:100px;transition:width .6s ease}
+
+/* ── ACHIEVEMENTS ── */
+.achievements-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.ach-badge{background:var(--s1);border-radius:12px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:6px;border:1.5px solid transparent}
+.ach-badge.unlocked{border-color:rgba(200,255,0,.3)}
+.ach-badge.locked{opacity:.22;filter:grayscale(1)}
+.ach-icon{font-size:20px}
+.ach-name{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);text-align:center;text-transform:uppercase;line-height:1.25}
+.ach-badge.unlocked .ach-name{color:var(--move)}
+
+/* ── LEVEL ── */
+.xp-track{width:100%;height:4px;background:var(--s2);border-radius:100px;margin-top:8px;overflow:hidden}
+.xp-fill{height:100%;background:var(--move);border-radius:100px;transition:width .6s ease}
+
+/* ── MILESTONES ── */
+.milestones-list{display:flex;flex-direction:column}
+.milestone-item{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:.5px solid var(--border);opacity:.4}
+.milestone-item:last-child{border-bottom:none}
+.milestone-item.reached{opacity:1}
+.ms-days{font-size:16px;font-weight:800;color:var(--muted);min-width:32px;letter-spacing:-.5px}
+.milestone-item.reached .ms-days{color:var(--green)}
+.ms-label{font-size:13px;flex:1}
+.ms-check{font-size:13px;opacity:0;color:var(--green)}
+.milestone-item.reached .ms-check{opacity:1}
+
+/* ── HISTORY ── */
+.history-item{display:grid;grid-template-columns:38px 1fr auto;gap:12px;align-items:center;padding:12px 16px;border-bottom:.5px solid var(--border)}
+.history-item:last-child{border-bottom:none}
+.history-week{font-size:22px;font-weight:800;color:var(--move);letter-spacing:-1px}
+.history-date{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:4px}
+.history-chips{display:flex;gap:4px;flex-wrap:wrap}
+.chip{font-family:'JetBrains Mono',monospace;font-size:9px;padding:2px 6px;border-radius:5px}
+.chip.peso{color:var(--move);background:rgba(200,255,0,.1)}
+.chip.cerveza{color:var(--stand);background:rgba(255,92,56,.1)}
+.chip.gym{color:var(--exercise);background:rgba(56,200,255,.1)}
+.history-delta .kg{font-size:16px;font-weight:800;letter-spacing:-.5px}
+.history-delta .kg.loss{color:var(--green)}
+.history-delta .kg.gain{color:var(--red)}
+.history-delta .kg.neutral{color:var(--muted)}
+.history-delta .kg-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-align:right}
+
+/* ── CALENDAR ── */
+.monthly-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:4px}
+.monthly-weekdays div{text-align:center;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);padding:3px 0}
+.monthly-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:14px}
+.cal-day{aspect-ratio:1;border-radius:7px;background:var(--s2);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.cal-day.empty{background:transparent}
+.cal-day.today{box-shadow:inset 0 0 0 2px var(--move)}
+.cal-day.has-gym{background:rgba(56,200,255,.14)}
+.cal-day.has-nobeers{background:rgba(255,92,56,.12)}
+.cal-day.perfect-day{background:rgba(200,255,0,.16)}
+.cal-day.future{opacity:.22}
 .cal-day-num{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted)}
-.cal-day.today .cal-day-num{color:var(--accent)}
+.cal-day.today .cal-day-num{color:var(--move);font-weight:600}
 .cal-day.has-gym .cal-day-num,.cal-day.perfect-day .cal-day-num{color:var(--text)}
 .cal-day-dots{display:flex;gap:2px;margin-top:1px}
 .cal-dot{width:3px;height:3px;border-radius:50%}
-.cal-dot.gym{background:var(--a3)}
-.cal-dot.nobeers{background:var(--a2)}
+.cal-dot.gym{background:var(--exercise)}
+.cal-dot.nobeers{background:var(--stand)}
 .cal-dot.weed{background:var(--purple)}
-.cal-dot.weigh{background:var(--accent)}
-.monthly-foot{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding-top:12px;border-top:1px solid var(--border)}
-.monthly-stat-num{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:-0.5px}
-.monthly-stat-num.gc{color:var(--a3)}
-.monthly-stat-num.pc{color:var(--accent)}
-.monthly-stat-num.ac{color:var(--a2)}
+.cal-dot.weigh{background:var(--move)}
+.monthly-foot{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding-top:12px;border-top:.5px solid var(--border)}
+.monthly-stat-num{font-size:20px;font-weight:800;letter-spacing:-.5px}
+.monthly-stat-num.gc{color:var(--exercise)}
+.monthly-stat-num.pc{color:var(--move)}
+.monthly-stat-num.ac{color:var(--stand)}
 .monthly-stat-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;margin-top:2px}
 
-/* ─────────────────────────────────────────────
-   PAGE 3: VICIOS
-───────────────────────────────────────────── */
-.vicio-hero{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
-.vicio-hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
-.vicio-hero-icon{font-size:32px}
-.vicio-hero-badge{font-family:'JetBrains Mono',monospace;font-size:10px;padding:4px 10px;border-radius:5px;text-transform:uppercase;letter-spacing:0.5px}
-.vicio-hero.alcohol .vicio-hero-badge{background:rgba(255,92,56,.1);color:var(--a2);border:1px solid rgba(255,92,56,.2)}
-.vicio-hero.weed .vicio-hero-badge{background:rgba(168,85,247,.1);color:var(--purple);border:1px solid rgba(168,85,247,.2)}
-.vicio-hero-num{font-family:'Syne',sans-serif;font-size:64px;font-weight:800;line-height:1;letter-spacing:-3px;margin-bottom:4px}
-.vicio-hero.alcohol .vicio-hero-num{color:var(--a2)}
-.vicio-hero.weed .vicio-hero-num{color:var(--purple)}
-.vicio-hero-unit{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:12px}
-.vicio-hero-milestone{font-family:'JetBrains Mono',monospace;font-size:11px;min-height:32px;line-height:1.5;margin-bottom:16px}
-.vicio-hero.alcohol .vicio-hero-milestone{color:var(--a2)}
-.vicio-hero.weed .vicio-hero-milestone{color:var(--purple)}
-.vicio-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.vicio-btn-reset{padding:11px;background:var(--s2);border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;transition:all 0.12s}
-.vicio-btn-add{padding:11px;border:none;border-radius:8px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.12s}
-.vicio-hero.alcohol .vicio-btn-add{background:rgba(255,92,56,.15);color:var(--a2);border:1px solid rgba(255,92,56,.3)}
-.vicio-hero.weed .vicio-btn-add{background:rgba(168,85,247,.15);color:var(--purple);border:1px solid rgba(168,85,247,.3)}
-.vicio-btn-add:active,.vicio-btn-reset:active{transform:scale(0.96)}
+/* ── BUTTONS ── */
+.btn{width:100%;padding:14px;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;transition:transform .12s}
+.btn:active{transform:scale(.97)}
+.btn-accent{background:var(--move);color:#000}
+.btn-sunday{background:var(--move);color:#000;animation:pSun 2s ease infinite}
+@keyframes pSun{0%,100%{box-shadow:0 0 0 0 rgba(200,255,0,.4)}50%{box-shadow:0 0 0 8px rgba(200,255,0,0)}}
+.notes-textarea{width:100%;min-height:72px;background:var(--s2);border:none;border-radius:10px;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;line-height:1.5;padding:12px;resize:none;outline:none}
+.notes-textarea::placeholder{color:var(--dim)}
 
-/* Milestones list */
-.milestones-list{display:flex;flex-direction:column;gap:6px}
-.milestone-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--s1);border:1px solid var(--border);border-radius:10px;transition:all 0.2s}
-.milestone-item.reached{border-color:rgba(200,255,0,.25);background:rgba(200,255,0,.04)}
-.milestone-item.reached.alc{border-color:rgba(255,92,56,.25);background:rgba(255,92,56,.04)}
-.milestone-item.reached.weed{border-color:rgba(168,85,247,.25);background:rgba(168,85,247,.04)}
-.ms-days{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--muted);min-width:36px;letter-spacing:-0.5px}
-.milestone-item.reached .ms-days{color:var(--accent)}
-.milestone-item.reached.alc .ms-days{color:var(--a2)}
-.milestone-item.reached.weed .ms-days{color:var(--purple)}
-.ms-label{font-size:13px;color:var(--muted);flex:1}
-.milestone-item.reached .ms-label{color:var(--text)}
-.ms-check{font-size:14px;opacity:0}
-.milestone-item.reached .ms-check{opacity:1}
-
-/* ─────────────────────────────────────────────
-   PAGE 4: AYUNO
-───────────────────────────────────────────── */
-.fasting-hero{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px;text-align:center}
-.fasting-protocol-tag{display:inline-block;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.25);color:var(--purple);font-family:'JetBrains Mono',monospace;font-size:10px;padding:4px 12px;border-radius:100px;margin-bottom:20px;letter-spacing:1px;text-transform:uppercase}
-.fasting-time-display{font-family:'Syne',sans-serif;font-size:56px;font-weight:800;letter-spacing:-2px;line-height:1;margin-bottom:8px}
-.fasting-time-display.waiting{color:var(--purple)}
-.fasting-time-display.ready{color:var(--accent)}
-.fasting-time-display.inactive{color:var(--dim)}
-.fasting-status-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:20px}
-.fasting-set-btn{display:block;width:100%;padding:12px;background:rgba(168,85,247,.1);border:1px dashed rgba(168,85,247,.35);border-radius:10px;color:var(--purple);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;transition:all 0.15s;text-align:center;letter-spacing:0.5px}
-.fasting-set-btn.has-time{border-style:solid;border-color:rgba(168,85,247,.4)}
-.fasting-result{display:none}
-.fasting-result.show{display:block}
-.fasting-info-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
-.fasting-info-row:last-child{border-bottom:none}
-.fasting-info-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
-.fasting-info-val{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--purple)}
-.fasting-tip-box{background:var(--s2);border-radius:8px;padding:12px;font-size:12px;color:var(--muted);line-height:1.6;margin-top:12px}
-
-/* ─────────────────────────────────────────────
-   PAGE 5: CUENTA
-───────────────────────────────────────────── */
-.account-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)}
-.account-avatar{width:52px;height:52px;background:var(--s2);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
-.account-name{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--text);letter-spacing:-0.3px}
-.account-since{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px}
-.account-xp{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);margin-top:4px}
-
-/* Peso card */
-.peso-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
-.peso-top{display:flex;align-items:flex-start;justify-content:space-between;padding:16px 16px 12px}
-.peso-top-left{}
-.peso-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
-.peso-hint{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px}
-.peso-big-num{font-family:'Syne',sans-serif;font-size:44px;font-weight:800;line-height:1;color:var(--accent);letter-spacing:-2px}
-.peso-big-unit{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:3px;text-align:right}
-.peso-delta-row{display:flex;justify-content:space-between;align-items:center;padding:0 16px 12px}
-.peso-delta-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
-.peso-delta-val{font-family:'Syne',sans-serif;font-size:15px;font-weight:700}
-.peso-delta-val.loss{color:var(--accent)}
-.peso-delta-val.gain{color:var(--a2)}
-.peso-delta-val.same{color:var(--muted)}
-.peso-action{padding:12px 16px;border-top:1px solid var(--border)}
-.peso-next{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-align:center;margin-top:8px}
-
-/* Meta block */
-.meta-block{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px}
-.meta-nums{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
-.meta-current{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;color:var(--accent);line-height:1;letter-spacing:-2px}
-.meta-arrow{font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--dim)}
-.meta-target{font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:var(--muted);letter-spacing:-1px}
-.meta-unit{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);align-self:flex-end;padding-bottom:4px}
-.meta-track{height:6px;background:var(--s3);border-radius:100px;overflow:hidden;margin-bottom:8px}
-.meta-fill{height:100%;background:linear-gradient(90deg,var(--a3),var(--accent));border-radius:100px;transition:width 0.6s ease}
-.meta-caption{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
-.sparkline-wrap{margin-top:14px}
-.sparkline-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
-
-/* Phase block */
-.phase-block{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px}
-.phase-block-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
-.phase-tag{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
-.phase-name{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:-0.5px}
-.phase-counter-num{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;letter-spacing:-1px;text-align:right}
-.phase-counter-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-align:right;margin-top:2px}
-.phase-desc{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:12px}
-.phase-track{height:4px;background:var(--s3);border-radius:100px;overflow:hidden;margin-bottom:8px}
-.phase-fill{height:100%;border-radius:100px;transition:width 0.6s ease}
-.phase-next-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:14px}
-.phase-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.phase-step{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:8px 4px;text-align:center}
-.phase-step.done{border-color:rgba(200,255,0,.2);background:rgba(200,255,0,.04)}
-.phase-step.current{border-color:var(--accent)}
-.phase-step.locked{opacity:.3}
-.phase-step-num{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--text)}
-.phase-step.current .phase-step-num{color:var(--accent)}
-.phase-step-name{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);margin-top:2px;text-transform:uppercase}
-.phase-step-lock{font-size:9px;margin-top:2px}
-
-/* Achievements */
-.achievements-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:16px}
-.ach-badge{background:var(--s1);border:1px solid var(--border);border-radius:10px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:6px}
-.ach-badge.unlocked{border-color:rgba(200,255,0,.25);background:rgba(200,255,0,.04)}
-.ach-badge.locked{opacity:.2;filter:grayscale(1)}
-.ach-icon{font-size:18px}
-.ach-name{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);text-align:center;text-transform:uppercase;line-height:1.2}
-.ach-badge.unlocked .ach-name{color:var(--accent)}
-
-/* Data management — discrete */
-.data-section{background:var(--s1);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:16px}
-.data-row{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.12s}
-.data-row:last-child{border-bottom:none}
-.data-row:hover{background:var(--s2)}
-.data-row-left{display:flex;align-items:center;gap:10px}
-.data-row-icon{font-size:16px}
-.data-row-label{font-size:13px;color:var(--text)}
-.data-row-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:1px}
-.data-row-arrow{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--dim)}
-
-/* Import panel (hidden by default) */
-.import-panel{display:none;padding:16px;border-top:1px solid var(--border);background:var(--s2)}
+/* ── IMPORT ── */
+.import-panel{display:none;padding:14px 16px;border-top:.5px solid var(--border);background:var(--s2)}
 .import-panel.open{display:block}
-.import-textarea{width:100%;min-height:56px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:10px;padding:10px;resize:none;outline:none;margin-bottom:10px}
-.import-textarea:focus{border-color:var(--purple)}
-.import-textarea::placeholder{color:var(--dim)}
+.import-textarea{width:100%;min-height:56px;background:var(--bg);border:none;border-radius:8px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:10px;padding:10px;resize:none;outline:none;margin-bottom:10px}
 .import-row{display:flex;gap:8px}
-.btn-sm{padding:9px 16px;border-radius:7px;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.12s;border:none}
-.btn-sm:active{transform:scale(0.96)}
-.btn-sm.accent{background:var(--accent);color:#0a0a0a}
+.btn-sm{padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none}
+.btn-sm.accent{background:var(--move);color:#000}
 .btn-sm.ghost{background:var(--s3);color:var(--muted)}
 
-/* ─────────────────────────────────────────────
-   MODALS
-───────────────────────────────────────────── */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(8px);z-index:100;align-items:flex-end;justify-content:center}
+/* ── TAB BAR (Apple) ── */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(18,18,20,.94);backdrop-filter:blur(24px);border-top:.5px solid var(--border);display:flex;z-index:50;padding-bottom:env(safe-area-inset-bottom)}
+:root.day .bottom-nav{background:rgba(248,248,250,.94)}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:9px 2px 7px;cursor:pointer;border:none;background:transparent;color:var(--muted)}
+.nav-item.active{color:var(--move)}
+.nav-icon{width:24px;height:24px;margin-bottom:3px}
+.nav-label{font-size:9px;font-weight:600;letter-spacing:.1px}
+
+/* ── MODALS (reuse) ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);z-index:100;align-items:flex-end;justify-content:center}
 .modal-overlay.show{display:flex}
-.modal{background:var(--s1);border:1px solid var(--border);border-top:none;border-radius:20px 20px 0 0;padding:28px 20px 48px;width:100%;max-width:430px;animation:slideUp .26s cubic-bezier(.2,.8,.4,1)}
-@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.modal-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--accent);margin-bottom:20px;letter-spacing:-0.3px}
-.modal-input{width:100%;padding:16px;background:var(--s2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Syne',sans-serif;font-size:32px;font-weight:800;text-align:center;outline:none;margin-bottom:12px;transition:border-color 0.15s;letter-spacing:-1px}
-.modal-input:focus{border-color:var(--accent)}
-.modal-hint{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-align:center;margin-bottom:20px}
+.modal{background:var(--s1);border-radius:18px 18px 0 0;padding:26px 20px 46px;width:100%;max-width:430px;animation:mUp .26s cubic-bezier(.2,.8,.4,1)}
+@keyframes mUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-title{font-size:20px;font-weight:800;letter-spacing:-.4px;margin-bottom:18px}
+.modal-input{width:100%;padding:16px;background:var(--s2);border:none;border-radius:12px;color:var(--text);font-size:34px;font-weight:800;text-align:center;outline:none;margin-bottom:12px;letter-spacing:-1px}
+.modal-hint{font-size:12px;color:var(--muted);text-align:center;margin-bottom:18px}
 .modal-btns{display:grid;grid-template-columns:1fr 2fr;gap:8px}
-.modal-cancel{padding:13px;background:var(--s2);border:1px solid var(--border);border-radius:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer}
-.modal-confirm{padding:13px;background:var(--accent);border:none;border-radius:10px;color:#0a0a0a;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer}
-
-/* Fasting time picker */
-.fasting-time-picker{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
-.time-option{padding:12px 8px;background:var(--s2);border:1px solid var(--border);border-radius:10px;text-align:center;cursor:pointer;transition:all 0.12s}
-.time-option.selected,.time-option:hover{border-color:var(--purple);background:rgba(168,85,247,.08)}
-.time-val{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--purple);letter-spacing:-0.5px}
+.modal-cancel{padding:14px;background:var(--s2);border:none;border-radius:12px;color:var(--muted);font-size:14px;font-weight:600;cursor:pointer}
+.modal-confirm{padding:14px;background:var(--move);border:none;border-radius:12px;color:#000;font-size:14px;font-weight:700;cursor:pointer}
+.fasting-time-picker{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.time-option{padding:12px 8px;background:var(--s2);border-radius:11px;text-align:center;cursor:pointer;border:1.5px solid transparent}
+.time-option.selected,.time-option:hover{border-color:var(--purple)}
+.time-val{font-size:18px;font-weight:800;color:var(--purple);letter-spacing:-.5px}
 .time-desc{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:2px}
-.custom-time-input{width:100%;padding:14px;background:var(--s2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Syne',sans-serif;font-size:28px;font-weight:800;text-align:center;outline:none;margin-bottom:16px;letter-spacing:-1px}
-.custom-time-input:focus{border-color:var(--purple)}
+.custom-time-input{width:100%;padding:14px;background:var(--s2);border:none;border-radius:11px;color:var(--text);font-size:28px;font-weight:800;text-align:center;outline:none;margin-bottom:14px;letter-spacing:-1px}
 
-/* Workout modal */
+/* fasting page */
+.fasting-set-btn{display:block;width:100%;padding:13px;background:rgba(191,90,242,.12);border:1.5px dashed rgba(191,90,242,.4);border-radius:12px;color:var(--purple);font-size:13px;font-weight:600;cursor:pointer;text-align:center}
+.fasting-set-btn.has-time{border-style:solid}
+.fasting-result{display:none}
+.fasting-result.show{display:block}
+.fasting-info-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:.5px solid var(--border)}
+.fasting-info-row:last-child{border-bottom:none}
+.fasting-info-label{font-size:12px;color:var(--muted);font-weight:500}
+.fasting-info-val{font-size:16px;font-weight:700;color:var(--purple)}
+.fasting-timer-big{font-size:56px;font-weight:800;letter-spacing:-2px;text-align:center;line-height:1;margin:8px 0}
+.fasting-timer-big.waiting{color:var(--purple)}
+.fasting-timer-big.ready{color:var(--move)}
+.fasting-timer-big.inactive{color:var(--dim)}
+.fasting-status-label{font-size:12px;color:var(--muted);text-align:center;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px}
+.fasting-tip-box{background:var(--s2);border-radius:10px;padding:12px;font-size:12px;color:var(--muted);line-height:1.55;margin-top:12px}
+
+/* workout modal */
 .workout-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);backdrop-filter:blur(10px);z-index:100;align-items:flex-end;justify-content:center}
 .workout-modal-overlay.show{display:flex}
-.workout-modal{background:var(--s1);border:1px solid var(--border);border-top:none;border-radius:20px 20px 0 0;width:100%;max-width:430px;max-height:92vh;overflow-y:auto;animation:slideUp .26s cubic-bezier(.2,.8,.4,1)}
-.workout-modal-header{position:sticky;top:0;background:var(--s1);border-bottom:1px solid var(--border);padding:18px 16px 14px;z-index:10}
-.workout-modal-close{position:absolute;top:16px;right:16px;background:var(--s2);border:1px solid var(--border);border-radius:50%;width:30px;height:30px;color:var(--muted);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.workout-modal{background:var(--s1);border-radius:18px 18px 0 0;width:100%;max-width:430px;max-height:92vh;overflow-y:auto;animation:mUp .26s cubic-bezier(.2,.8,.4,1)}
+.workout-modal-header{position:sticky;top:0;background:var(--s1);border-bottom:.5px solid var(--border);padding:18px 16px 14px;z-index:10}
+.workout-modal-close{position:absolute;top:16px;right:16px;background:var(--s2);border:none;border-radius:50%;width:30px;height:30px;color:var(--muted);font-size:14px;cursor:pointer}
 .workout-day-tag{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
-.workout-title{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;line-height:1;letter-spacing:-0.5px}
-.workout-subtitle{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px}
+.workout-title{font-size:24px;font-weight:800;letter-spacing:-.5px;line-height:1}
+.workout-subtitle{font-size:11px;color:var(--muted);margin-top:4px}
 .workout-body{padding:16px}
-.workout-focus-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
-.focus-chip{font-family:'JetBrains Mono',monospace;font-size:9px;padding:3px 8px;border-radius:4px;border:1px solid}
-.workout-prog-track{height:3px;background:var(--s3);border-radius:100px;overflow:hidden;margin-bottom:6px}
-.workout-prog-fill{height:100%;background:linear-gradient(90deg,var(--a3),var(--accent));border-radius:100px;transition:width 0.4s ease}
-.workout-prog-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-align:right;margin-top:-3px;margin-bottom:14px}
-.exercise-block{background:var(--s2);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:8px}
-.exercise-header{display:flex;align-items:center;padding:12px 14px;gap:10px;cursor:pointer;user-select:none}
+.workout-focus-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.focus-chip{font-family:'JetBrains Mono',monospace;font-size:9px;padding:3px 8px;border-radius:5px;border:1px solid}
+.workout-prog-track{height:4px;background:var(--s2);border-radius:100px;overflow:hidden;margin-bottom:5px}
+.workout-prog-fill{height:100%;background:linear-gradient(90deg,var(--exercise),var(--move));border-radius:100px;transition:width .4s ease}
+.workout-prog-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-align:right;margin-bottom:12px}
+.exercise-block{background:var(--s2);border-radius:12px;overflow:hidden;margin-bottom:8px}
+.exercise-header{display:flex;align-items:center;padding:13px 14px;gap:10px;cursor:pointer;user-select:none}
 .exercise-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);min-width:20px}
 .exercise-info{flex:1}
-.exercise-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:1px}
+.exercise-name{font-size:14px;font-weight:600;margin-bottom:1px}
 .exercise-sets{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted)}
-.exercise-check{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;transition:all 0.15s;flex-shrink:0;cursor:pointer}
-.exercise-check.done{background:var(--accent);border-color:var(--accent);color:#0a0a0a}
-.exercise-detail{display:none;padding:0 14px 14px;border-top:1px solid var(--border)}
+.exercise-check{width:27px;height:27px;border-radius:50%;border:2px solid var(--dim);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;cursor:pointer;color:transparent;background:none}
+.exercise-check.done{background:var(--move);border-color:var(--move);color:#000}
+.exercise-detail{display:none;padding:0 14px 14px;border-top:.5px solid var(--border)}
 .exercise-detail.open{display:block}
-.exercise-tip{font-size:12px;color:var(--muted);line-height:1.55;margin-top:10px}
+.exercise-tip{font-size:13px;color:var(--muted);line-height:1.55;margin-top:10px}
 .exercise-tip strong{color:var(--text)}
 .set-tracker{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
-.set-pill{padding:5px 12px;border-radius:5px;border:1px solid var(--border);background:var(--s1);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);cursor:pointer;transition:all 0.12s;user-select:none}
-.set-pill.done{background:var(--accent);border-color:var(--accent);color:#0a0a0a;font-weight:600}
-.cardio-block{background:rgba(56,200,255,.04);border:1px solid rgba(56,200,255,.15);border-radius:10px;padding:14px;margin-top:14px}
-.cardio-title{font-size:12px;font-weight:600;color:var(--a3);margin-bottom:5px}
+.set-pill{padding:6px 13px;border-radius:7px;border:none;background:var(--s1);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);cursor:pointer;user-select:none}
+.set-pill.done{background:var(--move);color:#000;font-weight:600}
+.cardio-block{background:rgba(56,200,255,.06);border-radius:12px;padding:14px;margin-top:14px}
+.cardio-title{font-size:13px;font-weight:700;color:var(--exercise);margin-bottom:5px}
 .cardio-desc{font-size:12px;color:var(--muted);line-height:1.55}
-.workout-done-btn{width:100%;padding:14px;background:var(--accent);border:none;border-radius:10px;color:#0a0a0a;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:16px;transition:all 0.15s}
-.workout-done-btn:active{transform:scale(0.98)}
+.workout-done-btn{width:100%;padding:15px;background:var(--move);border:none;border-radius:12px;color:#000;font-size:14px;font-weight:700;cursor:pointer;margin-top:16px}
 .rest-day-content{text-align:center;padding:40px 20px}
 .rest-day-icon{font-size:40px;margin-bottom:14px}
-.rest-day-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--text);margin-bottom:10px;letter-spacing:-0.3px}
+.rest-day-title{font-size:20px;font-weight:800;margin-bottom:10px;letter-spacing:-.3px}
 .rest-day-text{font-size:13px;color:var(--muted);line-height:1.6}
 
-/* Phase unlock */
+/* phase unlock */
 .phase-unlock-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.96);backdrop-filter:blur(12px);z-index:300;align-items:center;justify-content:center;padding:24px}
-.phase-unlock-overlay.show{display:flex;animation:fadeIn .3s ease}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.phase-unlock-card{background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:40px 28px;text-align:center;max-width:360px;width:100%;animation:popIn .4s cubic-bezier(.34,1.4,.64,1)}
+.phase-unlock-overlay.show{display:flex;animation:pFade .3s ease}
+.phase-unlock-card{background:var(--s1);border-radius:20px;padding:40px 28px;text-align:center;max-width:360px;width:100%;animation:popIn .4s cubic-bezier(.34,1.4,.64,1)}
 @keyframes popIn{from{transform:scale(.75);opacity:0}to{transform:scale(1);opacity:1}}
-.unlock-emoji{font-size:48px;margin-bottom:16px;animation:bounce 1.2s ease infinite}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.unlock-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px}
-.unlock-phase-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;margin-bottom:4px}
-.unlock-phase-title{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;letter-spacing:-1px;line-height:1;color:var(--accent);margin-bottom:16px}
+.unlock-emoji{font-size:48px;margin-bottom:16px;animation:bnc 1.2s ease infinite}
+@keyframes bnc{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.unlock-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--move);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px}
+.unlock-phase-name{font-size:14px;font-weight:700;letter-spacing:1px;margin-bottom:4px}
+.unlock-phase-title{font-size:32px;font-weight:800;letter-spacing:-1px;line-height:1;color:var(--move);margin-bottom:16px}
 .unlock-phase-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:24px}
-.unlock-btn{width:100%;padding:14px;background:var(--accent);color:#0a0a0a;border:none;border-radius:10px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer}
+.unlock-btn{width:100%;padding:14px;background:var(--move);color:#000;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer}
 
-/* Toast */
-.toast{position:fixed;top:16px;right:16px;transform:translateX(120%);background:var(--s1);border:1px solid var(--border);color:var(--text);padding:7px 14px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.5px;transition:transform .3s cubic-bezier(.2,.8,.4,1);z-index:300;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.4)}
+/* toast */
+.toast{position:fixed;top:14px;right:14px;transform:translateX(120%);background:var(--s1);color:var(--text);padding:8px 14px;border-radius:9px;font-size:12px;font-weight:600;transition:transform .3s cubic-bezier(.2,.8,.4,1);z-index:600;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.4)}
 .toast.show{transform:translateX(0)}
-.xp-toast{position:fixed;top:16px;right:16px;transform:translateX(120%) scale(.9);background:var(--accent);color:#0a0a0a;padding:7px 16px;border-radius:7px;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;opacity:0;transition:all .35s cubic-bezier(.2,.8,.4,1.2);z-index:250}
+.xp-toast{position:fixed;top:52px;right:14px;transform:translateX(120%) scale(.9);background:var(--move);color:#000;padding:6px 13px;border-radius:8px;font-size:12px;font-weight:700;opacity:0;transition:all .35s cubic-bezier(.2,.8,.4,1.2);z-index:600}
 .xp-toast.show{transform:translateX(0) scale(1);opacity:1}
-.confetti-piece{position:fixed;width:7px;height:11px;top:-20px;z-index:500;pointer-events:none;animation:confettiFall linear forwards;border-radius:2px}
-@keyframes confettiFall{to{transform:translateY(110vh) rotate(540deg);opacity:0}}
-
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}}
-
-  /* Center nav item — bigger home */
-  .nav-center {
-    position: relative;
-  }
-
-  .nav-icon-center{color:var(--accent)}.nav-icon-center {
-    font-size: 28px;
-    margin-bottom: 2px;
-    transition: transform 0.2s cubic-bezier(.2,.8,.4,1.4);
-    line-height: 1;
-    filter: drop-shadow(0 2px 6px rgba(200,255,0,0.35));
-  }
-
-  .nav-item.nav-center.active .nav-icon-center {
-    transform: scale(1.1);
-    filter: drop-shadow(0 2px 10px rgba(200,255,0,0.55));
-  }
-
-  .nav-item.nav-center .nav-label {
-    color: var(--accent);
-    font-size: 8px;
-  }
-
-  /* Toast — move way above nav so it never overlaps */
-  .toast {
-  
+.confetti-piece{position:fixed;width:7px;height:11px;top:-20px;z-index:500;pointer-events:none;animation:cf linear forwards;border-radius:2px}
+@keyframes cf{to{transform:translateY(110vh) rotate(540deg);opacity:0}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
-<div class="topbar">
-  <div class="logo">Ivan<span>Fit</span></div>
-  <div class="topbar-meta">
-    <div class="topbar-date" id="currentDate">—</div>
-    <div class="topbar-week">S<span id="weekNum">01</span></div>
-    <button id="modeToggle" onclick="toggleMode()" style="background:var(--s2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:14px;cursor:pointer;line-height:1;transition:none">🌙</button>
+<!-- HEADER -->
+<div class="header">
+  <div class="header-title" id="pageTitle">Resumen</div>
+  <div class="header-meta">
+    <div class="header-date" id="currentDate">—</div>
+    <button class="mode-btn" id="modeToggle" onclick="toggleMode()">🌙</button>
   </div>
 </div>
 
-<!-- ══════════════════════════════
-     PAGE: INICIO
-══════════════════════════════ -->
-<div class="page active" id="page-inicio">
+<!-- ═══════════ RESUMEN ═══════════ -->
+<div class="page active" id="page-resumen">
 
-  <!-- Quote -->
-  <div class="quote-card">
-    <div class="quote-text" id="quoteText">La disciplina es elegir entre lo que quieres ahora y lo que quieres más.</div>
-    <div class="quote-author" id="quoteAuthor">— Abraham Lincoln</div>
+  <!-- Insight motivacional -->
+  <div class="insight" id="insightBanner">
+    <div class="insight-icon" id="insightIcon">💪</div>
+    <div>
+      <div class="insight-text" id="insightText">Cargando tu progreso...</div>
+      <div class="insight-sub" id="insightSub"></div>
+    </div>
   </div>
 
-  <!-- Hero progress card -->
-  <div class="hero-card">
-    <div class="hero-top">
-      <div>
-        <div class="hero-greeting">Tu progreso</div>
-        <div class="hero-name">Ivan 💪</div>
-      </div>
-      <div class="hero-phase-badge">
-        <div class="hero-phase-label">Fase actual</div>
-        <div class="hero-phase-name" id="heroPhaseName">FUNDACIÓN</div>
-      </div>
+  <!-- Anillos de actividad -->
+  <div class="acard">
+    <div class="acard-head">
+      <div class="acard-title">Anillos de actividad</div>
+      <div class="sub mono" id="weekNumLabel">Semana <span id="weekNum">01</span></div>
     </div>
-
-    <!-- Three progress rings -->
-    <div class="rings-row">
-      <div class="ring-item">
-        <svg width="80" height="80" viewBox="0 0 80 80">
-          <circle cx="40" cy="40" r="32" fill="none" stroke="#1a1a1a" stroke-width="7"/>
-          <circle id="ringPeso" cx="40" cy="40" r="32" fill="none" stroke="#c8ff00" stroke-width="7"
-            stroke-dasharray="201" stroke-dashoffset="201" stroke-linecap="round"
-            transform="rotate(-90 40 40)" style="transition:stroke-dashoffset .8s ease"/>
-          <text x="40" y="38" text-anchor="middle" font-family="Syne,sans-serif" font-size="14" font-weight="800" fill="#f0f0f0" id="ringPesoVal">0%</text>
-          <text x="40" y="50" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#666">META</text>
+    <div class="rings-hero">
+      <div class="rings-svg-wrap">
+        <svg width="140" height="140" viewBox="0 0 140 140">
+          <!-- Peso ring (outer) -->
+          <circle cx="70" cy="70" r="60" fill="none" stroke="var(--s2)" stroke-width="11"/>
+          <circle id="ringPeso" cx="70" cy="70" r="60" fill="none" stroke="var(--move)" stroke-width="11"
+            stroke-dasharray="377" stroke-dashoffset="377" stroke-linecap="round"
+            transform="rotate(-90 70 70)" style="transition:stroke-dashoffset .9s ease"/>
+          <!-- Gym ring (middle) -->
+          <circle cx="70" cy="70" r="45" fill="none" stroke="var(--s2)" stroke-width="11"/>
+          <circle id="ringGym" cx="70" cy="70" r="45" fill="none" stroke="var(--exercise)" stroke-width="11"
+            stroke-dasharray="283" stroke-dashoffset="283" stroke-linecap="round"
+            transform="rotate(-90 70 70)" style="transition:stroke-dashoffset .9s ease"/>
+          <!-- Vicios ring (inner) -->
+          <circle cx="70" cy="70" r="30" fill="none" stroke="var(--s2)" stroke-width="11"/>
+          <circle id="ringVicios" cx="70" cy="70" r="30" fill="none" stroke="var(--stand)" stroke-width="11"
+            stroke-dasharray="188" stroke-dashoffset="188" stroke-linecap="round"
+            transform="rotate(-90 70 70)" style="transition:stroke-dashoffset .9s ease"/>
         </svg>
-        <div class="ring-title">Peso</div>
       </div>
-      <div class="ring-item">
-        <svg width="80" height="80" viewBox="0 0 80 80">
-          <circle cx="40" cy="40" r="32" fill="none" stroke="#1a1a1a" stroke-width="7"/>
-          <circle id="ringGym" cx="40" cy="40" r="32" fill="none" stroke="#38c8ff" stroke-width="7"
-            stroke-dasharray="201" stroke-dashoffset="201" stroke-linecap="round"
-            transform="rotate(-90 40 40)" style="transition:stroke-dashoffset .8s ease"/>
-          <text x="40" y="38" text-anchor="middle" font-family="Syne,sans-serif" font-size="14" font-weight="800" fill="#f0f0f0" id="ringGymVal">0%</text>
-          <text x="40" y="50" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#666">GYM</text>
-        </svg>
-        <div class="ring-title">Gym</div>
+      <div class="rings-legend">
+        <div class="legend-row">
+          <div class="legend-name">Meta de peso</div>
+          <div class="legend-val move" id="ringPesoVal">0%</div>
+        </div>
+        <div class="legend-row">
+          <div class="legend-name">Gym semanal</div>
+          <div class="legend-val exercise" id="ringGymVal">0/3</div>
+        </div>
+        <div class="legend-row">
+          <div class="legend-name">Días sin vicios</div>
+          <div class="legend-val stand" id="ringViciosVal">0<small> días</small></div>
+        </div>
       </div>
-      <div class="ring-item">
-        <svg width="80" height="80" viewBox="0 0 80 80">
-          <circle cx="40" cy="40" r="32" fill="none" stroke="#1a1a1a" stroke-width="7"/>
-          <circle id="ringVicios" cx="40" cy="40" r="32" fill="none" stroke="#a855f7" stroke-width="7"
-            stroke-dasharray="201" stroke-dashoffset="201" stroke-linecap="round"
-            transform="rotate(-90 40 40)" style="transition:stroke-dashoffset .8s ease"/>
-          <text x="40" y="38" text-anchor="middle" font-family="Syne,sans-serif" font-size="14" font-weight="800" fill="#f0f0f0" id="ringViciosVal">0</text>
-          <text x="40" y="50" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#666">DÍAS</text>
-        </svg>
-        <div class="ring-title">Sin vicios</div>
-      </div>
-    </div>
-
-    <!-- Weekly history bars -->
-    <div class="section-label" style="margin-bottom:8px">Últimas 8 semanas</div>
-    <div class="bars-chart" id="weeksBarChart">
-      <!-- rendered by JS -->
     </div>
   </div>
 
-  <!-- Level -->
-  <div class="level-strip">
-    <div class="level-icon" id="levelIcon">🥊</div>
-    <div class="level-info">
-      <div class="level-name" id="levelTitle">NOVATO</div>
-      <div class="level-sub" id="levelSub">Nivel 1 de 8</div>
-      <div class="xp-track"><div class="xp-fill" id="xpBarFill" style="width:0%"></div></div>
+  <!-- Reto del día -->
+  <div class="challenge">
+    <div>
+      <div class="challenge-tag">Reto del día</div>
+      <div class="challenge-text" id="challengeText">Toma 2.5L de agua hoy</div>
     </div>
-    <div class="level-xp" id="levelXp">0 XP</div>
+    <button class="challenge-check" id="challengeCheck" onclick="toggleChallenge()">✓</button>
   </div>
 
-  <!-- Rachas -->
-  <div class="section-label">Rachas</div>
-  <div class="streak-row">
-    <div class="streak-tile fire">
-      <div class="streak-tile-top">
-        <div class="streak-tile-label">Semanas seguidas</div>
-        <div class="streak-tile-icon">🔥</div>
-      </div>
-      <div class="streak-tile-num" id="streakNum">0</div>
-      <div class="streak-tile-unit">semanas de gym completas</div>
+  <!-- Métricas del día -->
+  <div class="sec-header">Hoy</div>
+  <div class="tiles">
+    <div class="tile" onclick="openPesoModal()">
+      <div class="tile-top"><div class="tile-name">Peso</div><div class="tile-ico">⚖️</div></div>
+      <div class="tile-val" id="statPeso">96.0<small> kg</small></div>
+      <div class="tile-sub" id="statPesoDelta">—</div>
     </div>
-    <div class="streak-tile trophy">
-      <div class="streak-tile-top">
-        <div class="streak-tile-label">Mejor racha</div>
-        <div class="streak-tile-icon">🏆</div>
-      </div>
-      <div class="streak-tile-num" id="bestStreakNum">0</div>
-      <div class="streak-tile-unit">semanas histórico</div>
+    <div class="tile" onclick="switchPage('actividad',null)">
+      <div class="tile-top"><div class="tile-name">Gym</div><div class="tile-ico">💪</div></div>
+      <div class="tile-val" id="statGym">0<small>/3</small></div>
+      <div class="tile-sub">esta semana</div>
+    </div>
+    <div class="tile" onclick="switchPage('actividad',null)">
+      <div class="tile-top"><div class="tile-name">Cervezas</div><div class="tile-ico">🍺</div></div>
+      <div class="tile-val" id="statCervezas">0<small>/6</small></div>
+      <div class="tile-sub" id="statCervezasDelta">dentro de meta</div>
+    </div>
+    <div class="tile" onclick="switchPage('salud',null)">
+      <div class="tile-top"><div class="tile-name">Racha</div><div class="tile-ico">🔥</div></div>
+      <div class="tile-val" id="streakNum">0<small> sem</small></div>
+      <div class="tile-sub">récord: <span id="bestStreakNum">0</span> semanas</div>
     </div>
   </div>
 
-  <!-- Gym days this week (home preview) -->
-  <div class="section-label">Gym esta semana</div>
-  <div class="card">
-    <div class="card-head">
-      <div>
-        <div style="font-size:13px;font-weight:600">Días de entrenamiento</div>
-        <div class="mono-sm" id="gymWeekSub" style="margin-top:2px">Toca un día para ver la rutina</div>
-      </div>
-      <div class="gym-counter"><span id="gymDaysCount">0</span><span>/3</span></div>
+  <!-- Tendencia -->
+  <div class="sec-header">Tendencia</div>
+  <div class="acard">
+    <div class="acard-head">
+      <div class="acard-title">Últimas 8 semanas</div>
+      <div class="sub mono" id="trendCaption"></div>
     </div>
-    <div style="padding:14px">
+    <div class="acard-pad">
+      <div class="bars-chart" id="weeksBarChart"></div>
+    </div>
+  </div>
+
+  <!-- Nivel -->
+  <div class="acard">
+    <div class="acard-pad" style="display:flex;align-items:center;gap:12px">
+      <div style="width:40px;height:40px;background:var(--s2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0" id="levelIcon">🥊</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:14px;font-weight:700" id="levelTitle">NOVATO</div>
+        <div class="sub" id="levelSub">Nivel 1 de 8</div>
+        <div class="xp-track"><div class="xp-fill" id="xpBarFill" style="width:0%"></div></div>
+      </div>
+      <div class="mono" style="font-size:12px;color:var(--move);flex-shrink:0" id="levelXp">0 XP</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════ ACTIVIDAD ═══════════ -->
+<div class="page" id="page-actividad">
+
+  <!-- Gym semana -->
+  <div class="acard">
+    <div class="acard-head">
+      <div class="acard-title">Entrenamiento semanal</div>
+      <div style="font-size:22px;font-weight:800;color:var(--exercise);letter-spacing:-1px"><span id="gymDaysCount">0</span><span style="font-size:13px;color:var(--muted);font-weight:600">/3</span></div>
+    </div>
+    <div class="acard-pad">
+      <div class="sub" style="margin-bottom:12px" id="gymWeekSub">Toca un día para ver la rutina</div>
       <div class="days-row" id="daysGrid"></div>
     </div>
   </div>
 
-</div>
-
-<!-- ══════════════════════════════
-     PAGE: ENTRENO
-══════════════════════════════ -->
-<div class="page" id="page-entreno">
-
-  <!-- Stats row -->
-  <div class="section-label">Esta semana</div>
-  <div class="stats-row">
-    <div class="stat-tile peso" onclick="openPesoModal()">
-      <div class="stat-tile-label">Peso</div>
-      <div class="stat-tile-num" id="statPeso">96.0</div>
-      <div class="stat-tile-delta" id="statPesoDelta">— kg</div>
-      <div class="stat-tile-hint">toca para editar</div>
+  <!-- Cervezas -->
+  <div class="acard">
+    <div class="acard-head">
+      <div class="acard-title">🍺 Cervezas esta semana</div>
+      <div style="font-size:20px;font-weight:800;color:var(--stand);letter-spacing:-.5px"><span id="beerCountBig">0</span><span style="font-size:12px;color:var(--muted);font-weight:600"> / 6</span></div>
     </div>
-    <div class="stat-tile cerveza">
-      <div class="stat-tile-label">Cervezas</div>
-      <div class="stat-tile-num" id="statCervezas">0</div>
-      <div class="stat-tile-delta" id="statCervezasDelta">meta: 6</div>
-    </div>
-    <div class="stat-tile gym">
-      <div class="stat-tile-label">Gym</div>
-      <div class="stat-tile-num" id="statGym">0</div>
-      <div class="stat-tile-delta">meta: 3</div>
-    </div>
-  </div>
-
-  <!-- Beer tracker -->
-  <div class="section-label">Cervezas esta semana</div>
-  <div class="card">
-    <div class="card-head">
-      <div class="card-head-label">🍺 500ml c/u</div>
-      <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--a2);letter-spacing:-0.5px">
-        <span id="beerCountBig">0</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);font-weight:400"> / 6</span>
-      </div>
-    </div>
-    <div class="card-body">
+    <div class="acard-pad">
       <div class="beer-grid" id="beerGrid"></div>
       <div class="beer-controls">
         <button class="ctrl-btn" onclick="changeBeer(-1)">− Quitar</button>
-        <button class="ctrl-btn" onclick="changeBeer(1)">+ Añadir 🍺</button>
+        <button class="ctrl-btn" onclick="changeBeer(1)">+ Añadir</button>
       </div>
     </div>
   </div>
 
-  <!-- Progreso -->
-  <div class="section-label">Adherencia</div>
-  <div class="card">
-    <div class="card-body">
-      <div class="prog-item">
-        <div class="prog-head">
-          <div class="prog-label">💪 Gym (3 sesiones)</div>
-          <div class="prog-val" id="gymPct">0%</div>
-        </div>
-        <div class="prog-track"><div class="prog-fill" id="gymBar" style="width:0%;background:var(--a3)"></div></div>
+  <!-- Adherencia -->
+  <div class="acard">
+    <div class="acard-head"><div class="acard-title">Adherencia</div></div>
+    <div class="acard-pad">
+      <div class="pbar-item">
+        <div class="pbar-head"><div class="pbar-label">💪 Gym (3 sesiones)</div><div class="pbar-val" id="gymPct">0%</div></div>
+        <div class="pbar-track"><div class="pbar-fill" id="gymBar" style="width:0%;background:var(--exercise)"></div></div>
       </div>
-      <div class="prog-item">
-        <div class="prog-head">
-          <div class="prog-label">🍺 Cervezas (máx 6)</div>
-          <div class="prog-val" id="beerPct">100%</div>
-        </div>
-        <div class="prog-track"><div class="prog-fill" id="beerBar" style="width:100%;background:var(--a3)"></div></div>
+      <div class="pbar-item">
+        <div class="pbar-head"><div class="pbar-label">🍺 Cervezas (máx 6)</div><div class="pbar-val" id="beerPct">100%</div></div>
+        <div class="pbar-track"><div class="pbar-fill" id="beerBar" style="width:100%;background:var(--exercise)"></div></div>
       </div>
     </div>
   </div>
 
-  <!-- Nota semanal -->
-  <div class="section-label">Nota de la semana</div>
-  <div class="card">
-    <div class="card-body">
-      <div class="notes-label">¿Cómo te sentiste esta semana?</div>
-      <textarea class="notes-textarea" id="weekNote" placeholder="Ej: Me costó arrancar pero al final me sentí bien..."></textarea>
+  <!-- Nota + guardar -->
+  <div class="acard">
+    <div class="acard-head"><div class="acard-title">Nota de la semana</div></div>
+    <div class="acard-pad">
+      <textarea class="notes-textarea" id="weekNote" placeholder="¿Cómo te sentiste esta semana?"></textarea>
     </div>
   </div>
-
-  <button class="btn btn-accent" onclick="saveWeek()" style="margin-bottom:20px">Cerrar semana y guardar</button>
+  <button class="btn btn-accent" onclick="saveWeek()" style="margin-bottom:16px">Cerrar semana y guardar</button>
 
   <!-- Historial -->
-  <div class="section-label">Historial</div>
-  <div id="historyList">
-    <div style="text-align:center;padding:28px 0;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px">Aún no hay semanas guardadas.</div>
+  <div class="sec-header">Historial</div>
+  <div class="acard" id="historyList">
+    <div style="text-align:center;padding:26px;color:var(--muted);font-size:12px">Aún no hay semanas guardadas.</div>
   </div>
 
   <!-- Calendario -->
-  <div class="section-label" style="margin-top:4px">Este mes</div>
-  <div class="card">
-    <div class="card-head">
-      <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;letter-spacing:-0.3px" id="monthlyTitle">JUNIO 2026</div>
-      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
-        <span style="width:6px;height:6px;border-radius:50%;background:var(--a3);display:inline-block"></span><span class="mono-xs" style="margin-right:4px">Gym</span>
-        <span style="width:6px;height:6px;border-radius:50%;background:var(--a2);display:inline-block"></span><span class="mono-xs" style="margin-right:4px">Sin alcohol</span>
-        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block"></span><span class="mono-xs">Perfecto</span>
+  <div class="sec-header">Este mes</div>
+  <div class="acard">
+    <div class="acard-head">
+      <div class="acard-title" id="monthlyTitle">JUNIO 2026</div>
+      <div style="display:flex;gap:5px;align-items:center">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--exercise)"></span><span class="mono" style="font-size:8px;color:var(--muted);margin-right:3px">GYM</span>
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--stand)"></span><span class="mono" style="font-size:8px;color:var(--muted);margin-right:3px">S/ALC</span>
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--move)"></span><span class="mono" style="font-size:8px;color:var(--muted)">TOP</span>
       </div>
     </div>
-    <div class="card-body" style="padding-top:12px">
-      <div class="monthly-weekdays">
-        <div>L</div><div>M</div><div>X</div><div>J</div><div>V</div><div>S</div><div>D</div>
-      </div>
+    <div class="acard-pad">
+      <div class="monthly-weekdays"><div>L</div><div>M</div><div>X</div><div>J</div><div>V</div><div>S</div><div>D</div></div>
       <div class="monthly-grid" id="monthlyGrid"></div>
       <div class="monthly-foot" id="monthlyStats"></div>
     </div>
@@ -770,207 +613,224 @@ body{padding-bottom:72px}
 
 </div>
 
-<!-- ══════════════════════════════
-     PAGE: VICIOS
-══════════════════════════════ -->
-<div class="page" id="page-vicios">
+<!-- ═══════════ SALUD ═══════════ -->
+<div class="page" id="page-salud">
 
-  <!-- Alcohol hero -->
-  <div class="section-label">Alcohol</div>
-  <div class="vicio-hero alcohol">
-    <div class="vicio-hero-top">
-      <div class="vicio-hero-icon">🍺</div>
-      <div class="vicio-hero-badge">Alcohol</div>
+  <!-- Peso -->
+  <div class="acard">
+    <div class="acard-head">
+      <div class="acard-title">⚖️ Peso semanal</div>
+      <div style="font-size:26px;font-weight:800;color:var(--move);letter-spacing:-1px" id="pesoSundayNum">96.0<span style="font-size:12px;color:var(--muted);font-weight:600"> kg</span></div>
     </div>
-    <div class="vicio-hero-num" id="alcoholDays">0</div>
-    <div class="vicio-hero-unit">días sin beber</div>
-    <div class="vicio-hero-milestone" id="alcoholMilestone">Empieza hoy</div>
-    <div class="vicio-btns">
-      <button class="vicio-btn-reset" onclick="resetVicio('alcohol')">Reiniciar</button>
-      <button class="vicio-btn-add" onclick="addVicioDays('alcohol',1)">+ Un día más 💪</button>
-    </div>
-  </div>
-
-  <!-- Alcohol milestones -->
-  <div class="section-label">Hitos de alcohol</div>
-  <div class="milestones-list" id="alcMilestonesList"></div>
-
-  <!-- Weed hero -->
-  <div class="section-label" style="margin-top:20px">Weed</div>
-  <div class="vicio-hero weed">
-    <div class="vicio-hero-top">
-      <div class="vicio-hero-icon">🌿</div>
-      <div class="vicio-hero-badge">Weed</div>
-    </div>
-    <div class="vicio-hero-num" id="weedDays">0</div>
-    <div class="vicio-hero-unit">días sin fumar</div>
-    <div class="vicio-hero-milestone" id="weedMilestone">Empieza hoy</div>
-    <div class="vicio-btns">
-      <button class="vicio-btn-reset" onclick="resetVicio('weed')">Reiniciar</button>
-      <button class="vicio-btn-add" onclick="addVicioDays('weed',1)">+ Un día más 💪</button>
-    </div>
-  </div>
-
-  <!-- Weed milestones -->
-  <div class="section-label">Hitos de weed</div>
-  <div class="milestones-list" id="weedMilestonesList"></div>
-
-</div>
-
-<!-- ══════════════════════════════
-     PAGE: AYUNO
-══════════════════════════════ -->
-<div class="page" id="page-ayuno">
-
-  <div class="fasting-hero">
-    <div class="fasting-protocol-tag">Protocolo 16:8</div>
-    <div class="fasting-time-display inactive" id="fastingTimer">--:--:--</div>
-    <div class="fasting-status-label" id="fastingStatusLabel">Registra tu última comida</div>
-    <button class="fasting-set-btn" id="fastingSetBtn" onclick="openFastingModal()">
-      🍽 Toca para registrar tu última comida
-    </button>
-    <div class="fasting-result" id="fastingResult">
-      <div class="fasting-info-row">
-        <div class="fasting-info-label">Última comida</div>
-        <div class="fasting-info-val" id="fastingLastMeal">—</div>
+    <div class="acard-pad" style="padding-top:8px">
+      <div class="sub" id="pesoSundaySub" style="margin-bottom:10px">Pésate cada domingo en ayunas</div>
+      <div id="pesoDeltaRow" style="display:none;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div class="sub">vs semana anterior</div>
+        <div style="font-size:15px;font-weight:700" id="pesoDeltaVal">—</div>
       </div>
-      <div class="fasting-info-row">
-        <div class="fasting-info-label">Puedes comer a partir de</div>
-        <div class="fasting-info-val" id="fastingEatTime" style="color:var(--accent)">—</div>
-      </div>
-      <div class="fasting-info-row">
-        <div class="fasting-info-label">Horas de ayuno</div>
-        <div class="fasting-info-val" id="fastingHours" style="color:var(--purple)">16h</div>
-      </div>
-      <div class="fasting-tip-box" id="fastingTip"></div>
-    </div>
-  </div>
-
-  <!-- Info boxes -->
-  <div class="section-label">¿Por qué 16:8?</div>
-  <div class="card">
-    <div class="card-body" style="display:flex;flex-direction:column;gap:12px">
-      <div style="display:flex;gap:12px;align-items:flex-start">
-        <div style="font-size:20px;flex-shrink:0">🔥</div>
-        <div><div style="font-size:13px;font-weight:600;margin-bottom:3px">Quema grasa real</div><div style="font-size:12px;color:var(--muted);line-height:1.55">Después de 12h sin comer tu cuerpo activa la quema de grasa. A las 16h está al máximo.</div></div>
-      </div>
-      <div style="display:flex;gap:12px;align-items:flex-start">
-        <div style="font-size:20px;flex-shrink:0">💪</div>
-        <div><div style="font-size:13px;font-weight:600;margin-bottom:3px">Sin perder músculo</div><div style="font-size:12px;color:var(--muted);line-height:1.55">El protocolo 16:8 es el más estudiado para quemar grasa sin catabolismo muscular.</div></div>
-      </div>
-      <div style="display:flex;gap:12px;align-items:flex-start">
-        <div style="font-size:20px;flex-shrink:0">🧠</div>
-        <div><div style="font-size:13px;font-weight:600;margin-bottom:3px">Claridad mental</div><div style="font-size:12px;color:var(--muted);line-height:1.55">En ayunas el cerebro usa cetonas — muchas personas reportan más enfoque y energía.</div></div>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<!-- ══════════════════════════════
-     PAGE: CUENTA
-══════════════════════════════ -->
-<div class="page" id="page-cuenta">
-
-  <!-- Profile header -->
-  <div class="account-header">
-    <div class="account-avatar">💪</div>
-    <div>
-      <div class="account-name">Ivan</div>
-      <div class="account-since" id="accountSince">Semana 1</div>
-      <div class="account-xp" id="accountXp">0 XP total</div>
-    </div>
-  </div>
-
-  <!-- Peso card -->
-  <div class="section-label">Peso semanal</div>
-  <div class="peso-card">
-    <div class="peso-top">
-      <div>
-        <div class="peso-label">⚖️ Mi peso actual</div>
-        <div class="peso-hint" id="pesoSundaySub">Pésate cada domingo en ayunas</div>
-      </div>
-      <div>
-        <div class="peso-big-num" id="pesoSundayNum">96.0</div>
-        <div class="peso-big-unit">kg</div>
-      </div>
-    </div>
-    <div class="peso-delta-row" id="pesoDeltaRow" style="display:none">
-      <div class="peso-delta-label">vs semana anterior</div>
-      <div class="peso-delta-val" id="pesoDeltaVal">—</div>
-    </div>
-    <div class="peso-action">
       <button class="btn btn-accent" id="pesoDomingoBtn" onclick="openPesoModal()">⚖️ Registrar peso de hoy</button>
-      <div class="peso-next" id="pesoNextWeigh"></div>
+      <div class="sub mono" id="pesoNextWeigh" style="text-align:center;margin-top:8px"></div>
     </div>
   </div>
 
   <!-- Meta -->
-  <div class="section-label">Meta de peso</div>
-  <div class="meta-block">
-    <div class="meta-nums">
-      <div class="meta-current" id="metaCurrent">96.0</div>
-      <div class="meta-unit">kg</div>
-      <div class="meta-arrow">→</div>
-      <div class="meta-target">86</div>
-      <div class="meta-unit">meta</div>
-    </div>
-    <div class="meta-track"><div class="meta-fill" id="metaBar" style="width:0%"></div></div>
-    <div class="meta-caption" id="metaCaption">0.0 kg perdidos · 10.0 kg restantes</div>
-    <div class="sparkline-wrap" id="sparklineWrap" style="display:none">
-      <div class="sparkline-label">Tendencia</div>
-      <svg id="weightSparkline" width="100%" height="50" preserveAspectRatio="none"></svg>
+  <div class="acard">
+    <div class="acard-head"><div class="acard-title">Meta: 86 kg</div></div>
+    <div class="acard-pad">
+      <div class="meta-nums">
+        <div class="meta-current" id="metaCurrent">96.0</div>
+        <div class="meta-unit">kg</div>
+        <div class="meta-arrow">→</div>
+        <div class="meta-target">86</div>
+        <div class="meta-unit">meta</div>
+      </div>
+      <div class="meta-track"><div class="meta-fill" id="metaBar" style="width:0%"></div></div>
+      <div class="sub mono" id="metaCaption">0.0 kg perdidos · 10.0 kg restantes</div>
+      <div id="sparklineWrap" style="display:none;margin-top:14px">
+        <div class="sub mono" style="margin-bottom:6px;text-transform:uppercase;font-size:9px;letter-spacing:1px">Tendencia</div>
+        <svg id="weightSparkline" width="100%" height="50" preserveAspectRatio="none"></svg>
+      </div>
     </div>
   </div>
 
-  <!-- Progresión de fases -->
-  <div class="section-label">Progresión</div>
-  <div class="phase-block" id="phaseCard">
-    <div class="phase-block-head">
-      <div>
-        <div class="phase-tag" id="phaseBadgeNum">Fase 1 de 4</div>
-        <div class="phase-name" id="phaseName">FUNDACIÓN</div>
-      </div>
-      <div>
-        <div class="phase-counter-num" id="phaseCounterNum">0</div>
-        <div class="phase-counter-label">entrenos</div>
+  <!-- ══ DEJAR EL ALCOHOL ══ -->
+  <div class="sec-header">Dejar el alcohol</div>
+
+  <!-- SOS antojo -->
+  <button class="sos-btn" onclick="openSOS()">🆘 Tengo un antojo fuerte</button>
+
+  <!-- Días sin alcohol hero -->
+  <div class="acard">
+    <div class="hero-num-card">
+      <div class="hero-num" style="color:var(--stand)" id="alcoholDays">0</div>
+      <div class="hero-num-unit">días sin alcohol</div>
+      <div class="hero-num-milestone" style="color:var(--stand)" id="alcoholMilestone">Empieza hoy</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+        <button class="btn-sm ghost" onclick="resetVicio('alcohol')" style="padding:12px">Reiniciar</button>
+        <button class="btn-sm" onclick="addVicioDays('alcohol',1)" style="padding:12px;background:rgba(255,92,56,.15);color:var(--stand)">+ Un día más</button>
       </div>
     </div>
-    <div class="phase-desc" id="phaseDesc">Aprende la técnica perfecta.</div>
-    <div class="phase-track"><div class="phase-fill" id="phaseProgressFill" style="width:0%"></div></div>
-    <div class="phase-next-label" id="phaseNextLabel">— entrenos para la siguiente fase</div>
-    <div class="phase-steps" id="phaseStepper"></div>
+  </div>
+
+  <!-- Lo que has ganado -->
+  <div class="acard-head" style="padding:0 4px 8px"><div class="acard-title">Lo que has ganado</div></div>
+  <div class="sober-stats">
+    <div class="sober-stat">
+      <div class="sober-stat-val" id="moneySaved">$0</div>
+      <div class="sober-stat-label">ahorrados en cerveza</div>
+    </div>
+    <div class="sober-stat">
+      <div class="sober-stat-val" id="calsSaved">0</div>
+      <div class="sober-stat-label">calorías evitadas</div>
+    </div>
+  </div>
+
+  <!-- Tu cuerpo se recupera -->
+  <div class="acard">
+    <div class="acard-head"><div class="acard-title">Tu cuerpo se está recuperando</div></div>
+    <div class="timeline" id="alcTimeline"></div>
+  </div>
+
+  <!-- Hitos alcohol -->
+  <div class="acard">
+    <div class="acard-head"><div class="acard-title">Hitos sin alcohol</div></div>
+    <div class="milestones-list" id="alcMilestonesList"></div>
+  </div>
+
+  <!-- Weed -->
+  <div class="sec-header">Weed</div>
+  <div class="acard">
+    <div class="hero-num-card" style="padding:18px 16px">
+      <div class="hero-num" style="color:var(--purple);font-size:44px" id="weedDays">0</div>
+      <div class="hero-num-unit">días sin fumar</div>
+      <div class="hero-num-milestone" style="color:var(--purple)" id="weedMilestone">Empieza hoy</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
+        <button class="btn-sm ghost" onclick="resetVicio('weed')" style="padding:11px">Reiniciar</button>
+        <button class="btn-sm" onclick="addVicioDays('weed',1)" style="padding:11px;background:rgba(191,90,242,.15);color:var(--purple)">+ Un día más</button>
+      </div>
+    </div>
+  </div>
+  <div class="acard">
+    <div class="acard-head"><div class="acard-title">Hitos sin weed</div></div>
+    <div class="milestones-list" id="weedMilestonesList"></div>
+  </div>
+
+  <!-- Ayuno -->
+  <div class="sec-header">Ayuno intermitente</div>
+  <div class="acard">
+    <div class="acard-head">
+      <div class="acard-title">⏱ Protocolo 16:8</div>
+    </div>
+    <div class="acard-pad">
+      <div class="fasting-timer-big inactive" id="fastingTimer">--:--:--</div>
+      <div class="fasting-status-label" id="fastingStatusLabel">Registra tu última comida</div>
+      <button class="fasting-set-btn" id="fastingSetBtn" onclick="openFastingModal()">🍽 Registrar última comida</button>
+      <div class="fasting-result" id="fastingResult">
+        <div class="fasting-info-row">
+          <div class="fasting-info-label">Última comida</div>
+          <div class="fasting-info-val" id="fastingLastMeal">—</div>
+        </div>
+        <div class="fasting-info-row">
+          <div class="fasting-info-label">Puedes comer a partir de</div>
+          <div class="fasting-info-val" style="color:var(--move)" id="fastingEatTime">—</div>
+        </div>
+        <div class="fasting-info-row">
+          <div class="fasting-info-label">Horas de ayuno</div>
+          <div class="fasting-info-val" id="fastingHours">16h</div>
+        </div>
+        <div class="fasting-tip-box" id="fastingTip"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════ LOGROS ═══════════ -->
+<div class="page" id="page-logros">
+
+  <!-- Fase -->
+  <div class="acard" id="phaseCard">
+    <div class="acard-head">
+      <div>
+        <div class="sub mono" style="text-transform:uppercase;font-size:9px;letter-spacing:1px" id="phaseBadgeNum">Fase 1 de 4</div>
+        <div style="font-size:22px;font-weight:800;letter-spacing:-.5px;margin-top:2px" id="phaseName">FUNDACIÓN</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:28px;font-weight:800;letter-spacing:-1px" id="phaseCounterNum">0</div>
+        <div class="sub mono" style="font-size:9px">entrenos</div>
+      </div>
+    </div>
+    <div class="acard-pad" style="padding-top:8px">
+      <div class="sub" style="margin-bottom:8px" id="phaseDesc">Aprende la técnica perfecta.</div>
+      <div class="phase-track"><div class="phase-fill" id="phaseProgressFill" style="width:0%"></div></div>
+      <div class="sub mono" id="phaseNextLabel">— entrenos para la siguiente fase</div>
+      <div class="phase-steps" id="phaseStepper"></div>
+    </div>
   </div>
 
   <!-- Logros -->
-  <div class="section-label">Logros</div>
+  <div class="sec-header">Insignias</div>
   <div class="achievements-grid" id="achievementsGrid"></div>
 
-  <!-- Data management — discrete -->
-  <div class="section-label">Mis datos</div>
-  <div class="data-section">
-    <div class="data-row" onclick="exportData()">
-      <div class="data-row-left">
-        <div class="data-row-icon">💾</div>
-        <div>
-          <div class="data-row-label">Exportar datos</div>
-          <div class="data-row-sub">Descarga una copia de seguridad</div>
-        </div>
-      </div>
-      <div class="data-row-arrow">→</div>
+  <!-- Rachas -->
+  <div class="sec-header">Rachas</div>
+  <div class="tiles">
+    <div class="tile">
+      <div class="tile-top"><div class="tile-name">Racha actual</div><div class="tile-ico">🔥</div></div>
+      <div class="tile-val" style="color:var(--stand)" id="streakNum2">0<small> sem</small></div>
+      <div class="tile-sub">semanas de gym completas</div>
     </div>
-    <div class="data-row" onclick="toggleImportPanel()">
-      <div class="data-row-left">
-        <div class="data-row-icon">📥</div>
-        <div>
-          <div class="data-row-label">Importar datos</div>
-          <div class="data-row-sub">Restaurar desde otra URL o dispositivo</div>
-        </div>
-      </div>
-      <div class="data-row-arrow" id="importArrow">→</div>
+    <div class="tile">
+      <div class="tile-top"><div class="tile-name">Mejor racha</div><div class="tile-ico">🏆</div></div>
+      <div class="tile-val" style="color:var(--move)" id="bestStreakNum2">0<small> sem</small></div>
+      <div class="tile-sub">récord histórico</div>
     </div>
+  </div>
+
+</div>
+
+<!-- ═══════════ YO ═══════════ -->
+<div class="page" id="page-yo">
+
+  <div class="acard">
+    <div class="acard-pad" style="display:flex;align-items:center;gap:14px">
+      <div style="width:56px;height:56px;background:var(--s2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0">💪</div>
+      <div>
+        <div style="font-size:20px;font-weight:800;letter-spacing:-.3px">Ivan</div>
+        <div class="sub" id="accountSince">Semana 1</div>
+        <div class="mono" style="font-size:11px;color:var(--move);margin-top:2px" id="accountXp">0 XP total</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Frase del día -->
+  <div class="acard">
+    <div class="acard-pad">
+      <div style="font-size:14px;font-style:italic;line-height:1.6;color:var(--text2)" id="quoteText">La disciplina es elegir entre lo que quieres ahora y lo que quieres más.</div>
+      <div class="sub mono" style="margin-top:8px" id="quoteAuthor">— Abraham Lincoln</div>
+    </div>
+  </div>
+
+  <!-- Datos -->
+  <div class="sec-header">Mis datos</div>
+  <div class="list">
+    <button class="lrow" onclick="exportData()">
+      <div class="lrow-ico" style="background:rgba(48,209,88,.15)">💾</div>
+      <div class="lrow-body">
+        <div class="lrow-title">Exportar datos</div>
+        <div class="lrow-sub">Descarga una copia de seguridad</div>
+      </div>
+      <div class="lrow-arrow">›</div>
+    </button>
+    <button class="lrow" onclick="toggleImportPanel()">
+      <div class="lrow-ico" style="background:rgba(56,200,255,.15)">📥</div>
+      <div class="lrow-body">
+        <div class="lrow-title">Importar datos</div>
+        <div class="lrow-sub">Restaurar desde otro dispositivo</div>
+      </div>
+      <div class="lrow-arrow" id="importArrow">›</div>
+    </button>
     <div class="import-panel" id="importPanel">
-      <div class="mono-sm" style="margin-bottom:8px">Pega aquí los datos exportados:</div>
       <textarea class="import-textarea" id="importInput" placeholder="Pega el JSON aquí..."></textarea>
       <div class="import-row">
         <button class="btn-sm accent" onclick="importData()">Importar</button>
@@ -979,71 +839,43 @@ body{padding-bottom:72px}
     </div>
   </div>
 
+  <div style="display:none" id="importBanner"></div>
+
 </div>
 
-<!-- ══════════════════════════════
-     BOTTOM NAV
-══════════════════════════════ -->
+<!-- ═══════════ TAB BAR ═══════════ -->
 <nav class="bottom-nav">
-  <button class="nav-item" onclick="switchPage('vicios',this)">
-    <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 2c0 4-4 6-4 10a4 4 0 008 0c0-4-4-6-4-10z"/>
-      <path d="M12 12c0 2-1.5 3-1.5 4.5a1.5 1.5 0 003 0C13.5 15 12 14 12 12z"/>
-    </svg>
-    <div class="nav-label">Vicios</div>
-    <div class="nav-dot"></div>
+  <button class="nav-item active" onclick="switchPage('resumen',this)" data-title="Resumen">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="2"/></svg>
+    <div class="nav-label">Resumen</div>
   </button>
-  <button class="nav-item" onclick="switchPage('entreno',this)">
-    <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="2" y="10" width="4" height="4" rx="1"/>
-      <rect x="18" y="10" width="4" height="4" rx="1"/>
-      <rect x="5" y="8" width="3" height="8" rx="1"/>
-      <rect x="16" y="8" width="3" height="8" rx="1"/>
-      <line x1="8" y1="12" x2="16" y2="12"/>
-    </svg>
-    <div class="nav-label">Entreno</div>
-    <div class="nav-dot"></div>
+  <button class="nav-item" onclick="switchPage('actividad',this)" data-title="Actividad">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="10" width="4" height="4" rx="1"/><rect x="18" y="10" width="4" height="4" rx="1"/><rect x="5" y="8" width="3" height="8" rx="1"/><rect x="16" y="8" width="3" height="8" rx="1"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+    <div class="nav-label">Actividad</div>
   </button>
-  <button class="nav-item nav-center active" onclick="switchPage('inicio',this)">
-    <svg class="nav-icon-center" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/>
-      <path d="M9 21V12h6v9"/>
-    </svg>
-    <div class="nav-label">Inicio</div>
-    <div class="nav-dot"></div>
+  <button class="nav-item" onclick="switchPage('salud',this)" data-title="Salud">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.4 4.6a5.5 5.5 0 00-7.8 0L12 5.2l-.6-.6a5.5 5.5 0 00-7.8 7.8l.6.6L12 20.8l7.8-7.8.6-.6a5.5 5.5 0 000-7.8z"/></svg>
+    <div class="nav-label">Salud</div>
   </button>
-  <button class="nav-item" onclick="switchPage('ayuno',this)">
-    <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="13" r="8"/>
-      <path d="M12 9v4l3 2"/>
-      <path d="M9 2h6"/>
-    </svg>
-    <div class="nav-label">Ayuno</div>
-    <div class="nav-dot"></div>
+  <button class="nav-item" onclick="switchPage('logros',this)" data-title="Logros">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M8.5 14.5L7 21l5-2.5L17 21l-1.5-6.5"/></svg>
+    <div class="nav-label">Logros</div>
   </button>
-  <button class="nav-item" onclick="switchPage('cuenta',this)">
-    <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="7" r="4"/>
-      <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>
-    </svg>
-    <div class="nav-label">Cuenta</div>
-    <div class="nav-dot"></div>
+  <button class="nav-item" onclick="switchPage('yo',this)" data-title="Yo">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    <div class="nav-label">Yo</div>
   </button>
 </nav>
 
-<!-- ══════════════════════════════
-     MODALS
-══════════════════════════════ -->
-<div class="workout-modal-overlay" id="workoutModal">
-  <div class="workout-modal" id="workoutModalInner"></div>
-</div>
+<!-- ═══════════ MODALS ═══════════ -->
+<div class="workout-modal-overlay" id="workoutModal"><div class="workout-modal" id="workoutModalInner"></div></div>
 
 <div class="modal-overlay" id="fastingModal">
   <div class="modal">
     <div class="modal-title">¿Última comida?</div>
-    <div class="mono-xs" style="margin-bottom:12px">Horas comunes</div>
+    <div class="sub mono" style="margin-bottom:12px;text-transform:uppercase;font-size:9px;letter-spacing:1px">Horas comunes</div>
     <div class="fasting-time-picker" id="fastingQuickPicks"></div>
-    <div class="mono-xs" style="margin-bottom:10px">O escribe la hora</div>
+    <div class="sub mono" style="margin-bottom:10px;text-transform:uppercase;font-size:9px;letter-spacing:1px">O escribe la hora</div>
     <input type="time" class="custom-time-input" id="fastingTimeInput">
     <div class="modal-btns">
       <button class="modal-cancel" onclick="closeFastingModal()">Cancelar</button>
@@ -1075,100 +907,264 @@ body{padding-bottom:72px}
   </div>
 </div>
 
+<!-- SOS MODAL -->
+<div class="sos-modal-overlay" id="sosModal">
+  <div class="sos-modal">
+    <div class="sos-title">Respira, Ivan</div>
+    <div class="sos-sub">El antojo dura máximo 20 minutos. Puedes surfearlo. Sigue el círculo con tu respiración:</div>
+    <div class="sos-breath-circle">Inhala…<br>Exhala…</div>
+    <div class="sos-sub" style="font-weight:600;color:var(--text)">Inhala 4 seg · Sostén 7 seg · Exhala 8 seg</div>
+    <div class="sos-tips">
+      <div class="sos-tip"><span>🥤</span><span><b>Cambia el gesto:</b> agua mineral con limón en la misma mano donde iría la cerveza.</span></div>
+      <div class="sos-tip"><span>🚶</span><span><b>Muévete 5 min:</b> camina, haz 20 sentadillas. El antojo baja con el movimiento.</span></div>
+      <div class="sos-tip"><span>🧠</span><span><b>Recuerda por qué:</b> vas <span id="sosProgress">—</span> y cada cerveza que no tomas te acerca a los 86 kg.</span></div>
+      <div class="sos-tip"><span>⏳</span><span><b>Regla de los 20 min:</b> dile a tu antojo "ahorita no, en 20 minutos vemos". Casi siempre se va solo.</span></div>
+    </div>
+    <button class="sos-close" onclick="closeSOS()">Ya pasó, estoy bien 💪</button>
+  </div>
+</div>
+
 <div class="toast" id="toast">✓ Guardado</div>
 <div class="xp-toast" id="xpToast">+50 XP</div>
 
-</body>
-</html>
-
 <script>
 
-// ── PAGE NAVIGATION ──────────────────────────────────────────
+// ── PAGE NAV (Apple tabs) ────────────────────────────────────
+const PAGE_TITLES = {resumen:'Resumen',actividad:'Actividad',salud:'Salud',logros:'Logros',yo:'Yo'};
 function switchPage(name, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
+  const pg = document.getElementById('page-' + name);
+  if (pg) pg.classList.add('active');
   if (el) el.classList.add('active');
-  if (name === 'inicio') { renderRings(); renderWeekBars(); }
-  if (name === 'vicios') { renderMilestoneLists(); }
-  if (name === 'cuenta') { renderAccountHeader(); }
+  else {
+    document.querySelectorAll('.nav-item').forEach(n => {
+      if (n.getAttribute('data-title') === PAGE_TITLES[name]) n.classList.add('active');
+    });
+  }
+  const t = document.getElementById('pageTitle');
+  if (t) t.textContent = PAGE_TITLES[name] || 'IvanFit';
+  window.scrollTo({top:0});
+  if (name === 'resumen') { renderRings(); renderWeekBars(); renderInsight(); }
+  if (name === 'salud') { renderMilestoneLists(); renderSoberStats(); renderAlcTimeline(); }
+  if (name === 'logros') { renderStreakMirror(); }
+  if (name === 'yo') { renderAccountHeader(); }
 }
 
-// ── HERO RINGS ────────────────────────────────────────────────
+// ── INSIGHT MOTIVACIONAL (dinámico) ──────────────────────────
+function renderInsight() {
+  const icon = document.getElementById('insightIcon');
+  const text = document.getElementById('insightText');
+  const sub = document.getElementById('insightSub');
+  if (!text) return;
+  const lost = Math.max(0, 96 - (state.peso || 96));
+  const gym = (state.gymDays||[]).length;
+  const streak = state.streak || 0;
+  const alcDays = state.alcoholDays || 0;
+  const day = new Date().getDay();
+
+  let msg, sb, ic;
+  if (lost >= 5) { ic='🚀'; msg='Ya perdiste ' + lost.toFixed(1) + ' kg — vas a mitad de camino'; sb='Los 86 kg están cada vez más cerca.'; }
+  else if (gym >= 3) { ic='🏆'; msg='¡Semana de gym completa!'; sb='3 de 3 entrenos. Así se construye un cuerpo nuevo.'; }
+  else if (streak >= 2) { ic='🔥'; msg='Racha de ' + streak + ' semanas seguidas'; sb='La constancia es tu superpoder ahora.'; }
+  else if (alcDays >= 7) { ic='💎'; msg=alcDays + ' días sin alcohol'; sb='Tu cuerpo te lo está agradeciendo.'; }
+  else if (lost > 0) { ic='📉'; msg='Vas ' + lost.toFixed(1) + ' kg abajo desde que empezaste'; sb='Cada semana cuenta. Sigue así.'; }
+  else if (day === 1) { ic='💪'; msg='Lunes: día de Empuje'; sb='La semana se gana el lunes. Ve al gym hoy.'; }
+  else if (day === 3) { ic='💪'; msg='Miércoles: día de Jalón'; sb='Mitad de semana. No aflojes ahora.'; }
+  else if (day === 5) { ic='🦵'; msg='Viernes: día de Piernas'; sb='El día más duro. Terminarlo se siente increíble.'; }
+  else { ic='💪'; msg='Cada día es una oportunidad'; sb='Pequeñas decisiones, gran transformación.'; }
+
+  icon.textContent = ic;
+  text.textContent = msg;
+  sub.textContent = sb;
+}
+
+// ── RETO DEL DÍA ─────────────────────────────────────────────
+const DAILY_CHALLENGES = [
+  'Toma 2.5L de agua hoy',
+  'Camina 20 minutos extra',
+  'Cero azúcar añadida hoy',
+  'Duerme antes de las 11pm',
+  'Come proteína en cada comida',
+  '10 sentadillas al despertar',
+  'Sin alcohol hoy',
+  'Estira 10 minutos antes de dormir',
+  'Sube escaleras en vez de elevador',
+  'Prepara tu comida de mañana hoy',
+  'Camina después de la comida principal',
+  'Cero comida frita hoy',
+  'Toma un vaso de agua antes de cada comida',
+  'Sin comer 3 horas antes de dormir'
+];
+
+function todayChallengeIdx() {
+  return Math.floor(Date.now() / 86400000) % DAILY_CHALLENGES.length;
+}
+
+function renderChallenge() {
+  const text = document.getElementById('challengeText');
+  const check = document.getElementById('challengeCheck');
+  if (!text) return;
+  text.textContent = DAILY_CHALLENGES[todayChallengeIdx()];
+  const todayKey = new Date().toISOString().slice(0,10);
+  const done = (state.challengesDone || {})[todayKey];
+  if (check) check.classList.toggle('done', !!done);
+}
+
+function toggleChallenge() {
+  const todayKey = new Date().toISOString().slice(0,10);
+  if (!state.challengesDone) state.challengesDone = {};
+  const was = state.challengesDone[todayKey];
+  state.challengesDone[todayKey] = !was;
+  saveState();
+  renderChallenge();
+  if (!was) {
+    awardXP(30, 'Reto diario');
+    launchConfetti();
+    showToast('✓ ¡Reto del día completado!');
+  }
+}
+
+// ── RINGS (Apple, 3 concentric) ──────────────────────────────
 function renderRings() {
   const START = 96, TARGET = 86;
   const lost = Math.max(0, START - (state.peso || START));
   const pesoPct = Math.min(100, (lost / (START - TARGET)) * 100);
-  setRing('ringPeso', pesoPct, 'ringPesoVal', Math.round(pesoPct) + '%');
-  const gymPct2 = Math.min(100, ((state.gymDays||[]).length / 3) * 100);
-  setRing('ringGym', gymPct2, 'ringGymVal', (state.gymDays||[]).length + '/3');
-  const alcDays = state.alcoholDays || 0;
-  const weedDays2 = state.weedDays || 0;
-  const avgVicios = Math.round((alcDays + weedDays2) / 2);
-  const viciosPct = Math.min(100, (avgVicios / 30) * 100);
-  setRing('ringVicios', viciosPct, 'ringViciosVal', avgVicios + 'd');
-  const ph = getCurrentPhase();
-  const hpn = document.getElementById('heroPhaseName');
-  if (hpn) hpn.textContent = ph.name;
+  setRingC('ringPeso', 377, pesoPct);
+  const el1 = document.getElementById('ringPesoVal');
+  if (el1) el1.textContent = Math.round(pesoPct) + '%';
+
+  const gymN = (state.gymDays||[]).length;
+  setRingC('ringGym', 283, Math.min(100, (gymN/3)*100));
+  const el2 = document.getElementById('ringGymVal');
+  if (el2) el2.textContent = gymN + '/3';
+
+  const avgV = Math.round(((state.alcoholDays||0) + (state.weedDays||0)) / 2);
+  setRingC('ringVicios', 188, Math.min(100, (avgV/30)*100));
+  const el3 = document.getElementById('ringViciosVal');
+  if (el3) el3.innerHTML = avgV + '<small> días</small>';
 }
 
-function setRing(ringId, pct, valId, label) {
-  const r = document.getElementById(ringId);
-  const v = document.getElementById(valId);
-  if (!r || !v) return;
-  const circ = 201;
+function setRingC(id, circ, pct) {
+  const r = document.getElementById(id);
+  if (!r) return;
   r.style.strokeDashoffset = circ - (circ * pct / 100);
-  v.textContent = label;
 }
 
-// ── WEEKLY BARS CHART ─────────────────────────────────────────
+// ── WEEK BARS ────────────────────────────────────────────────
 function renderWeekBars() {
   const chart = document.getElementById('weeksBarChart');
   if (!chart) return;
   const history = (state.history || []).slice(0, 8).reverse();
+  const cap = document.getElementById('trendCaption');
   if (history.length === 0) {
-    chart.innerHTML = '<div style="font-family:JetBrains Mono,monospace;font-size:10px;color:#666;width:100%;text-align:center;padding:16px 0">Guarda tu primera semana para ver la gráfica</div>';
+    chart.innerHTML = '<div style="font-size:11px;color:var(--muted);width:100%;text-align:center;padding:20px 0">Guarda tu primera semana para ver la tendencia</div>';
+    if (cap) cap.textContent = '';
     return;
   }
-  const weeks = [];
-  for (let i = 0; i < 8; i++) {
-    if (i < history.length) weeks.push(history[i]);
-    else weeks.push(null);
+  if (cap && history.length >= 2) {
+    const first = history[0].peso, last = history[history.length-1].peso;
+    const d = (last - first).toFixed(1);
+    cap.textContent = (d <= 0 ? '▼ ' + Math.abs(d) : '▲ ' + d) + ' kg';
+    cap.style.color = d <= 0 ? 'var(--green)' : 'var(--red)';
   }
-  const pesos = weeks.filter(w => w && w.peso).map(w => w.peso);
+  const weeks = [];
+  for (let i = 0; i < 8; i++) weeks.push(i < history.length ? history[i] : null);
+  const pesos = weeks.filter(w=>w&&w.peso).map(w=>w.peso);
   const maxP = pesos.length ? Math.max(...pesos) : 96;
   const minP = pesos.length ? Math.min(...pesos) - 0.5 : 85;
-  chart.innerHTML = weeks.map((w, i) => {
-    if (!w) {
-      return '<div class="bar-col"><div class="bar-track"><div class="bar-fill" style="height:10%;background:var(--s3)"></div></div><div class="bar-label">S' + (i+1) + '</div></div>';
-    }
-    const pct = Math.max(10, Math.min(95, ((w.peso - minP) / (maxP - minP + 0.1)) * 85 + 10));
+  chart.innerHTML = weeks.map((w,i) => {
+    if (!w) return '<div class="bar-col"><div class="bar-track"><div class="bar-fill" style="height:8%;background:var(--s3)"></div></div><div class="bar-label">·</div></div>';
+    const pct = Math.max(10, Math.min(95, ((w.peso - minP)/(maxP - minP + .1))*85 + 10));
     const inv = 100 - pct;
     const gymOk = (w.gymDays||[]).length >= 3;
     const beerOk = w.beers <= 6;
-    const perfect = gymOk && beerOk;
-    const color = perfect ? 'var(--accent)' : gymOk ? 'var(--a3)' : 'var(--s3)';
-    return '<div class="bar-col"><div class="bar-track"><div class="bar-fill" style="height:' + inv + '%;background:' + color + '"></div></div><div class="bar-label">S' + (w.week||i+1) + '</div></div>';
+    const color = (gymOk && beerOk) ? 'var(--move)' : gymOk ? 'var(--exercise)' : 'var(--s3)';
+    return '<div class="bar-col"><div class="bar-track"><div class="bar-fill" style="height:'+inv+'%;background:'+color+'"></div></div><div class="bar-label">S'+(w.week||i+1)+'</div></div>';
   }).join('');
 }
 
-// ── MILESTONE LISTS ───────────────────────────────────────────
+// ── SOBER STATS (dinero + calorías) ──────────────────────────
+const BEER_COST_MXN = 45;   // precio promedio por cerveza 500ml
+const BEER_CALS = 220;      // calorías por cerveza 500ml
+const BASELINE_WEEKLY = 12; // lo que tomaba antes
+
+function renderSoberStats() {
+  // Beers avoided = baseline * weeks - actual consumed (from history + current)
+  const weeks = (state.history||[]).length + 1;
+  const consumed = (state.history||[]).reduce((s,h)=>s+(h.beers||0),0) + (state.beers||0);
+  const avoided = Math.max(0, BASELINE_WEEKLY * weeks - consumed);
+  const money = avoided * BEER_COST_MXN;
+  const cals = avoided * BEER_CALS;
+  const mEl = document.getElementById('moneySaved');
+  const cEl = document.getElementById('calsSaved');
+  if (mEl) mEl.textContent = '$' + money.toLocaleString('es-MX');
+  if (cEl) cEl.textContent = cals.toLocaleString('es-MX');
+}
+
+// ── ALCOHOL RECOVERY TIMELINE ────────────────────────────────
+const ALC_TIMELINE = [
+  [1,  'A las 24 horas', 'Tu azúcar en sangre se normaliza y tu cuerpo empieza a hidratarse mejor.'],
+  [3,  'A los 3 días', 'El sueño se vuelve más profundo y reparador. La inflamación baja.'],
+  [7,  'A la semana', 'Tu hígado empieza a regenerarse. La piel se ve más clara.'],
+  [14, 'A las 2 semanas', 'Baja la grasa abdominal. La presión arterial mejora.'],
+  [21, 'A los 21 días', 'El hábito neurológico se rompe. Los antojos disminuyen drásticamente.'],
+  [30, 'Al mes', 'Tu hígado se recuperó ~15%. Mejor testosterona = más músculo en el gym.'],
+  [60, 'A los 2 meses', 'Metabolismo optimizado. Tu progreso en el gym se acelera visiblemente.'],
+  [90, 'A los 90 días', 'Reseteo completo. Tu relación con el alcohol cambió para siempre.']
+];
+
+function renderAlcTimeline() {
+  const el = document.getElementById('alcTimeline');
+  if (!el) return;
+  const days = Math.max(state.alcoholDays||0, state.bestAlcoholStreak||0);
+  el.innerHTML = ALC_TIMELINE.map(([d, when, what]) => {
+    const reached = days >= d;
+    return '<div class="tl-item ' + (reached?'reached':'') + '"><div class="tl-dot"></div><div><div class="tl-when">' + when + '</div><div class="tl-what">' + what + '</div></div></div>';
+  }).join('');
+}
+
+// ── SOS ANTOJO ───────────────────────────────────────────────
+function openSOS() {
+  const p = document.getElementById('sosProgress');
+  if (p) {
+    const lost = Math.max(0, 96 - (state.peso||96)).toFixed(1);
+    const alcD = state.alcoholDays || 0;
+    p.textContent = lost + ' kg abajo' + (alcD > 0 ? ' y ' + alcD + ' días sin alcohol' : '');
+  }
+  document.getElementById('sosModal').classList.add('show');
+  // SOS usage counts as a win
+  awardXP(15, 'Resististe');
+}
+
+function closeSOS() {
+  document.getElementById('sosModal').classList.remove('show');
+  showToast('💪 Lo superaste. Eso es fuerza real.');
+}
+
+// ── STREAK MIRROR (logros page duplicates) ───────────────────
+function renderStreakMirror() {
+  const s1 = document.getElementById('streakNum2');
+  const s2 = document.getElementById('bestStreakNum2');
+  if (s1) s1.innerHTML = (state.streak||0) + '<small> sem</small>';
+  if (s2) s2.innerHTML = (state.bestStreak||0) + '<small> sem</small>';
+}
+
+// ── MILESTONE LISTS ──────────────────────────────────────────
 function renderMilestoneLists() {
   const alcEl = document.getElementById('alcMilestonesList');
   const weedEl = document.getElementById('weedMilestonesList');
   if (alcEl) alcEl.innerHTML = ALCOHOL_MILESTONES.map(function(m) {
-    var d = m[0], t = m[1];
-    var reached = (state.alcoholDays||0) >= d || (state.bestAlcoholStreak||0) >= d;
-    return '<div class="milestone-item ' + (reached ? 'reached alc' : '') + '"><div class="ms-days">' + d + '</div><div class="ms-label">' + t + '</div><div class="ms-check">✓</div></div>';
+    var reached = (state.alcoholDays||0) >= m[0] || (state.bestAlcoholStreak||0) >= m[0];
+    return '<div class="milestone-item ' + (reached?'reached':'') + '"><div class="ms-days">' + m[0] + '</div><div class="ms-label">' + m[1] + '</div><div class="ms-check">✓</div></div>';
   }).join('');
   if (weedEl) weedEl.innerHTML = WEED_MILESTONES.map(function(m) {
-    var d = m[0], t = m[1];
-    var reached = (state.weedDays||0) >= d || (state.bestWeedStreak||0) >= d;
-    return '<div class="milestone-item ' + (reached ? 'reached weed' : '') + '"><div class="ms-days">' + d + '</div><div class="ms-label">' + t + '</div><div class="ms-check">✓</div></div>';
+    var reached = (state.weedDays||0) >= m[0] || (state.bestWeedStreak||0) >= m[0];
+    return '<div class="milestone-item ' + (reached?'reached':'') + '"><div class="ms-days">' + m[0] + '</div><div class="ms-label">' + m[1] + '</div><div class="ms-check">✓</div></div>';
   }).join('');
 }
 
-// ── ACCOUNT HEADER ────────────────────────────────────────────
+// ── ACCOUNT ──────────────────────────────────────────────────
 function renderAccountHeader() {
   var since = document.getElementById('accountSince');
   var xpEl = document.getElementById('accountXp');
@@ -1176,16 +1172,15 @@ function renderAccountHeader() {
   if (xpEl) xpEl.textContent = (state.xp || 0) + ' XP total';
 }
 
-// ── IMPORT PANEL TOGGLE ───────────────────────────────────────
 function toggleImportPanel() {
   var panel = document.getElementById('importPanel');
   var arrow = document.getElementById('importArrow');
   if (!panel) return;
   panel.classList.toggle('open');
-  if (arrow) arrow.textContent = panel.classList.contains('open') ? '↓' : '→';
+  if (arrow) arrow.textContent = panel.classList.contains('open') ? '⌄' : '›';
 }
 
-// ── SUNDAY PESO BUTTON ────────────────────────────────────────
+// ── SUNDAY PESO BTN ──────────────────────────────────────────
 function updatePesoBtn() {
   var btn = document.getElementById('pesoDomingoBtn');
   var sub = document.getElementById('pesoSundaySub');
@@ -1201,9 +1196,41 @@ function updatePesoBtn() {
     btn.textContent = '⚖️ Registrar peso de hoy';
     var days = daysUntilSunday();
     if (sub) sub.textContent = 'Pésate cada domingo en ayunas · misma hora siempre';
-    if (next) next.textContent = 'Próximo pesaje en ' + days + ' día' + (days === 1 ? '' : 's') + ' (domingo)';
+    if (next) next.textContent = 'Próximo pesaje: en ' + days + ' día' + (days===1?'':'s') + ' (domingo)';
   }
 }
+
+
+
+// ── PAGE NAVIGATION ──────────────────────────────────────────
+
+
+// ── HERO RINGS ────────────────────────────────────────────────
+
+
+function setRing(ringId, pct, valId, label) {
+  const r = document.getElementById(ringId);
+  const v = document.getElementById(valId);
+  if (!r || !v) return;
+  const circ = 201;
+  r.style.strokeDashoffset = circ - (circ * pct / 100);
+  v.textContent = label;
+}
+
+// ── WEEKLY BARS CHART ─────────────────────────────────────────
+
+
+// ── MILESTONE LISTS ───────────────────────────────────────────
+
+
+// ── ACCOUNT HEADER ────────────────────────────────────────────
+
+
+// ── IMPORT PANEL TOGGLE ───────────────────────────────────────
+
+
+// ── SUNDAY PESO BUTTON ────────────────────────────────────────
+
 
 
 const DAYS = ['LUN','MAR','MIÉ','JUE','VIE','SÁB','DOM'];
@@ -1961,8 +1988,11 @@ function renderLevel() {
 }
 
 function renderStreak() {
-  document.getElementById('streakNum').textContent = state.streak || 0;
-  document.getElementById('bestStreakNum').textContent = state.bestStreak || 0;
+  var s = document.getElementById('streakNum');
+  var b = document.getElementById('bestStreakNum');
+  if (s) s.innerHTML = (state.streak || 0) + '<small> sem</small>';
+  if (b) b.textContent = state.bestStreak || 0;
+  renderStreakMirror();
 }
 
 function renderQuote() {
@@ -2097,6 +2127,9 @@ function addVicioDays(type, n) {
   renderMilestoneLists();
   renderMonthlyCalendar();
   renderRings();
+  renderSoberStats();
+  renderAlcTimeline();
+  renderInsight();
   checkAchievements(false);
 }
 
@@ -2137,7 +2170,7 @@ function renderPesoDominical() {
   const deltaRow = document.getElementById('pesoDeltaRow');
   const deltaVal = document.getElementById('pesoDeltaVal');
 
-  if (num) num.textContent = (state.peso || 96).toFixed(1);
+  if (num) num.innerHTML = (state.peso || 96).toFixed(1) + '<span style="font-size:12px;color:var(--muted);font-weight:600"> kg</span>';
 
   // Delta vs prev
   if (state.prevPeso !== null && state.prevPeso !== undefined && deltaRow) {
@@ -2483,6 +2516,11 @@ function init() {
   renderMilestoneLists();
   renderAccountHeader();
   updatePesoBtn();
+  renderInsight();
+  renderChallenge();
+  renderSoberStats();
+  renderAlcTimeline();
+  renderStreakMirror();
   checkFirstRun();
   if (state.lastMealTime) renderFasting();
 }
@@ -2573,7 +2611,7 @@ function changeBeer(delta) {
 
 function updateAllStats() {
   // Peso
-  document.getElementById('statPeso').textContent = state.peso.toFixed(1);
+  document.getElementById('statPeso').innerHTML = state.peso.toFixed(1) + '<small> kg</small>';
   document.getElementById('metaCurrent').textContent = state.peso.toFixed(1);
   
   if (state.prevPeso !== null) {
@@ -2603,13 +2641,13 @@ function updateAllStats() {
 
   // Gym
   const gymCount = state.gymDays.length;
-  document.getElementById('statGym').textContent = gymCount;
+  document.getElementById('statGym').innerHTML = gymCount + '<small>/3</small>';
   const gymPct = Math.min(100, Math.round((gymCount / 3) * 100));
   document.getElementById('gymPct').textContent = gymPct + '%';
   document.getElementById('gymBar').style.width = gymPct + '%';
 
   // Cervezas
-  document.getElementById('statCervezas').textContent = state.beers;
+  document.getElementById('statCervezas').innerHTML = state.beers + '<small>/6</small>';
   document.getElementById('beerCountBig').textContent = state.beers;
   const beerOk = Math.max(0, 6 - state.beers);
   const beerPct = Math.min(100, Math.round((beerOk / 6) * 100));
@@ -2669,6 +2707,8 @@ function saveWeek() {
   renderSparkline();
   renderRings();
   renderWeekBars();
+  renderSoberStats();
+  renderInsight();
   checkAchievements(true);
   showToast('¡Semana ' + entry.week + ' guardada! +' + weekXP + ' XP');
   launchConfetti();
@@ -2877,6 +2917,7 @@ document.getElementById('fastingModal').addEventListener('click', function(e) {
 });
 
 init();
+
 
 </script>
 </body>
